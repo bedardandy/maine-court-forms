@@ -1,0 +1,991 @@
+{
+  "form_id": "AD-004",
+  "schema_version": "0.3",
+  "source_pdf": "pdfs/AD-004.pdf",
+  "artifact_pdf": "form.pdf",
+  "n_pages": 1,
+  "n_fields": 19,
+  "by_category": {
+    "case_constant": 3,
+    "narrative_derived": 15,
+    "party_attr": 1
+  },
+  "by_risk_tier": {
+    "green": 19
+  },
+  "by_data_type": {
+    "text": 19
+  },
+  "_skill_metadata_override": {},
+  "fields": [
+    {
+      "field_id": "location",
+      "widget_id": "W001",
+      "label": "Location",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        427,
+        78,
+        553,
+        91
+      ],
+      "data_constraints": {},
+      "category": "case_constant",
+      "subcategory": "county",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "docket_no_2",
+      "widget_id": "W002",
+      "label": "Docket No_2",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        436,
+        92,
+        550,
+        105
+      ],
+      "data_constraints": {},
+      "category": "case_constant",
+      "subcategory": "docket_no",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "name_of_adoptee",
+      "widget_id": "W003",
+      "label": "Name of Adoptee",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        45,
+        147,
+        261,
+        160
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "this_matter_involves_an_adoption_petition_filed_pursuant_to_18c_mrs_9301_and_the_minor_adoptee",
+      "widget_id": "W004",
+      "label": "This matter involves an adoption petition filed pursuant to 18C MRS  9301 and the minor adoptee",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        55,
+        230,
+        66,
+        241
+      ],
+      "data_constraints": {},
+      "category": "party_attr",
+      "subcategory": "minor",
+      "party": "minor",
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "i_am_the_adoptee_named_above_i_was_born_on",
+      "widget_id": "W005",
+      "label": "I am the adoptee named above I was born on",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        293,
+        260,
+        403,
+        273
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "and_i_am",
+      "widget_id": "W006",
+      "label": "and I am",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        447,
+        260,
+        513,
+        273
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "i_understand_that_a_petition_to_adopt_me_has_been_filed_by",
+      "widget_id": "W007",
+      "label": "I understand that a petition to adopt me has been filed by",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        343,
+        289,
+        514,
+        302
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "petitioners_who_will_become_my_legal",
+      "widget_id": "W008",
+      "label": "petitioners who will become my legal",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        90,
+        303,
+        332,
+        316
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "and_for_the_change_of_my_name",
+      "widget_id": "W009",
+      "label": "and for the change of my name",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        322,
+        378,
+        333,
+        389
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "this_matter_involves_a_confirmatory_adoption_petition_filed_pursuant_to_18c_mrs_9316_and_the",
+      "widget_id": "W010",
+      "label": "This matter involves a confirmatory adoption petition filed pursuant to 18C MRS  9316 and the",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        55,
+        403,
+        66,
+        414
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "i_am_the_adoptee_named_above_i_was_born_on_2",
+      "widget_id": "W011",
+      "label": "I am the adoptee named above I was born on_2",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        293,
+        437,
+        403,
+        450
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "and_i_am_2",
+      "widget_id": "W012",
+      "label": "and I am_2",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        447,
+        437,
+        513,
+        450
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "i_understand_that_a_petition_to_adopt_me_has_been_filed_by_2",
+      "widget_id": "W013",
+      "label": "I understand that a petition to adopt me has been filed by_2",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        343,
+        466,
+        514,
+        479
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "petitioners_who_isare_my_parents_or_my",
+      "widget_id": "W014",
+      "label": "petitioners who isare my parents or my",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        90,
+        481,
+        332,
+        494
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "dated",
+      "widget_id": "W015",
+      "label": "Dated",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        86,
+        535,
+        202,
+        548
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "date",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "text1",
+      "widget_id": "W016",
+      "label": "Text1",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        342,
+        532,
+        541,
+        548
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "printed_name_of_adoptee",
+      "widget_id": "W017",
+      "label": "Printed Name of Adoptee",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        342,
+        564,
+        540,
+        577
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "county",
+      "widget_id": "W018",
+      "label": "COUNTY",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        54,
+        625,
+        192,
+        638
+      ],
+      "data_constraints": {},
+      "category": "case_constant",
+      "subcategory": "county",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "personally_appeared_the_abovenamed",
+      "widget_id": "W019",
+      "label": "Personally appeared the abovenamed",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        238,
+        651,
+        403,
+        664
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    }
+  ]
+}

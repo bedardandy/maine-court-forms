@@ -1,0 +1,33 @@
+{
+  "form_id": "CR-234",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check. 1 layout render-flag(s) recorded.",
+  "map": {
+    "defendant": "parties.defendant.full_name",
+    "date_of_birth_mmddyyyy": "parties.defendant.date_of_birth",
+    "undefined": "parties.defendant.date_of_birth",
+    "undefined_2": "parties.defendant.date_of_birth",
+    "current_mailing_address": "parties.defendant.address",
+    "current_residential_address": "parties.defendant.address",
+    "county": "facts.county",
+    "if_yes_location": "facts.custody_location",
+    "if_no_phone_number": "parties.defendant.phone",
+    "email": "parties.defendant.email",
+    "docket_number_and_charge_1": "matter.docket_number",
+    "docket_number_and_charge_2": "facts.charge",
+    "an_interpreter_for_the": "facts.interpreter_language",
+    "country_region_or_dialect": "facts.language_dialect",
+    "accommodations_requested": "facts.accommodations",
+    "referred_by": "facts.referral_source",
+    "phone_and_email_address": "facts.referral_contact"
+  },
+  "render_flags": [
+    {
+      "issue": "overflow",
+      "field": "Date of Birth (mm/dd/yyyy):",
+      "detail": "Text repeats three times, overflowing the line and overlapping itself",
+      "votes": 5
+    }
+  ]
+}

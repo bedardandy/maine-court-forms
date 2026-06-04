@@ -1,0 +1,633 @@
+{
+  "form_id": "MH-015",
+  "schema_version": "0.3",
+  "source_pdf": "pdfs/MH-015.pdf",
+  "artifact_pdf": "form.pdf",
+  "n_pages": 1,
+  "n_fields": 12,
+  "by_category": {
+    "narrative_derived": 10,
+    "case_constant": 2
+  },
+  "by_risk_tier": {
+    "green": 12
+  },
+  "by_data_type": {
+    "text": 12
+  },
+  "_skill_metadata_override": {},
+  "fields": [
+    {
+      "field_id": "in_re",
+      "widget_id": "W001",
+      "label": "IN RE",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        66,
+        75,
+        255,
+        90
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "date_of_birth_mmddyyyy",
+      "widget_id": "W002",
+      "label": "Date of Birth mmddyyyy",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        170,
+        120,
+        255,
+        135
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "date",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "location_town",
+      "widget_id": "W003",
+      "label": "Location Town",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        422,
+        75,
+        583,
+        90
+      ],
+      "data_constraints": {},
+      "category": "case_constant",
+      "subcategory": "county",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "docket_no",
+      "widget_id": "W004",
+      "label": "Docket No",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        400,
+        91,
+        584,
+        106
+      ],
+      "data_constraints": {},
+      "category": "case_constant",
+      "subcategory": "docket_no",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": true,
+        "llm_eligible": false,
+        "human_required": false,
+        "source": "case_dict"
+      },
+      "risk_score": 0,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "court_ori",
+      "widget_id": "W005",
+      "label": "Court ORI",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        395,
+        120,
+        583,
+        135
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "ari_no",
+      "widget_id": "W006",
+      "label": "ARI No",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        394,
+        135,
+        583,
+        150
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "i",
+      "widget_id": "W007",
+      "label": "I",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        81,
+        209,
+        277,
+        224
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "a_law_enforcement_officer_for_the",
+      "widget_id": "W008",
+      "label": "a law enforcement officer for the",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        447,
+        209,
+        576,
+        224
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "department",
+      "widget_id": "W009",
+      "label": "Department",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        95,
+        225,
+        241,
+        238
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "take",
+      "widget_id": "W010",
+      "label": "take",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        53,
+        239,
+        241,
+        253
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "date_mmddyyyy",
+      "widget_id": "W011",
+      "label": "Date mmddyyyy",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        131,
+        298,
+        259,
+        313
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "date",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    },
+    {
+      "field_id": "undefined",
+      "widget_id": "W012",
+      "label": "undefined",
+      "type": "text",
+      "data_type": "text",
+      "page": 0,
+      "rect": [
+        318,
+        298,
+        583,
+        313
+      ],
+      "data_constraints": {},
+      "category": "narrative_derived",
+      "subcategory": "free_text",
+      "party": null,
+      "writable_when": null,
+      "required_when": null,
+      "choice_group": null,
+      "choice_value": null,
+      "formula": null,
+      "depends_on": [],
+      "validators": [],
+      "fill_strategy": {
+        "deterministic": false,
+        "llm_eligible": true,
+        "human_required": false,
+        "source": "llm_over_narrative"
+      },
+      "risk_score": 5,
+      "risk_tier": "green",
+      "risk_breakdown": {
+        "category_base": 5,
+        "eval_wrong": 0,
+        "eval_oc": 0,
+        "eval_miscompr": 0
+      },
+      "hand_review": {
+        "reasons": []
+      },
+      "eval_evidence": {
+        "wrong": 0,
+        "overconfident": 0,
+        "underconfident": 0,
+        "misunderstood": 0,
+        "matches": 0,
+        "not_applicable": 0,
+        "patterns_scored": 0
+      }
+    }
+  ]
+}

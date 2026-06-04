@@ -1,0 +1,39 @@
+{
+  "form_id": "GS-006",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check. 1 layout render-flag(s) recorded.",
+  "map": {
+    "location": "matter.court_location",
+    "docket_no_2": "matter.docket_number",
+    "in_re": "parties.child_1.full_name",
+    "on": "matter.filing_date",
+    "date_i": "parties.plaintiff.full_name",
+    "date": "today()",
+    "name_1": "parties.plaintiff.full_name",
+    "address": "parties.plaintiff.address",
+    "name_2": "parties.plaintiff.address",
+    "phone_number": "parties.plaintiff.phone",
+    "email_1": "parties.plaintiff.email",
+    "text5": "today()",
+    "text3": "parties.attorney.bar_number",
+    "date_2": "today()",
+    "name_1_2": "parties.attorney.full_name",
+    "address_3": "parties.attorney.address",
+    "name_2_2": "parties.attorney.address",
+    "phone_number_3": "parties.attorney.phone",
+    "email_2": "parties.attorney.email",
+    "county": "matter.court_county",
+    "personally_appeared_the_above_named": "parties.plaintiff.full_name",
+    "date_3": "today()",
+    "text1": "party.signature"
+  },
+  "render_flags": [
+    {
+      "issue": "overflow",
+      "field": "Address:",
+      "detail": "Text '123 Main Street' is written twice, with the second instance overlapping the line below.",
+      "votes": 3
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "maine-court-forms",
+  "version": "1.0.0",
+  "description": "Route a plain-language fact pattern to the correct Maine Judicial Branch court form and produce a filled PDF by mapping each form's AcroForm fields to a canonical fact object.",
+  "author": {
+    "name": "Maine Court Forms contributors"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["maine", "court", "legal-forms", "pdf", "acroform", "routing", "llm-agents", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Maine Court Forms",
+    "shortDescription": "Route + fill Maine Judicial Branch court forms",
+    "longDescription": "Go from a plain-language situation to the right Maine court form and a filled PDF. A single-call router selects the form(s) from a compact catalog; each form ships an AcroForm field schema and a canonical fact->field mapping, so the fill path is deterministic and needs no VLM at fill time. Blank PDFs are fetched on demand from the official portal and verified by SHA-256 — never redistributed. Bundles an MCP server (find_forms / get_form / fill_form) and a routing-and-fill skill. Not legal advice.",
+    "developerName": "Maine Court Forms contributors",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Use this project to assist with: I need the right Maine court form for my situation, filled out"
+    ],
+    "brandColor": "#7B2D26"
+  }
+}

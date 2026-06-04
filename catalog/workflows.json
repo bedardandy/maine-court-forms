@@ -1,0 +1,142 @@
+{
+  "workflows": {
+    "fed_nonpayment": {
+      "name": "Residential Eviction — Nonpayment of Rent",
+      "description": "Forcible Entry and Detainer for nonpayment of rent",
+      "matter_types": ["FED", "eviction", "forcible_entry_detainer", "nonpayment"],
+      "steps": [
+        {"order": 1, "form": "CV-256", "name": "FED Information Sheet & Mediation Request", "when": "Serve with Notice to Quit", "required": true, "notes": "Must be served along with Notice to Quit"},
+        {"order": 2, "form": "CV-007", "name": "Complaint for Residential FED", "when": "Filing complaint", "required": true, "notes": "Core complaint form"},
+        {"order": 3, "form": "CV-001", "name": "Civil Summary Sheet", "when": "Filing with complaint", "required": true, "notes": "Required cover sheet for all civil filings"},
+        {"order": 4, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "when": "Filing with complaint (if attorney filing)", "required": true, "condition": "attorney_filing", "notes": "Attorney must file appearance"},
+        {"order": 5, "form": "CR-CV-FM-255", "name": "Notice Regarding Electronic Service", "when": "Filing with complaint", "required": false, "condition": "electronic_service", "notes": "If parties agree to electronic service"},
+        {"order": 6, "form": "CV-204", "name": "Affidavit of Service, FED", "when": "After service completed", "required": true, "notes": "Proof that defendant was served"},
+        {"order": 7, "form": "CV-061", "name": "Affidavit & Request for Default", "when": "If defendant doesn't respond", "required": false, "condition": "default_judgment", "notes": "Only if defendant fails to appear/answer"},
+        {"order": 8, "form": "CV-195", "name": "Request for Writ of Possession", "when": "After judgment in plaintiff's favor", "required": false, "condition": "judgment_granted", "notes": "To actually get possession of the property"},
+        {"order": 9, "form": "CV-206", "name": "Notice of Appeal and Affidavit, FED", "when": "If appealing", "required": false, "condition": "appeal", "notes": "7-day appeal window after judgment"}
+      ]
+    },
+    "fed_lease_violation": {
+      "name": "Residential Eviction — Lease Violation",
+      "description": "FED for breach of lease terms",
+      "matter_types": ["FED", "eviction", "lease_violation"],
+      "steps": [
+        {"order": 1, "form": "CV-256", "name": "FED Information Sheet", "required": true},
+        {"order": 2, "form": "CV-007", "name": "Complaint for FED", "required": true},
+        {"order": 3, "form": "CV-001", "name": "Civil Summary Sheet", "required": true},
+        {"order": 4, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "required": true, "condition": "attorney_filing"},
+        {"order": 5, "form": "CV-204", "name": "Affidavit of Service", "required": true},
+        {"order": 6, "form": "CV-061", "name": "Default Judgment", "required": false, "condition": "default_judgment"},
+        {"order": 7, "form": "CV-195", "name": "Writ of Possession", "required": false, "condition": "judgment_granted"}
+      ]
+    },
+    "personal_property_recovery": {
+      "name": "Recovery of Personal Property (Summary Process)",
+      "description": "Recover personal property through summary process",
+      "matter_types": ["personal_property", "property_recovery", "summary_process"],
+      "steps": [
+        {"order": 1, "form": "CV-183", "name": "Complaint for Recovery of Personal Property", "required": true},
+        {"order": 2, "form": "CV-001", "name": "Civil Summary Sheet", "required": true},
+        {"order": 3, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "required": true, "condition": "attorney_filing"},
+        {"order": 4, "form": "CV-187", "name": "Notice of Appeal for Recovery of PP", "required": false, "condition": "appeal"},
+        {"order": 5, "form": "CV-188", "name": "Writ of Possession for PP", "required": false, "condition": "judgment_granted"}
+      ]
+    },
+    "contract_breach": {
+      "name": "Breach of Contract",
+      "description": "Civil action for breach of contract",
+      "matter_types": ["contract", "breach_of_contract", "debt_collection", "commercial"],
+      "steps": [
+        {"order": 1, "form": "CV-261", "name": "Contract Case Cover Sheet", "required": true},
+        {"order": 2, "form": "CV-001", "name": "Civil Summary Sheet", "required": true},
+        {"order": 3, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "required": true, "condition": "attorney_filing"},
+        {"order": 4, "form": "CR-CV-FM-255", "name": "Electronic Service Notice", "required": false, "condition": "electronic_service"},
+        {"order": 5, "form": "CV-FM-036", "name": "Acknowledgment of Receipt", "required": false},
+        {"order": 6, "form": "CV-061", "name": "Default Judgment", "required": false, "condition": "default_judgment"},
+        {"order": 7, "form": "CV-181", "name": "Renewal Writ of Execution", "required": false, "condition": "judgment_granted"}
+      ]
+    },
+    "debt_buyer": {
+      "name": "Debt Buyer Collection",
+      "description": "Debt buyer filing collection action",
+      "matter_types": ["debt_buyer", "purchased_debt"],
+      "steps": [
+        {"order": 1, "form": "CV-287", "name": "Debt Buyer Complaint", "required": true},
+        {"order": 2, "form": "CV-001", "name": "Civil Summary Sheet", "required": true},
+        {"order": 3, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "required": true, "condition": "attorney_filing"},
+        {"order": 4, "form": "CV-061", "name": "Default Judgment", "required": false, "condition": "default_judgment"}
+      ]
+    },
+    "small_claims": {
+      "name": "Small Claims",
+      "description": "Small claims action (up to $6,000)",
+      "matter_types": ["small_claims"],
+      "steps": [
+        {"order": 1, "form": "SC-001", "name": "Statement of Claim", "required": true},
+        {"order": 2, "form": "SC-006", "name": "Affidavit and Request for Service", "required": true},
+        {"order": 3, "form": "SC-005", "name": "Acknowledgment of Service", "required": true, "notes": "After service completed"},
+        {"order": 4, "form": "SC-007", "name": "Notice of Small Claims Appeal", "required": false, "condition": "appeal"},
+        {"order": 5, "form": "SC-003", "name": "Request for Disclosure Hearing", "required": false, "condition": "judgment_granted"}
+      ]
+    },
+    "civil_appeal": {
+      "name": "Civil Appeal to Law Court",
+      "description": "Appeal a civil judgment to the Supreme Judicial Court",
+      "matter_types": ["appeal", "civil_appeal", "law_court"],
+      "steps": [
+        {"order": 1, "form": "CV-CR-162", "name": "Notice of Appeal", "required": true},
+        {"order": 2, "form": "CV-CR-JV-165", "name": "Transcript and Audio Order Form", "required": true},
+        {"order": 3, "form": "CV-CR-163", "name": "Request for Protection", "required": false}
+      ]
+    },
+    "service_alternate_means": {
+      "name": "Service by Alternate Means",
+      "description": "When normal service cannot be completed",
+      "matter_types": ["alternate_service", "service_by_publication"],
+      "steps": [
+        {"order": 1, "form": "CV-FM-072", "name": "Motion for Service by Alternate Means", "required": true},
+        {"order": 2, "form": "CV-FM-202", "name": "Affidavit Service Completed by Alternate Means", "required": true, "notes": "After alternate service completed"},
+        {"order": 3, "form": "CV-172", "name": "Newspaper Cover Letter", "required": false, "condition": "publication_service"},
+        {"order": 4, "form": "CV-173", "name": "Verification of Publication", "required": false, "condition": "publication_service"}
+      ]
+    },
+    "foreclosure": {
+      "name": "Foreclosure",
+      "description": "Residential foreclosure action",
+      "matter_types": ["foreclosure", "mortgage_foreclosure"],
+      "steps": [
+        {"order": 1, "form": "CV-001", "name": "Civil Summary Sheet", "required": true},
+        {"order": 2, "form": "CR-CV-FM-JV-021", "name": "Entry of Appearance", "required": true},
+        {"order": 3, "form": "FDP-002A", "name": "Plaintiff's Foreclosure Mediation Info", "required": true},
+        {"order": 4, "form": "CV-207", "name": "Consent for Expedited Final Hearing", "required": false},
+        {"order": 5, "form": "CV-208", "name": "Request to Schedule Expedited Hearing", "required": false}
+      ]
+    },
+    "contempt": {
+      "name": "Motion for Contempt (Civil)",
+      "description": "Civil contempt for failure to comply with court order",
+      "matter_types": ["contempt", "civil_contempt"],
+      "steps": [
+        {"order": 1, "form": "CV-037", "name": "Subpoena on Motion for Contempt", "required": true},
+        {"order": 2, "form": "CV-001", "name": "Civil Summary Sheet", "required": true}
+      ]
+    },
+    "foreign_judgment": {
+      "name": "Register Foreign Judgment",
+      "description": "Register a judgment from another state under UEFJA",
+      "matter_types": ["foreign_judgment", "uefja", "judgment_registration"],
+      "steps": [
+        {"order": 1, "form": "CV-266", "name": "Affidavit to Register Foreign Judgment", "required": true},
+        {"order": 2, "form": "CV-001", "name": "Civil Summary Sheet", "required": true}
+      ]
+    },
+    "bcd_transfer": {
+      "name": "Transfer to Business & Consumer Docket",
+      "description": "Transfer case to the Business and Consumer Docket",
+      "matter_types": ["bcd", "business_consumer_docket"],
+      "steps": [
+        {"order": 1, "form": "CV-222", "name": "Application for Transfer to BCD", "required": true}
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# Never commit fill/audit run artifacts — these are large and reproducible.
+evaluations/
+intermediate/
+reports/
+**/*.filled.pdf
+**/*.flat.pdf
+**/*.audit.json
+*.pixmap.png
+
+# Scratch vision-crop renders dumped at the repo root by the mapping/audit
+# tools (e.g. _z_top.png, .bot.png, .improve_<form>_p<n>.png). Debris, never
+# deliverables. No tracked PNGs exist, so these root-only globs are safe.
+/_*.png
+/.*.png
+.improve_*.png
+
+# Large raw catalog dump — kept on disk for the scaffold tool but excluded
+# from git to keep the review bundle lean. Re-add when publishing if wanted.
+catalog/inventory.json
+
+# Blank source PDFs (~131 MB) are kept out of git until PDF-redistribution
+# licensing is resolved (see KICKOFF.md task 3). They stay on disk for local
+# fill/verify; each form's source_url in form.yaml drives the downloader
+# fallback. Re-add this tree once licensing permits redistribution.
+forms/**/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor / OS
+.DS_Store
+*.swp

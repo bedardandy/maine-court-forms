@@ -1,0 +1,9 @@
+{
+  "_doc": "Shared-AcroForm-field splits (accessibility + correctness). Each listed field is one AcroForm field reused across semantically different boxes; detach the wrong-context appearance so it stops inheriting the other box's value and gets its own /TU. Verified via sentinel render. The other 13 worklist collisions across CR-140/CR-JV-253/CV-067/FM-040-A/JV-005/OTH-123 are benign (same value legitimately repeated in caption+body or across page headers, or unmapped cosmetic) — no split needed.",
+  "splits": [
+    {"field": "2_5", "page": 12, "new_name": "confidential_mailing_address", "clear": true,
+     "_why": "2_5 = child-DOB table cell (pg4) AND confidential 'Mailing address' line (pg12); pg12 detached + blanked."},
+    {"field": "2_6", "page": 14, "new_name": "protective_custody_case_detail", "clear": true,
+     "_why": "2_6 = child-2 address table cell (pg4) AND a Protective-Custody case-detail field (pg14); pg14 detached + blanked."}
+  ]
+}

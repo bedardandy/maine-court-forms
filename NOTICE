@@ -1,0 +1,28 @@
+Maine Court Forms — form-by-form automation library
+Copyright 2026 The maine-court-forms contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+----------------------------------------------------------------------
+Blank court forms (NOT redistributed)
+----------------------------------------------------------------------
+The blank PDF forms this library maps are official documents of the
+Maine Judicial Branch:
+
+    https://www.courts.maine.gov/forms-fees-fines/forms.html
+
+They are NOT included in or redistributed by this repository. Each form's
+official `source_url` (forms/<ID>/form.yaml), together with a size and
+SHA-256 in catalog/pdf_manifest.json, lets the tooling fetch and verify the
+official blank on demand (see tools/fetch_pdfs.py).
+
+The forms remain the property of the Maine Judicial Branch and are subject
+to its terms; this project claims no rights over them. Any built artifact
+that embeds a blank Maine Judicial Branch form should carry this attribution.
+
+This repository's own work — code (engine/, tools/) and the structured form
+artifacts (forms/<ID>/ metadata, schemas, skills, mappings; catalog/; docs/)
+— is the part licensed under Apache-2.0.
+
+Not legal advice. Filled output is a draft and must be verified against the
+official form before filing.

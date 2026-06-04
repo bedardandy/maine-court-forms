@@ -1,0 +1,17 @@
+{
+  "form_id": "CV-FM-273",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check.",
+  "map": {
+    "county": "matter.court_county",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "2_the_court_appointed_a_referee_paid_for_by_the_court_to_hear_my_case_on_mmddyyyy": "facts.referee_appointment_date",
+    "date_mmddyyyy": "today()",
+    "undefined": "party.signature",
+    "plaintiff": "parties.plaintiff.full_name",
+    "defendant": "parties.defendant.full_name",
+    "printed_name_and_bar_number_if_applicable": "party.full_name"
+  }
+}

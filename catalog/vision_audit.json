@@ -1,0 +1,546 @@
+{
+  "note": "Single-pass vision audit of ai-mapped forms: each form filled from its canonical sample_case.json (engine/fill_via_mapping.py), rendered, and checked by a vision model for filled fields that are truncated, overflowing, or value/label mismatched. NOT full verification (single model, single pass). Many 'flagged' cases are fill-engine label-fanout artifacts on dense/merged PDFs, not wrong mapping keys (see KICKOFF / engine notes). Clean = no render-level defects found. UPDATE: forms originally flagged were re-mapped with tools/vision_map_forms.py (set-of-marks vision mapping) and re-audited; their entries here reflect the post-remap result. (Finding 'detail' text was dropped to avoid embedding sample values; issue + field label retained.)",
+  "model": "qwen3.6-27b",
+  "tool": "tools/vision_audit.py",
+  "audited": 89,
+  "clean": 83,
+  "flagged": 6,
+  "forms": {
+    "AD-007": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "AD-008": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "AD-009": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": []
+    },
+    "AD-015": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "AD-FM-GS-JV-PA-PC-292": {
+      "result": "clean",
+      "fields_written": 31,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "AD-FM-GS-JV-PA-PC-293": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-009": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-032": {
+      "result": "clean",
+      "fields_written": 12,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-076": {
+      "result": "clean",
+      "fields_written": 6,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-112": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-153": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-228": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-235": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": []
+    },
+    "CR-236": {
+      "result": "clean",
+      "fields_written": 23,
+      "findings": []
+    },
+    "CR-259": {
+      "result": "clean",
+      "fields_written": 7,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-CV-214": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": []
+    },
+    "CR-CV-FM-260": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-CV-FM-JV-PA-PC-286": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-CV-FM-PC-200": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CR-CV-JV-297": {
+      "result": "clean",
+      "fields_written": 18,
+      "findings": []
+    },
+    "CV-060": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": []
+    },
+    "CV-145": {
+      "result": "clean",
+      "fields_written": 16,
+      "findings": []
+    },
+    "CV-187": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-206": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-223": {
+      "result": "clean",
+      "fields_written": 6,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-287": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": []
+    },
+    "CV-295": {
+      "result": "flagged",
+      "fields_written": 32,
+      "findings": [
+        {
+          "field": "Physical Address (Street, City/Town, State, Zip)",
+          "issue": "mismatched"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "CV-CR-162": {
+      "result": "clean",
+      "fields_written": 12,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-CR-163": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-CR-JV-165": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-FM-072": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": []
+    },
+    "CV-FM-202": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": []
+    },
+    "CV-FM-203": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-FM-270": {
+      "result": "clean",
+      "fields_written": 15,
+      "findings": []
+    },
+    "CV-FM-275": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": []
+    },
+    "CV-FM-JV-PB-PC-024": {
+      "result": "clean",
+      "fields_written": 6,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-FM-JV-PB-PC-242": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": []
+    },
+    "CV-FM-JV-PB-PC-269": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "CV-FM-PA-PB-PC-268": {
+      "result": "clean",
+      "fields_written": 15,
+      "findings": []
+    },
+    "CV-FM-PB-221": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": []
+    },
+    "CV-FM-PB-299": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": []
+    },
+    "FM-040": {
+      "result": "clean",
+      "fields_written": 16,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-054": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-062": {
+      "result": "flagged",
+      "fields_written": 32,
+      "findings": [
+        {
+          "field": "(state)",
+          "issue": "mismatched"
+        },
+        {
+          "field": "(state)",
+          "issue": "mismatched"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "FM-068": {
+      "result": "clean",
+      "fields_written": 30,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-070": {
+      "result": "clean",
+      "fields_written": 34,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-132": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-136": {
+      "result": "clean",
+      "fields_written": 7,
+      "findings": []
+    },
+    "FM-205": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": []
+    },
+    "FM-218": {
+      "result": "flagged",
+      "fields_written": 8,
+      "findings": [
+        {
+          "field": "Docket No.:",
+          "issue": "mismatched"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "FM-226": {
+      "result": "clean",
+      "fields_written": 46,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "FM-235": {
+      "result": "clean",
+      "fields_written": 19,
+      "findings": []
+    },
+    "FM-PB-009": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": []
+    },
+    "FM-PB-297": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "GS-002": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "GS-004": {
+      "result": "clean",
+      "fields_written": 7,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "GS-007": {
+      "result": "clean",
+      "fields_written": 15,
+      "findings": []
+    },
+    "GS-009": {
+      "result": "flagged",
+      "fields_written": 33,
+      "findings": [
+        {
+          "field": "Name",
+          "issue": "mismatched"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "GS-014": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "GS-016": {
+      "result": "flagged",
+      "fields_written": 9,
+      "findings": [
+        {
+          "field": "Address",
+          "issue": "truncated"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "GS-017": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "GS-018": {
+      "result": "clean",
+      "fields_written": 11,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "JV-005": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": []
+    },
+    "JV-035": {
+      "result": "clean",
+      "fields_written": 6,
+      "findings": []
+    },
+    "JV-046": {
+      "result": "clean",
+      "fields_written": 7,
+      "findings": []
+    },
+    "MH-015": {
+      "result": "clean",
+      "fields_written": 5,
+      "findings": []
+    },
+    "MJ-002": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": []
+    },
+    "MJBVB-018": {
+      "result": "clean",
+      "fields_written": 8,
+      "findings": []
+    },
+    "MJBVB-020": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": []
+    },
+    "MRS-1041ME": {
+      "result": "clean",
+      "fields_written": 21,
+      "findings": []
+    },
+    "MRS-1120ME": {
+      "result": "clean",
+      "fields_written": 16,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "MRS-706ME": {
+      "result": "clean",
+      "fields_written": 29,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "MRS-900ME": {
+      "result": "clean",
+      "fields_written": 0,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "MRS-W4ME": {
+      "result": "clean",
+      "fields_written": 9,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "NC-003": {
+      "result": "clean",
+      "fields_written": 10,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "OMB-097": {
+      "result": "flagged",
+      "fields_written": 21,
+      "findings": [
+        {
+          "field": "Case ID:",
+          "issue": "overflow"
+        }
+      ],
+      "remapped": "vision"
+    },
+    "OTH-033": {
+      "result": "clean",
+      "fields_written": 21,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "OTH-132": {
+      "result": "clean",
+      "fields_written": 12,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "OTH-135": {
+      "result": "clean",
+      "fields_written": 4,
+      "findings": []
+    },
+    "PA-013": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PB-003": {
+      "result": "clean",
+      "fields_written": 13,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PB-004": {
+      "result": "clean",
+      "fields_written": 3,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PB-012": {
+      "result": "clean",
+      "fields_written": 0,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PC-043": {
+      "result": "clean",
+      "fields_written": 6,
+      "findings": []
+    },
+    "SC-003": {
+      "result": "clean",
+      "fields_written": 4,
+      "findings": []
+    },
+    "SC-007": {
+      "result": "clean",
+      "fields_written": 14,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PB-010": {
+      "result": "clean",
+      "fields_written": 0,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "PB-011": {
+      "result": "clean",
+      "fields_written": 0,
+      "findings": [],
+      "remapped": "vision"
+    },
+    "OTH-098": {
+      "result": "clean",
+      "fields_written": 0,
+      "findings": [],
+      "remapped": "vision"
+    }
+  }
+}

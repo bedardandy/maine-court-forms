@@ -1,0 +1,36 @@
+{
+  "form_id": "SC-007",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled; 3x consensus flagged 2 value(s); Opus 4.8 reviewed the filled form and confirmed no mapping change needed. 1 layout render-flag(s) recorded.",
+  "map": {
+    "plaintiff": "parties.plaintiff.full_name",
+    "undefined": "parties.plaintiff.address",
+    "defendant": "parties.defendant.full_name",
+    "undefined_2": "parties.defendant.address",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "text1": "facts.judgment_date",
+    "a_small_claims_judgment_was_entered_in_the_amount_of": "facts.judgment_amount",
+    "date_mmddyyyy": "today()",
+    "text3": "parties.plaintiff.address",
+    "signature_of_plaintiff_2": "parties.plaintiff.address",
+    "1": "facts.appeal_grounds",
+    "2": "facts.appeal_grounds",
+    "maine_judicial_branch_1": "parties.defendant.full_name",
+    "maine_judicial_branch_2": "parties.defendant.address",
+    "date_mmddyyyy_2": "today()",
+    "signature_of_defendant_2": "parties.defendant.address",
+    "undefined_3": "party.signature",
+    "undefined_4": "party.signature",
+    "text4": "parties.defendant.address"
+  },
+  "render_flags": [
+    {
+      "issue": "overflow",
+      "field": "Mailing Address of Plaintiff",
+      "detail": "Text '123 Main Street' overlaps the line above it.",
+      "votes": 3
+    }
+  ]
+}

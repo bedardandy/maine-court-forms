@@ -1,0 +1,44 @@
+{
+  "form_id": "CR-287",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled; 3x consensus flagged 1 value(s); Opus 4.7 reviewed the filled form and confirmed no mapping change needed. 1 layout render-flag(s) recorded.",
+  "map": {
+    "first_name": "party.first_name",
+    "middle_initial": "party.middle_name",
+    "last_name": "party.last_name",
+    "mailing_address": "party.address",
+    "residential_address_if_same_as_mailing_address_write_same": "facts.residential_address",
+    "email_address": "party.email",
+    "home_phone": "party.phone",
+    "cell_phone": "facts.cell_phone",
+    "work_phone": "facts.work_phone",
+    "social_security": "facts.social_security_number",
+    "drivers_license": "facts.driver_license_number",
+    "what_hours_are_you_willing_to_work_1": "facts.willing_hours",
+    "if_you_answered_yes_please_explain_1": "facts.availability_restrictions_explanation",
+    "why_are_you_seeking_this_appointment_1": "facts.reason_for_appointment",
+    "bail_commissioner_1": "facts.education_training_experience",
+    "if_you_answered_yes_to_any_of_the_above_please_give_details_including_agency_and_timeframe_1": "facts.current_employment_details",
+    "if_you_answered_yes_to_any_of_the_above_please_give_details_including_agency_and_timeframe_1_2": "facts.relative_current_employment_details",
+    "if_you_answered_yes_to_any_of_the_above_please_give_details_including_agency_and_timeframe_1_3": "facts.applicant_past_employment_details",
+    "if_you_answered_yes_to_any_of_the_above_please_give_details_including_agency_and_timeframe_1_4": "facts.details_agency_timeframe",
+    "askedanswered_above_please_include_agencybusiness_and_timeframe_1": "facts.legal_work_involvement",
+    "if_you_answered_yes_please_explain_1_2": "facts.explanation_ability_to_serve",
+    "currentmost_recent_employment": "facts.current_employer_name",
+    "company": "facts.current_position",
+    "position": "facts.current_duties",
+    "to_mmddyyyy": "facts.employment_start_date",
+    "undefined_9": "facts.employment_end_date",
+    "dates_of_employment_mmddyyyy": "facts.supervisor_name",
+    "reason_for_leaving_1": "facts.reason_for_leaving"
+  },
+  "render_flags": [
+    {
+      "issue": "overflow",
+      "field": "Street Address and Apt. #",
+      "detail": "Address '123 Main Street' is entered on the line but spills over the intended field boundary, overlapping into the area for City/State/Zip Code labels below.",
+      "votes": 5
+    }
+  ]
+}

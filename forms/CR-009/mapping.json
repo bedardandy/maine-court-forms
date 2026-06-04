@@ -1,0 +1,30 @@
+{
+  "form_id": "CR-009",
+  "status": "verified",
+  "model": "qwen3.6-27b+opus-4-7",
+  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check.",
+  "map": {
+    "county": "matter.court_county",
+    "location": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "defendant": "parties.defendant.full_name",
+    "offenses_charged_with": "facts.offense_charged",
+    "offenses_charged_with_2": "facts.offense_charged",
+    "in_the_unified_criminal_court_in": "facts.court_location_offense",
+    "bail_set": "facts.current_bail_amount",
+    "bail_conditions": "facts.current_bail_conditions",
+    "bail_conditions_cont": "facts.current_bail_conditions",
+    "5_if_released_on_bail_the_defendant_will_live_at": "facts.defendant_residence_address",
+    "full_address_cont": "facts.defendant_residence_address",
+    "employed_at": "facts.defendant_employer",
+    "give_name_and_address_of_employer": "facts.defendant_employer",
+    "earlier_convictions_or_failures_to_appear": "facts.prior_convictions_failures",
+    "earlier_convictions_or_failure_to_appears_cont": "facts.prior_convictions_failures",
+    "earlier_convictions_or_failure_to_appear_cont_2": "facts.prior_convictions_failures",
+    "length_of_time_defendant_has_lived_in_maine": "facts.residence_duration_in_maine",
+    "ties_to_maine": "facts.ties_to_maine",
+    "ties_to_maine_cont": "facts.ties_to_maine",
+    "date": "today()",
+    "bail_amount": "facts.requested_bail_amount"
+  }
+}

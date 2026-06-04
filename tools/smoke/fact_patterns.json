@@ -1,0 +1,143 @@
+{
+  "_doc": "Synthetic plain-language fact patterns for the intake smoke test (tools/smoke_fact_patterns.py). Each narrative is what a self-represented litigant might tell an intake assistant. All parties/dates/addresses are fictional. `expect_forms` is a SOFT routing hint (not a hard assertion); the harness records whether the router/Qwen landed on it. No legal advice; these exercise the extract->fill->audit->judge path only.",
+  "patterns": [
+    {
+      "id": "fam_divorce_nokids",
+      "area": "family",
+      "narrative": "I want to file for divorce in Cumberland County. My name is Maria Elena Vasquez and I live at 47 Birchwood Lane, Portland, Maine 04103. My phone is 207-555-0142. My husband is Daniel Robert Vasquez. We were married on June 14, 2009 in Portland. We have no children together. I want the divorce on the grounds of irreconcilable differences.",
+      "expect_forms": ["FM-004"]
+    },
+    {
+      "id": "fam_divorce_twokids",
+      "area": "family",
+      "narrative": "I need a divorce and we have two young kids. I'm Jennifer Anne Caldwell, living at 12 Harbor Road, Bangor, ME 04401, cell 207-555-0199. My spouse is Mark Steven Caldwell. We married on September 2, 2012 in Bangor, Penobscot County. Our children are Lucas Caldwell, born March 8, 2014, and Emma Caldwell, born November 21, 2016. I want shared parenting if possible.",
+      "expect_forms": ["FM-004", "FM-080", "FM-040"]
+    },
+    {
+      "id": "fam_parentage",
+      "area": "family",
+      "narrative": "I am trying to establish that James Tyler Brooks is the father of my son so we can set up child support. My name is Alicia Monroe, 88 Cedar Street, Lewiston, Maine 04240, in Androscoggin County. My son is Noah Monroe, born July 3, 2021. James lives in Auburn.",
+      "expect_forms": ["FM-006"]
+    },
+    {
+      "id": "fam_support_mod",
+      "area": "family",
+      "narrative": "I lost my job and need to lower my child support order. I'm the defendant, Robert Lin, of 305 Pine Hill Drive, Augusta ME 04330, Kenneboec County, docket number FM-2022-0451. The plaintiff is my ex-wife Sandra Lin. We have one child, Kevin Lin, age 9.",
+      "expect_forms": ["FM-040", "FM-050"]
+    },
+    {
+      "id": "fam_motion_modify",
+      "area": "family",
+      "narrative": "I want to ask the court to change the parenting schedule because my work hours changed. I'm Thomas Reyes, 9 Lakeview Terrace, Saco, Maine 04072, York County. The other parent is Donna Reyes. Our case number is FM-2020-0312. We have one child together, age 7.",
+      "expect_forms": ["FM-058", "FM-059"]
+    },
+    {
+      "id": "fam_contempt",
+      "area": "family",
+      "narrative": "My ex hasn't paid court-ordered child support in five months and I want to file for contempt. I'm Patricia O'Donnell, 220 Elm Avenue, Waterville ME 04901. The other party is Brian O'Donnell. Our docket is FM-2019-0888 in Kennebec County.",
+      "expect_forms": ["FM-030"]
+    },
+    {
+      "id": "pfa_domestic",
+      "area": "pfa",
+      "narrative": "I need a protection from abuse order against my former boyfriend. He has threatened me and showed up at my home twice last week. My name is Rachel Simmons, I live at 14 Spruce Court, Biddeford Maine 04005 in York County, phone 207-555-0177. The person I need protection from is Kyle Foster, who lives in Sanford.",
+      "expect_forms": ["PA-001"]
+    },
+    {
+      "id": "pfa_minor_child",
+      "area": "pfa",
+      "narrative": "I'm filing for protection from abuse on behalf of my 12-year-old daughter against her uncle. I am the mother, Christine Walker, of 61 Maple Street, Rockland, ME 04841, Knox County. My daughter is Sophie Walker, born May 2, 2013. The abuser is Gary Walker.",
+      "expect_forms": ["PA-001"]
+    },
+    {
+      "id": "pfh_neighbor",
+      "area": "pfa",
+      "narrative": "My neighbor has been harassing me, banging on my walls and following me to my car. There is no family or dating relationship. I want a protection from harassment order. I'm Victor Nguyen, 7 Riverside Drive Apt 3, Brunswick Maine 04011, Cumberland County. The neighbor is Frank Delgado.",
+      "expect_forms": ["PA-009"]
+    },
+    {
+      "id": "money_smallclaims_loan",
+      "area": "money",
+      "narrative": "I lent my friend $2,800 in writing and he never paid it back. I want to file a small claims case. I'm the plaintiff, Hannah Goldberg, 33 Winter Street, Portland ME 04101, Cumberland County, phone 207-555-0123. The defendant is Eric Townsend of 410 Forest Ave, Portland. The debt has been due since August 1, 2024.",
+      "expect_forms": ["SC-001", "CV-160"]
+    },
+    {
+      "id": "money_smallclaims_damage",
+      "area": "money",
+      "narrative": "A contractor damaged my fence and won't pay for repairs that cost me $1,450. I want to bring a small claims action. I am Gregory Pate, 102 Orchard Lane, Gorham, Maine 04038, Cumberland County. The defendant is Coastal Build LLC.",
+      "expect_forms": ["SC-001"]
+    },
+    {
+      "id": "money_debt_judgment",
+      "area": "money",
+      "narrative": "I won a money judgment and the defendant still won't pay. I want to start disclosure to find out about their assets. I'm the creditor, Linda Marsh, judgment for $5,200, docket CV-2023-0210 in Penobscot County. The debtor is Wayne Bisson.",
+      "expect_forms": ["CV-168", "CV-169"]
+    },
+    {
+      "id": "money_eviction",
+      "area": "money",
+      "narrative": "My tenant has not paid rent for three months and I want to evict for nonpayment. I'm the landlord, Susan Pelletier, who owns the property at 58 Granite Street, Lewiston, ME 04240, Androscoggin County. The tenant is Carl Whitman. Rent is $1,100 per month and they owe $3,300.",
+      "expect_forms": ["CV-007", "CV-021"]
+    },
+    {
+      "id": "money_civil_complaint",
+      "area": "money",
+      "narrative": "A roofing company took my $6,000 deposit and never did the work. I want to sue them in District Court for breach of contract. I'm Andrew Foss, 75 Hillcrest Road, Westbrook Maine 04092, Cumberland County. The defendant is Summit Roofing Inc.",
+      "expect_forms": ["CV-001", "CV-160"]
+    },
+    {
+      "id": "name_adult",
+      "area": "namechange",
+      "narrative": "I want to legally change my own name from Jonathan Pierce Albright to Jon Pierce Rivers. I live at 19 Spring Street, Ellsworth, Maine 04605, Hancock County, phone 207-555-0160. I'm doing this for personal reasons, not to avoid debts.",
+      "expect_forms": ["NC-001"]
+    },
+    {
+      "id": "name_minor",
+      "area": "namechange",
+      "narrative": "I want to change my minor daughter's last name to match mine after her father's rights were terminated. I'm the mother, Megan Doyle, 41 Birch Road, Presque Isle ME 04769, Aroostook County. My daughter is currently named Lily Carter, born February 9, 2017, and I want her name to be Lily Doyle.",
+      "expect_forms": ["NC-001", "PB-012"]
+    },
+    {
+      "id": "misc_guardianship_minor",
+      "area": "namechange",
+      "narrative": "My grandson lives with me and I need legal guardianship because his parents can't care for him. I'm Dorothy Klein, 6 Meadow Lane, Skowhegan, Maine 04976, Somerset County. The child is Mason Klein, born October 12, 2015. His mother is Tracy Klein.",
+      "expect_forms": ["GS-001", "PC-160"]
+    },
+    {
+      "id": "misc_appearance",
+      "area": "namechange",
+      "narrative": "I was served with a civil complaint and I want to file my entry of appearance to represent myself. I'm the defendant, Steven Albert, 88 Quarry Road, Bath ME 04530, Sagadahoc County, docket CV-2024-0099. The plaintiff is Northpoint Credit Union.",
+      "expect_forms": ["CV-035", "FM-020"]
+    },
+    {
+      "id": "crim_appearance",
+      "area": "criminal",
+      "narrative": "I have been charged in a criminal case and I want to enter my appearance and request a court-appointed lawyer because I can't afford one. My name is Marcus Bell, 23 Union Street, Rockport, Maine 04856, Knox County. My docket number is CR-2024-0512. I make about $1,400 a month.",
+      "expect_forms": ["CR-028", "CR-016"]
+    },
+    {
+      "id": "crim_continuance",
+      "area": "criminal",
+      "narrative": "I need to ask the criminal court to postpone my hearing date because I have a medical procedure scheduled the same day. I'm the defendant, Olivia Hartman, docket CR-2024-0331 in York County. My hearing is set for June 18, 2026.",
+      "expect_forms": ["CR-040"]
+    },
+    {
+      "id": "crim_release_conditions",
+      "area": "criminal",
+      "narrative": "I want to ask the court to modify my conditions of release so I can travel for work out of state. I'm Derek Sloan, the defendant, docket CR-2023-0777 in Cumberland County, living at 130 Ocean Avenue, South Portland ME 04106.",
+      "expect_forms": ["CR-004", "CR-032"]
+    },
+    {
+      "id": "crim_indigency",
+      "area": "criminal",
+      "narrative": "I need to fill out a financial affidavit to show I qualify for a court-appointed attorney in my criminal case. I'm Tanya Brooks, 14 Mill Street, Norway, Maine 04268, Oxford County. I earn $1,200 a month and have two dependents. Docket CR-2024-0190.",
+      "expect_forms": ["CR-016", "FM-042"]
+    },
+    {
+      "id": "crim_discovery_motion",
+      "area": "criminal",
+      "narrative": "I want to file a motion asking the prosecutor to turn over the evidence in my case. I'm the defendant, Raymond Cobb, docket CR-2024-0654 in Aroostook County, address 200 High Street, Caribou ME 04736.",
+      "expect_forms": ["CR-039"]
+    }
+  ]
+}

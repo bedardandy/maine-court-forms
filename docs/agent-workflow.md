@@ -1,0 +1,67 @@
+# Agent workflow — "use this project to assist with: \<fact pattern\>"
+
+This library is built to be driven by an agent (Claude Code, codex, or any
+MCP client). Given a plain-language fact pattern, follow this protocol.
+
+> **Not legal advice.** Output is a draft to be reviewed against the official
+> form. Always surface uncertainty and what's missing.
+
+## The 6 steps
+
+**1. Route — which form(s)?**
+```bash
+python3 tools/find_forms.py "evict a tenant for nonpayment of rent"
+```
+Returns matching **workflows** (ordered form sequences for a matter, from
+`catalog/workflows.json`) and top **forms** (`catalog/forms_index.json`). Pick
+the form(s) the fact pattern requires.
+
+**2. Understand the form — what facts are needed, and can I trust it?**
+- Read `forms/<ID>/SKILL.md` (facts needed + field-by-field guide) and
+  `forms/<ID>/form.yaml` (court, category, governing law).
+- Check `forms/<ID>/mapping.json` `status` — the **trust tier**:
+  - `recipe` → authoritative (audit-verified)
+  - `opus-reviewed` / `vision-mapped` → reviewed draft
+  - `ai-mapped` / `draft-heuristic` → unverified draft — **verify the output**
+- `catalog/vision_audit.json` records which forms render clean.
+
+**3. Extract — build the canonical fact object.**
+Translate the fact pattern into the canonical shape (full spec in
+`docs/integrations/README.md`; a worked example in `examples/`):
+```jsonc
+{ "matter":  { "docket_number", "court_county", "court_location", "case_type", "filing_date" },
+  "parties": { "plaintiff": {...}, "defendant": {...}, "attorney": {...}, "child_1": {...} },
+  "party":   { "full_name", "first_name", "last_name", "address", ... },
+  "facts":   { /* form-specific */ } }
+```
+Leave a field out if the fact pattern doesn't supply it — don't invent values.
+
+**4. Fetch the blank PDF** (not shipped — see `LICENSE.md`):
+```bash
+python3 tools/fetch_pdfs.py --forms <ID>
+```
+
+**5. Fill.**
+```bash
+python3 -m engine.fill_via_mapping --form <ID> --case case.json   # uses mapping.json
+# recipe-tier forms: python3 -m engine.fill --form <ID> --case case.json
+```
+(The MCP `fill_form` tool picks the right path automatically.)
+
+**6. Verify & report.** Inspect the filled PDF (or run `tools/vision_audit.py`).
+Report: what was filled, the trust tier, any **unresolved/missing facts**, and
+that it must be verified before filing.
+
+## MCP (recommended for agents)
+
+Register the server so the agent calls tools directly:
+```bash
+claude mcp add maine-court-forms -- python3 tools/mcp_server.py
+```
+Tools: `find_forms(query)`, `get_form(form_id)`, `fill_form(form_id, facts)`.
+
+## Two data shapes — don't confuse them
+The **canonical fact object** above is what you build from the fact pattern and
+what `mapping.json` targets. The reference engine has a separate internal case
+shape; `engine/canonical.py` bridges them, and `engine/fill.py` auto-detects —
+so always hand the agent the canonical object.
