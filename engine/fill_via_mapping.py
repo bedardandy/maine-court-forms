@@ -19,8 +19,10 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import os
 import pathlib
 
+from . import verify
 from .form_filler import fill_form
 from .field_split import split_to_copy
 from .text_fit import fit as _fit, widget_char_budget
@@ -152,6 +154,11 @@ def fill_via_mapping(form_id: str, facts: dict, out_dir: pathlib.Path,
     if not pdf.exists():
         return {"form_id": form_id, "ok": False,
                 "error": f"blank PDF not found: {pdf} (run tools/fetch_pdfs.py)"}
+    # Guard: the on-disk blank must be the revision this mapping was built
+    # against (catalog/pdf_manifest.json). A mismatch warns by default; set
+    # MCF_VERIFY_BLANK=strict to refuse, =off to skip.
+    verify.guard_blank(form_id, forms_root,
+                       mode=os.environ.get("MCF_VERIFY_BLANK", "warn"))
     # Width-fit overflowing values to their widget's char budget (mirrors the
     # engine's fill_one pass): names initial-collapse, addresses postal-
     # abbreviate, so a long real-world value shrinks instead of clipping.

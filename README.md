@@ -84,6 +84,7 @@ docs/
 tools/
   find_forms.py         route a fact pattern -> candidate forms + workflows
   fetch_pdfs.py         downloads blank PDFs from the official portal (verified)
+  check_upstream.py     re-probe official URLs; flag forms the courts have revised
   mcp_server.py         MCP server: find_forms / get_form / fill_form
   scaffold_forms.py     regenerates the per-form folders from source data
 skills/route-and-fill/  top-level agent skill (the route -> fill protocol)
@@ -104,6 +105,26 @@ python3 tools/fetch_pdfs.py --forms AD-001,AD-022 # a subset
 ```
 
 You only need this to *fill* a form (the schema/metadata work without it).
+
+### Staying current — detecting a revised form
+
+Every mapping was enriched against one specific revision of the blank, pinned by
+SHA-256 in `catalog/pdf_manifest.json`. The portal serves the *current* revision
+at a stable URL, so when the courts update a form the bytes change while the URL
+does not — and a fill built on the old mapping can land values in shifted
+widgets. Two guards catch this:
+
+```bash
+python3 tools/check_upstream.py            # re-probe official URLs; flag CHANGED / GONE
+```
+
+`check_upstream` re-downloads each blank, hashes it, and reports any form whose
+bytes no longer match the manifest. It is read-only and exits non-zero on any
+change, so it runs as a scheduled early-warning (`.github/workflows/drift.yml`,
+weekly). When it flags a form, re-map it, then `--update-manifest` to adopt the
+new hash. At **fill time**, `fill_via_mapping` checks the on-disk blank against
+the manifest first — `MCF_VERIFY_BLANK=warn` (default), `strict`, or `off` — so a
+blank swapped on disk cannot be filled unnoticed.
 
 ## Two tiers of automation
 

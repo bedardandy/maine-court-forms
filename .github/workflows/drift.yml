@@ -1,0 +1,29 @@
+name: upstream-drift
+
+# Re-probe the official Maine Judicial Branch URLs and flag any blank that has
+# been revised since the mappings were enriched. Scheduled (not a per-PR gate)
+# because it needs network and reflects state on courts.maine.gov, not a PR.
+
+on:
+  schedule:
+    - cron: "23 7 * * 1" # Mondays 07:23 UTC
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe official URLs against the manifest
+        # Non-zero exit means a form CHANGED or its URL is GONE. The JSON report
+        # names every affected form; re-map those, then --update-manifest.
+        run: python tools/check_upstream.py --json | tee drift-report.json
+      - name: Upload drift report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-report
+          path: drift-report.json
