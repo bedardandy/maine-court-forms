@@ -106,9 +106,6 @@ RECIPE3 = {
     # OTH interpreter reimbursement family
     "OTH-017":   "infer_oth_interpreter",
     "OTH-131":   "infer_oth_interpreter",
-    # MRS (Maine Revenue Services) tax forms
-    "MRS-700SOV": "infer_mrs_tax",
-    "MRS-1099ME": "infer_mrs_tax",
     # GS guardianship family — consent/objection/nomination + minor's consent
     "GS-008":    "infer_gs_family",
     "GS-012":    "infer_gs_family",

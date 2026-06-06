@@ -37,11 +37,10 @@ import yaml
 
 OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
-# Federal IRS forms live in the engine repo but are out of scope for this
-# Maine Judicial Branch library (the Maine-court mapping heuristic can't map
-# them, and they aren't court forms). Skip them during auto-discovery.
-# Maine Revenue Service forms (MRS-*) are kept.
-EXCLUDE_PREFIXES = ("IRS-",)
+# This is a Maine Judicial Branch library. Federal IRS forms and Maine Revenue
+# Service (MRS-*) tax forms are out of scope — the MRS forms moved to the
+# transactional-tax-forms library. Skip both prefixes during auto-discovery.
+EXCLUDE_PREFIXES = ("IRS-", "MRS-")
 
 
 def _load_json(p: pathlib.Path):
