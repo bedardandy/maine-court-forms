@@ -37,7 +37,7 @@ USER_AGENT = "maine-court-forms/fetch_pdfs (+https://courts.maine.gov)"
 def _download(url: str, timeout: int, retries: int) -> bytes:
     ctx = ssl.create_default_context()
     last = None
-    for attempt in range(retries):
+    for attempt in range(max(1, retries)):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
             with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:

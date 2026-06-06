@@ -39,6 +39,15 @@ party.<attr> for the single filing party (same attrs, plus signature).
 facts.<snake_case> for form-specific data with no home above.
 today()  signature"""
 
+_KEY_RE = re.compile(
+    r"^(?:matter\.[a-z_]+|parties\.[a-z0-9_]+\.[a-z_]+|party\.[a-z_]+|"
+    r"facts\.[a-z0-9_]+|today\(\)|signature)$")
+
+
+def _key_ok(key: str) -> bool:
+    return bool(_KEY_RE.match(key or ""))
+
+
 SYSTEM = (
     "You audit a DRAFT field-mapping for a Maine court form. A vision model "
     "assigned each fillable field a canonical fact-key. Catch keys that do not "
@@ -108,8 +117,11 @@ def adjudicate(fid: str) -> dict:
     lines = [f"{f} | caption={caps.get(f,'')!r} | draft_key={k}" for f, k in mp.items()]
     user = f"Form: {fid}\n\nFields (field_id | caption | draft_key):\n" + "\n".join(lines)
     out = _parse_json(_opus(SYSTEM, user))
-    corr = {f: out.get("corrections", {})[f] for f in out.get("corrections", {})
-            if f in mp and out["corrections"][f] != mp[f]}
+    raw = {f: out.get("corrections", {})[f] for f in out.get("corrections", {})
+           if f in mp and out["corrections"][f] != mp[f]}
+    # Only apply in-vocabulary corrections (defensive against an off-vocab key).
+    corr = {f: k for f, k in raw.items() if _key_ok(k)}
+    rejected = {f: k for f, k in raw.items() if not _key_ok(k)}
     removed = [f for f in out.get("remove", []) if f in mp]
     for f, k in corr.items():
         mp[f] = k
@@ -118,10 +130,12 @@ def adjudicate(fid: str) -> dict:
     mapping["map"] = mp
     mapping["status"] = "opus-adjudicated"
     mapping["adjudication"] = {"model": "claude-opus (cli)", "corrected": corr,
-                               "removed": removed, "notes": out.get("notes", "")}
+                               "removed": removed, "rejected_off_vocab": rejected,
+                               "notes": out.get("notes", "")}
     (fdir / "mapping.json").write_text(json.dumps(mapping, indent=2) + "\n")
     return {"form_id": fid, "fields": len(mp), "corrected": len(corr),
-            "removed": len(removed), "notes": out.get("notes", "")[:90]}
+            "removed": len(removed), "rejected": len(rejected),
+            "notes": out.get("notes", "")[:90]}
 
 
 def main() -> int:
