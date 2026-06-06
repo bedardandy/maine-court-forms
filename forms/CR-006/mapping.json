@@ -1,16 +1,25 @@
 {
   "form_id": "CR-006",
-  "status": "vision-mapped",
+  "status": "opus-adjudicated",
   "model": "qwen3.6-27b",
   "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
     "defendant": "parties.defendant.full_name",
     "county": "matter.court_county",
-    "location_town": "matter.court_location",
+    "location_town": "parties.defendant.city",
     "docket_no": "matter.docket_number",
     "bail_poster": "party.full_name",
     "deposit_with_the_clerk_of_this_court_in_the_sum_of": "facts.bail_amount",
     "date_mmddyyyy": "today()",
-    "undefined": "party.signature"
+    "undefined": "today()"
+  },
+  "adjudication": {
+    "model": "claude-opus (cli)",
+    "corrected": {
+      "location_town": "parties.defendant.city",
+      "undefined": "today()"
+    },
+    "removed": [],
+    "notes": "'Defendant Location (Town)' is the defendant's city, not court_location; the second 'Date (mm/dd/yyyy): \u25ba' field is a date\u2192today(), not a signature."
   }
 }

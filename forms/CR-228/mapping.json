@@ -1,6 +1,6 @@
 {
   "form_id": "CR-228",
-  "status": "vision-mapped",
+  "status": "opus-adjudicated",
   "model": "qwen3.6-27b",
   "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
@@ -29,11 +29,19 @@
     "undefined_2": "facts.tax_refund_amount",
     "cash_in_my_possession": "facts.cash_on_hand",
     "more_days_to_pay_my_fine_in_full": "facts.extension_days",
-    "week_3": "facts.payment_amount",
+    "week_3": "facts.payment_frequency",
     "mmddyyyy": "facts.payment_start_date",
     "court_grants_my_request_before_the_date_of_the_hearing_i_must_return_to_court_on_mmddyyyy": "facts.hearing_date",
     "at": "facts.hearing_time",
     "date_mmddyyyy": "today()",
     "undefined_3": "party.signature"
+  },
+  "adjudication": {
+    "model": "claude-opus (cli)",
+    "corrected": {
+      "week_3": "facts.payment_frequency"
+    },
+    "removed": [],
+    "notes": "week_3 caption lists payment intervals (week/two weeks/month) and carries no '$', unlike every genuine amount field on the form, so it's the payment frequency not an amount; all other keys match their captions (location_town=court header, my_home_phone_is_2/text1 are address lines auto-named after the phone label, Date \u25ba is the signature line)."
   }
 }

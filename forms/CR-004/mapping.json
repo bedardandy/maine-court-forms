@@ -1,16 +1,16 @@
 {
   "form_id": "CR-004",
-  "status": "vision-mapped",
+  "status": "opus-adjudicated",
   "model": "qwen3.6-27b",
   "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
     "county": "matter.court_county",
     "location_town": "matter.court_location",
     "docket_no": "matter.docket_number",
-    "surety_s_name": "parties.plaintiff.first_name",
-    "city_town_of_residence": "parties.plaintiff.last_name",
-    "county_of_residence": "parties.plaintiff.city",
-    "state_of_residence": "parties.plaintiff.state",
+    "surety_s_name": "party.full_name",
+    "city_town_of_residence": "party.city",
+    "county_of_residence": "facts.county_of_residence",
+    "state_of_residence": "party.state",
     "town_of_real_estate": "facts.property_town",
     "street_address_of_real_estate": "facts.property_street",
     "county_maine_and_i_grant_to_the_state_of_maine_a_lien_on_the_real_estate_in_the_amount": "facts.property_county",
@@ -23,7 +23,20 @@
     "undefined": "facts.returnable_division_county",
     "divisioncounty_in_citytown": "facts.returnable_city_town",
     "date_mmddyyyy": "today()",
-    "2": "parties.plaintiff.full_name",
-    "1_2": "parties.plaintiff.address"
+    "2": "party.full_name",
+    "1_2": "party.address"
+  },
+  "adjudication": {
+    "model": "claude-opus (cli)",
+    "corrected": {
+      "surety_s_name": "party.full_name",
+      "city_town_of_residence": "party.city",
+      "county_of_residence": "facts.county_of_residence",
+      "state_of_residence": "party.state",
+      "2": "party.full_name",
+      "1_2": "party.address"
+    },
+    "removed": [],
+    "notes": "Surety posting bail is the filing party (party.*), not plaintiff; 'City/Town of residence' is party.city not last_name; 'County of residence' has no party attr so facts.county_of_residence."
   }
 }

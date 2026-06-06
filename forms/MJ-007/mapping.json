@@ -1,6 +1,6 @@
 {
   "form_id": "MJ-007",
-  "status": "vision-mapped",
+  "status": "opus-adjudicated",
   "model": "qwen3.6-27b",
   "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
@@ -8,7 +8,7 @@
     "judgment_debtor": "parties.defendant.full_name",
     "location_town": "matter.court_location",
     "docket_no": "matter.docket_number",
-    "my_name_is": "parties.attorney.full_name",
+    "my_name_is": "party.full_name",
     "i_am_employed_by": "facts.employer_name",
     "the_following_constitutes_a_complete_listing_of_the_amounts_earned_by_the_judgment_debtor_and_the": "facts.employer_address",
     "in_the_capacity_of": "facts.employer_capacity",
@@ -27,7 +27,16 @@
     "7": "facts.court_ordered_payment",
     "8": "facts.maximum_withholding_amount",
     "text2": "today()",
-    "text4": "party.signature",
+    "text4": "today()",
     "text3": "party.full_name"
+  },
+  "adjudication": {
+    "model": "claude-opus (cli)",
+    "corrected": {
+      "my_name_is": "party.full_name",
+      "text4": "today()"
+    },
+    "removed": [],
+    "notes": "'My name is' is the employer's disclosing agent (single filing party), not an attorney; text4 caption reads 'Date', so it is today(), not a signature. Financial lines and creditor/debtor mappings are caption-correct."
   }
 }

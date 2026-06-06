@@ -1,6 +1,6 @@
 {
   "form_id": "CR-009",
-  "status": "vision-mapped",
+  "status": "opus-adjudicated",
   "model": "qwen3.6-27b",
   "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
@@ -21,6 +21,14 @@
     "7_the_defendant_has_lived_in_maine_for_state_how_long": "facts.residency_duration",
     "maine": "facts.ties_to_maine",
     "date_mmddyyyy": "today()",
-    "undefined_3": "parties.attorney.full_name"
+    "undefined_3": "today()"
+  },
+  "adjudication": {
+    "model": "claude-opus (cli)",
+    "corrected": {
+      "undefined_3": "today()"
+    },
+    "removed": [],
+    "notes": "undefined_3 caption is 'Date (mm/dd/yyyy)' by the attorney signature, not a name \u2192 today(); all other keys match captions (location_town is the court header Location field)."
   }
 }
