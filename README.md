@@ -16,11 +16,15 @@ openclaw, or any MCP client (see [Point any LLM harness at it](#point-any-llm-ha
 — and works just as well under a [docassemble](https://docassemble.org) interview,
 a LangGraph node, a PandaDoc template sync, or a custom pipeline.
 
-> **Not legal advice.** Blank forms are official Maine Judicial Branch
-> documents. The surrounding metadata, skills, and mappings are
-> community-maintained and may lag form revisions. Always verify against the
-> [official source](https://www.courts.maine.gov/forms-fees-fines/forms.html)
-> before filing.
+> ⚠️ **Not legal advice — for professional use only.** This is software that
+> produces *draft* forms. It is meant to be used solely as one component of a
+> broader workflow that is implemented, supervised, and reviewed by a licensed
+> attorney — not as a do-it-yourself substitute for legal representation. Blank
+> forms are official Maine Judicial Branch documents; the surrounding metadata,
+> skills, and mappings are community-maintained, may lag form revisions, and many
+> are AI-generated and unverified. Always verify against the
+> [official source](https://www.courts.maine.gov/forms-fees-fines/forms.html) and
+> applicable law before filing. See [**DISCLAIMER**](DISCLAIMER.md).
 
 ## Scope & related work
 
