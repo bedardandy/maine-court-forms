@@ -3,7 +3,7 @@
 [![tests](https://github.com/bedardandy/maine-court-forms/actions/workflows/ci.yml/badge.svg)](https://github.com/bedardandy/maine-court-forms/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-A community-maintained, **form-by-form** library of **350+ Maine Judicial Branch
+A community-maintained, **form-by-form** library of **342 Maine Judicial Branch
 court forms** structured for programmatic filling. Every form is a self-contained
 folder — machine-readable metadata, an AcroForm field schema, an agent fill-guide
 ("skill"), and a canonical fact→field mapping — so any automation layer can fill a
@@ -151,7 +151,7 @@ print(meta["title"], "—", meta["field_count"], "fields")
 
 ## Status
 
-Field schemas are complete for all **350 forms**. Of those, **71 are recipe-tier**
+Field schemas are complete for all **342 forms**. Of those, **71 are recipe-tier**
 (dedicated, audit-verified fill recipes) and **279 are schema-only** (draft-heuristic
 mappings — good to start, verify before production use). The `docs/integrations/`
 adapter specs (docassemble, LangChain/LangGraph, PandaDoc, Pi harness, MCP) are

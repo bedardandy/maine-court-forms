@@ -48,10 +48,12 @@ python3 tools/check_upstream.py --forms <ID> --update-manifest
 
 ## GONE — HTTP 500 on the court portal (8)
 
-All eight are `MRS-*` Maine Revenue Service **tax** forms (estate, withholding,
-income), a different agency than the Judicial Branch. The court portal's
-`DownloadForm` endpoint no longer serves them. They are being moved out of this
-library into a dedicated transactional-tax-forms repository; this library is
-Judicial Branch forms only.
+All eight were `MRS-*` Maine Revenue Service **tax** forms (estate, withholding,
+income), a different agency than the Judicial Branch, and the court portal's
+`DownloadForm` endpoint no longer serves them. **They have been removed from this
+library** (folders, manifest, and vision_audit) — this library is Judicial Branch
+forms only. The seven still published by Maine Revenue Services moved to the
+`transactional-tax-forms` library (fetched from maine.gov); MRS-1099ME was
+discontinued upstream after TY2023 and dropped.
 
-`MRS-1041ME, MRS-1099ME, MRS-1120ME, MRS-700SOV, MRS-706ME, MRS-900ME, MRS-941ME, MRS-W4ME`
+Removed: `MRS-1041ME, MRS-1099ME, MRS-1120ME, MRS-700SOV, MRS-706ME, MRS-900ME, MRS-941ME, MRS-W4ME`

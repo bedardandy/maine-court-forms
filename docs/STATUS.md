@@ -6,7 +6,7 @@ known gaps. Pairs with `architecture.md` (how it fits together) and `KICKOFF.md`
 
 ## Overview
 
-A form-by-form automation library for **350 Maine Judicial Branch forms**. Each
+A form-by-form automation library for **342 Maine Judicial Branch forms**. Each
 `forms/<ID>/` is self-contained (schema, mapping, metadata, agent skill, README,
 sample case). A shared, optional `engine/` (filler + 42 recipes + vision audit)
 consumes those folders; five integration adapters are *specified* in
