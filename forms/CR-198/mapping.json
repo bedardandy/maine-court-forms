@@ -1,6 +1,25 @@
 {
   "form_id": "CR-198",
-  "status": "recipe",
-  "note": "Authoritative mapping lives in engine/recipes/infer_*cr198*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "status": "vision-mapped",
+  "model": "qwen3.6-27b",
+  "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
+  "map": {
+    "defendant": "parties.defendant.full_name",
+    "county": "matter.court_county",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "name": "party.full_name",
+    "date_of_birth_mmddyyyy": "party.date_of_birth",
+    "total_number_of_hours_needed": "facts.total_hours_needed",
+    "to_be_completed_by_mmddyyyy": "facts.completion_deadline",
+    "organization_name": "facts.organization_name",
+    "address": "facts.organization_address",
+    "telephone": "facts.organization_phone",
+    "supervisor_name": "facts.supervisor_name",
+    "telephone_2": "facts.supervisor_phone",
+    "itemization_of_days_and_hours_worked_by_cpsw_participant_attach_a_separate_sheet_if_needed_1": "facts.itemization_of_hours",
+    "comments_1": "facts.comments",
+    "date_mmddyyyy": "today()",
+    "printed_name": "facts.organization_representative_name"
+  }
 }

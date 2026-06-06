@@ -1,19 +1,16 @@
 {
   "form_id": "CR-006",
-  "status": "verified",
-  "model": "qwen3.6-27b+opus-4-7",
-  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check.",
+  "status": "vision-mapped",
+  "model": "qwen3.6-27b",
+  "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
   "map": {
-    "county": "matter.court_county",
-    "location": "matter.court_location",
-    "docket_no": "matter.docket_number",
     "defendant": "parties.defendant.full_name",
-    "property_on_deposit_with_the_clerk_of_this_court_in_the_sum_of": "party.full_name",
-    "appearance_before_this_court_of_the_defendant_named_above_and_i_agree_to_permit_the_clerk_of": "facts.bail_amount",
-    "date": "today()",
-    "this_date": "today()",
-    "other_property_the_cash_bail_real_estate_or_other_property_is_the_property_of_the_defendant_or_has": "facts.cash_bail_amount",
-    "is_hereby_ordered_to_sell_the_real_estate_or_other_property_and_the_proceeds_are_to_be_applied_to": "parties.defendant.full_name",
-    "date_2": "today()"
+    "county": "matter.court_county",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "bail_poster": "party.full_name",
+    "deposit_with_the_clerk_of_this_court_in_the_sum_of": "facts.bail_amount",
+    "date_mmddyyyy": "today()",
+    "undefined": "party.signature"
   }
 }

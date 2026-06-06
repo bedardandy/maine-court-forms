@@ -1,6 +1,33 @@
 {
   "form_id": "MJ-007",
-  "status": "recipe",
-  "note": "Authoritative mapping lives in engine/recipes/infer_*mj007*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "status": "vision-mapped",
+  "model": "qwen3.6-27b",
+  "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
+  "map": {
+    "judgment_creditor": "parties.plaintiff.full_name",
+    "judgment_debtor": "parties.defendant.full_name",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "my_name_is": "parties.attorney.full_name",
+    "i_am_employed_by": "facts.employer_name",
+    "the_following_constitutes_a_complete_listing_of_the_amounts_earned_by_the_judgment_debtor_and_the": "facts.employer_address",
+    "in_the_capacity_of": "facts.employer_capacity",
+    "1": "facts.gross_pay_amount",
+    "undefined": "facts.federal_income_tax",
+    "undefined_2": "facts.social_security_tax",
+    "undefined_3": "facts.state_income_tax",
+    "undefined_4": "facts.medicare_tax",
+    "undefined_5": "facts.state_employee_retirement",
+    "undefined_6": "facts.other_withholding",
+    "2": "facts.total_deductions",
+    "3": "facts.disposable_earnings",
+    "4": "facts.twenty_five_percent_amount",
+    "5": "facts.state_minimum_wage",
+    "6": "facts.excess_over_minimum_wage",
+    "7": "facts.court_ordered_payment",
+    "8": "facts.maximum_withholding_amount",
+    "text2": "today()",
+    "text4": "party.signature",
+    "text3": "party.full_name"
+  }
 }

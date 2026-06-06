@@ -1,6 +1,29 @@
 {
   "form_id": "CR-004",
-  "status": "recipe",
-  "note": "Authoritative mapping lives in engine/recipes/infer_*cr004*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "status": "vision-mapped",
+  "model": "qwen3.6-27b",
+  "note": "Re-mapped from the current blank after upstream drift (tools/remap_from_pdf.py).",
+  "map": {
+    "county": "matter.court_county",
+    "location_town": "matter.court_location",
+    "docket_no": "matter.docket_number",
+    "surety_s_name": "parties.plaintiff.first_name",
+    "city_town_of_residence": "parties.plaintiff.last_name",
+    "county_of_residence": "parties.plaintiff.city",
+    "state_of_residence": "parties.plaintiff.state",
+    "town_of_real_estate": "facts.property_town",
+    "street_address_of_real_estate": "facts.property_street",
+    "county_maine_and_i_grant_to_the_state_of_maine_a_lien_on_the_real_estate_in_the_amount": "facts.property_county",
+    "of_2": "facts.lien_amount_words",
+    "dollars": "facts.lien_amount_numeric",
+    "mmddyyyy": "facts.bond_date",
+    "given_for_the_release_of_defendant": "parties.defendant.full_name",
+    "who_iswas_being_held_in_custody_for_the_offense_ofreason": "facts.offense_reason",
+    "which_bail_is_returnable_to_the_unified_criminal_court_of": "facts.returnable_court_name",
+    "undefined": "facts.returnable_division_county",
+    "divisioncounty_in_citytown": "facts.returnable_city_town",
+    "date_mmddyyyy": "today()",
+    "2": "parties.plaintiff.full_name",
+    "1_2": "parties.plaintiff.address"
+  }
 }

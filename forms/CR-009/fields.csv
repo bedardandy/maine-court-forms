@@ -1,29 +1,26 @@
-field_id,label,widget_id,type,data_type,category,subcategory,page,risk_score,risk_tier,fill_deterministic,fill_llm_eligible,fill_human_required,fill_source,validators
-unified_criminal_docket,UNIFIED CRIMINAL DOCKET,W001,text,text,case_constant,docket_no,0,0,green,Y,,,case_dict,
-county,County,W002,text,text,case_constant,county,0,0,green,Y,,,case_dict,
-superior_court,SUPERIOR COURT,W003,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-district_court,DISTRICT COURT,W004,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-location,Location,W005,text,text,case_constant,county,0,0,green,Y,,,case_dict,
-docket_no,Docket No,W006,text,text,case_constant,docket_no,0,0,green,Y,,,case_dict,
-defendant,Defendant,W007,text,text,party_attr,defendant,0,0,green,Y,,,case_dict,
-offenses_charged_with,Offenses charged with,W008,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-offenses_charged_with_2,Offenses charged with 2,W009,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-in_the_unified_criminal_court_in,in the Unified Criminal Court in,W010,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-bail_set,Bail set,W011,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-bail_conditions,Bail conditions,W012,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-bail_conditions_cont,Bail conditions cont,W013,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-personal_recognizance_or,personal recognizance or,W014,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-an_unsecured_appearance_bond,an unsecured appearance bond,W015,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-bail_in_the_amount_of,bail in the amount of,W016,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-bail_amount,Bail amount,W017,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-5_if_released_on_bail_the_defendant_will_live_at,"5. If released on bail, the defendant will live at",W018,text,text,party_attr,defendant,0,0,green,Y,,,case_dict,
-full_address_cont,full address cont,W019,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-employed_at,employed at,W020,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-give_name_and_address_of_employer,give name and address of employer,W021,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-earlier_convictions_or_failures_to_appear,Earlier convictions or failures to appear,W022,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-earlier_convictions_or_failure_to_appears_cont,Earlier convictions or failure to appears cont,W023,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-earlier_convictions_or_failure_to_appear_cont_2,Earlier convictions or failure to appear cont 2,W024,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-length_of_time_defendant_has_lived_in_maine,Length of time defendant has lived in Maine,W025,text,text,party_attr,defendant,0,0,green,Y,,,case_dict,
-ties_to_maine,ties to Maine,W026,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-ties_to_maine_cont,ties to maine cont,W027,text,text,narrative_derived,free_text,0,5,green,,Y,,llm_over_narrative,
-date,Date,W028,text,text,narrative_derived,date,0,5,green,,Y,,llm_over_narrative,
+field_id,label,type,page,rect
+defendant,Defendant,text,0,"35.3,99.4,237.0,120.2"
+superior_court,Superior Court,checkbox,0,"355.7,61.8,368.8,74.9"
+district_court,District Court,checkbox,0,"447.2,61.8,460.3,74.9"
+unified_criminal_docket,Unified Criminal Docket,checkbox,0,"355.7,76.4,368.8,89.5"
+county,County,text,0,"400.6,89.5,581.0,105.0"
+location_town,Location Town,text,0,"441.0,105.7,581.0,120.2"
+docket_no,Docket No,text,0,"418.7,120.8,581.0,135.4"
+undefined,undefined,text,0,"72.0,213.8,572.6,234.7"
+3_bail_is_now_set_at,3 Bail is now set at,text,0,"156.5,257.7,360.1,278.6"
+with_the_following_conditions_1,with the following conditions 1,text,0,"72.0,279.7,576.1,300.6"
+with_the_following_conditions_2,with the following conditions 2,text,0,"72.0,301.6,576.1,322.5"
+personal_recognizance,Personal recognizance,checkbox,0,"108.7,370.1,121.8,383.2"
+unsecured_appearance_bond,Unsecured appearance bond,checkbox,0,"108.7,384.7,121.8,397.8"
+bail_in_the_amount_of,Bail in the amount of,checkbox,0,"108.7,399.4,121.8,412.4"
+5_if_released_on_bail_the_defendant_will_live_at_give_full_address,5 If released on bail the defendant will live at give full address,text,0,"239.2,398.8,396.1,412.4"
+and,and,text,0,"72.0,441.2,550.9,462.0"
+will_be_employed_at_give_name_and_address_of_employer_1,will be employed at give name and address of employer 1,text,0,"353.0,463.1,576.1,484.0"
+will_be_employed_at_give_name_and_address_of_employer_2,will be employed at give name and address of employer 2,text,0,"72.0,485.1,540.1,506.0"
+6_list_any_earlier_criminal_convictions_and_any_prior_failures_to_appear,6 List any earlier criminal convictions and any prior failures to appear,text,0,"405.1,507.0,576.1,527.9"
+undefined_2,undefined_2,text,0,"72.0,529.0,572.6,549.9"
+7_the_defendant_has_lived_in_maine_for_state_how_long,7 The defendant has lived in Maine for state how long,text,0,"336.1,551.0,432.1,571.8"
+maine,Maine,text,0,"109.0,573.0,572.6,593.9"
+date_mmddyyyy,Date mmddyyyy,text,0,"138.6,613.5,251.3,634.4"
+undefined_3,undefined_3,text,0,"323.2,613.5,579.7,634.4"
+attorney_for_defendant,Attorney for Defendant,checkbox,0,"332.2,632.1,345.2,644.6"
