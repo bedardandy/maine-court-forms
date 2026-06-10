@@ -72,4 +72,4 @@ This is a court order form used in money judgment cases. Typically completed by 
 - **MJ-SC-005** — MOTION FOR CONTEMPT
 - **MJ-SC-012** — AFFIDAVIT AND AGREEMENT
 
-> **Note:** a dedicated fill recipe exists for this form in `engine/recipes/`. The recipe is the authoritative field mapping; this doc is the human-readable companion.
+> **Note:** this form was re-mapped from the current blank after upstream drift; `mapping.json` (status `opus-adjudicated`) is the authoritative fill path. The old `engine/recipes/` module targeted the superseded revision — do not prefer it over the mapping.

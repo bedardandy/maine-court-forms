@@ -71,4 +71,4 @@ Form used in criminal proceedings in Maine court.
 - **CR-032** — Motion and Affidavit for Assignment of Counsel
 - **CR-073** — Form CR-073
 
-> **Note:** a dedicated fill recipe exists for this form in `engine/recipes/`. The recipe is the authoritative field mapping; this doc is the human-readable companion.
+> **Note:** this form was re-mapped from the current blank after upstream drift; `mapping.json` (status `opus-adjudicated`) is the authoritative fill path. The old `engine/recipes/` module targeted the superseded revision — do not prefer it over the mapping.

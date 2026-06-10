@@ -63,9 +63,11 @@ minor-child roles; width-fit is wired into the mapping fill path.
 - **Adapters**: the MCP server and codex plugin are built; the remaining
   `docs/integrations/` adapters (docassemble, LangChain/LangGraph, PandaDoc,
   Pi harness) are specified but not built.
-- **Provenance is split**: `form.yaml: automation_status` still reads
-  `schema-only` (273) / `recipe` (69) and lags the finer-grained
-  `mapping.json` status; the mapping status is the real signal.
+- **Provenance is split**: `form.yaml: automation_status` is coarse —
+  `schema-only` (276) / `recipe` (66), now reconciled to the 66 forms whose
+  `mapping.json` status is `recipe` (CR-004/CR-198/MJ-007 were re-mapped
+  after upstream drift and no longer count). The finer-grained
+  `mapping.json` status remains the real signal.
 - **Audit is family-sample biased** and only renders the first 3–4 pages; the
   sample carries 2 children (forms with more child rows fill only those 2).
 - **Carryovers:** an Opus re-run of the mappers is pending API auth; engine bug

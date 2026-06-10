@@ -4,7 +4,7 @@
 - **Court:** Unified Criminal Docket / Superior Court / District Court
 - **Pages:** 1  |  **Fillable fields:** 23
 - **Revision:** unknown
-- **Automation:** recipe
+- **Automation:** schema-only
 
 ## Purpose
 

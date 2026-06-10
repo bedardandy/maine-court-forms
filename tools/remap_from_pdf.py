@@ -117,6 +117,19 @@ def remap(fid: str, client) -> dict:
                "note": "Re-mapped from the current blank after upstream drift "
                        "(tools/remap_from_pdf.py).", "map": mp}
     (fdir / "mapping.json").write_text(json.dumps(mapping, indent=2) + "\n")
+    # Keep form.yaml's automation flags in sync: once the form is re-mapped
+    # from the current blank, any old engine recipe targeted the superseded
+    # revision and mapping.json is the fill path. (CR-004/CR-198/MJ-007
+    # drifted exactly this way: form.yaml kept saying automation_status:
+    # recipe after a remap, so the repo counted 69 recipe forms against the
+    # 66 in mapping.json ground truth.)
+    fy = fdir / "form.yaml"
+    if fy.exists():
+        t = fy.read_text()
+        t = t.replace("has_fill_recipe: true", "has_fill_recipe: false")
+        t = t.replace("automation_status: recipe",
+                      "automation_status: schema-only")
+        fy.write_text(t)
     return {"form_id": fid, "widgets": len(rows), "mapped": len(mp), "dropped": len(dropped)}
 
 

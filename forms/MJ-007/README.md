@@ -4,7 +4,7 @@
 - **Court:** District Court / Superior Court
 - **Pages:** 2  |  **Fillable fields:** 29
 - **Revision:** unknown
-- **Automation:** recipe
+- **Automation:** schema-only
 
 ## Purpose
 
