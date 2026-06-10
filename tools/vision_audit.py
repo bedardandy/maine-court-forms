@@ -12,8 +12,10 @@ evidence the mapped values land correctly; findings point at the fields to fix.
     python3 tools/vision_audit.py --forms AD-015,FM-218
 
 Blank fields are ignored (the generic sample doesn't carry every fact, so many
-fields are legitimately empty). Needs the blank PDFs on disk (tools/fetch_pdfs.py)
-and the local Qwen-VL cluster. Writes findings to --log.
+fields are legitimately empty). Needs the blank PDFs on disk (tools/fetch_pdfs.py),
+the `openai` python package (pip install openai — used as the client for any
+OpenAI-compatible VL endpoint; see MCF_LLM_ENDPOINTS), and a vision-language
+model endpoint. Writes findings to --log.
 """
 from __future__ import annotations
 
@@ -78,7 +80,10 @@ def _select(sample: int) -> list[str]:
     for p in sorted(OSS_ROOT.glob("forms/*/mapping.json")):
         m = json.loads(p.read_text())
         fid = p.parent.name
-        if m.get("status") != "ai-mapped" or len(m.get("map") or {}) < 5:
+        # Shipped statuses are verified / opus-adjudicated (the old
+        # "ai-mapped" filter matched nothing after the promotion pass).
+        if (m.get("status") not in ("verified", "opus-adjudicated")
+                or len(m.get("map") or {}) < 5):
             continue
         if not (p.parent / f"{fid}.pdf").exists():
             continue
@@ -106,7 +111,7 @@ def main() -> int:
     args.out.mkdir(parents=True, exist_ok=True)
     logf = args.log.open("w")
     lock = threading.Lock()
-    print(f"vision-auditing {len(forms)} ai-mapped forms with {VL_MODEL} "
+    print(f"vision-auditing {len(forms)} mapped forms with {VL_MODEL} "
           f"({args.workers} workers over {len(clients)} nodes)")
 
     def work(fid: str):
