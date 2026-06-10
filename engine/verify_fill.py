@@ -1,23 +1,14 @@
 #!/usr/bin/env python3
-"""Deterministic post-fill verification: did the values actually land?
+"""Deterministic post-fill verification — shim over the shared
+``maine-forms-engine`` (``maine_forms_engine.fill.verify_fill``; this repo was
+the extraction donor).
 
 Reopens a filled PDF, reads every widget value, and diffs them against the
 intended ``field_id -> value`` dict. No model involved — this is the cheap,
 machine-checkable half of verification (the vision audit judges *placement
-against the printed label*; this checks *presence and value*).
-
-Per-field statuses:
-
-- ``placed``    — a widget for the field holds exactly the intended value
-                  (checkboxes: intended affirmative and the widget is on).
-- ``differs``   — a widget holds a non-empty value that is not the intended
-                  one (commonly width-fit abbreviation or wrap; the actual
-                  value is returned so the caller can judge).
-- ``missing``   — the field's widget(s) exist but are empty.
-- ``no-widget`` — no widget with that name exists in the filled PDF. This is
-                  expected for multi-widget overflow groups: the filler
-                  deletes those widgets and draws the wrapped text as page
-                  content, which widget reads cannot see.
+against the printed label*; this checks *presence and value*). Per-field
+statuses: ``placed`` / ``differs`` / ``missing`` / ``no-widget`` (the last is
+expected for multi-widget overflow groups — see the package docstring).
 
 CLI:
     python3 -m engine.verify_fill --form AD-001 --pdf /tmp/out/AD-001.filled.pdf \
@@ -29,103 +20,13 @@ import argparse
 import json
 import pathlib
 
+from maine_forms_engine.fill.verify_fill import (  # noqa: F401
+    _fid_labels,
+    _widget_values,
+    verify_fill,
+)
+
 OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
-
-_AFFIRMATIVE = {"x", "✓", "yes", "y", "1", "true", "on",
-                "checked", "[x]", "selected"}
-_CHECKBOX_ON = {"yes", "on", "x", "1", "true", "checked"}
-
-
-def _widget_values(pdf_path: pathlib.Path) -> dict[str, list[dict]]:
-    """name -> [{value, page, type}] for every widget in the PDF."""
-    import fitz
-    out: dict[str, list[dict]] = {}
-    doc = fitz.open(str(pdf_path))
-    type_names = {
-        fitz.PDF_WIDGET_TYPE_TEXT: "text",
-        fitz.PDF_WIDGET_TYPE_CHECKBOX: "checkbox",
-        fitz.PDF_WIDGET_TYPE_RADIOBUTTON: "radio",
-    }
-    for page_idx, page in enumerate(doc):
-        for w in page.widgets() or []:
-            out.setdefault(w.field_name, []).append({
-                "value": (w.field_value or "").strip()
-                          if isinstance(w.field_value, str)
-                          else (w.field_value or ""),
-                "page": page_idx,
-                "type": type_names.get(w.field_type, "other"),
-            })
-    doc.close()
-    return out
-
-
-def _fid_labels(schema: dict | None) -> dict[str, list[str]]:
-    """field_id -> widget label(s); identity when no schema is given."""
-    if not schema:
-        return {}
-    fid_to_widgets: dict[str, list[str]] = {}
-    for f in schema.get("fields", []):
-        fid_to_widgets.setdefault(f["field_id"], []).append(f["label"])
-    return fid_to_widgets
-
-
-def verify_fill(pdf_path: str | pathlib.Path, intended: dict[str, str],
-                schema: dict | None = None) -> dict:
-    """Diff a filled PDF's widget values against the intended fid->value map.
-
-    Args:
-        pdf_path: the filled PDF.
-        intended: field_id -> intended value (empty values are skipped).
-        schema: the form's schema.json dict (maps field_id -> widget label).
-            When omitted, intended keys are treated as widget names directly.
-
-    Returns ``{"fields": {fid: {...}}, "summary": {...}, "ok": bool}`` —
-    ``ok`` is True when nothing is missing (differs/no-widget are surfaced
-    but don't fail the check on their own).
-    """
-    widgets = _widget_values(pathlib.Path(pdf_path))
-    fid_to_widgets = _fid_labels(schema)
-    fields: dict[str, dict] = {}
-    counts = {"placed": 0, "differs": 0, "missing": 0, "no-widget": 0}
-
-    for fid, value in intended.items():
-        if value in (None, ""):
-            continue
-        labels = fid_to_widgets.get(fid, [fid])
-        entries = [e for lb in labels for e in widgets.get(lb, [])]
-        if not entries:
-            status, actual, page = "no-widget", None, None
-        else:
-            sval = str(value).strip()
-            placed = differs = None
-            for e in entries:
-                actual_v = str(e["value"]).strip()
-                if e["type"] in ("checkbox", "radio"):
-                    want_on = sval.lower() in _AFFIRMATIVE
-                    is_on = actual_v.lower() in _CHECKBOX_ON
-                    if want_on == is_on:
-                        placed = e
-                        break
-                    if actual_v:
-                        differs = e
-                elif actual_v == sval:
-                    placed = e
-                    break
-                elif actual_v:
-                    differs = differs or e
-            if placed is not None:
-                status, actual, page = "placed", placed["value"], placed["page"]
-            elif differs is not None:
-                status, actual, page = "differs", differs["value"], differs["page"]
-            else:
-                status, actual, page = "missing", "", entries[0]["page"]
-        counts[status] += 1
-        fields[fid] = {"placed": status == "placed", "status": status,
-                       "expected": value, "value": actual, "page": page}
-
-    summary = {"intended": sum(counts.values()), **counts}
-    return {"ok": counts["missing"] == 0, "fields": fields,
-            "summary": summary}
 
 
 def main() -> int:

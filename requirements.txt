@@ -1,10 +1,11 @@
 # Runtime dependencies for the form-by-form library.
 #
 # Core fill path (engine/) + scaffold tool (tools/):
+maine-forms-engine @ git+https://github.com/bedardandy/maine-forms-engine@v0.1.0
 PyMuPDF>=1.24      # fitz — read AcroForm schema + write/flatten filled PDFs
 PyYAML>=6.0        # form.yaml / metadata
-pikepdf>=8.0       # engine/field_split.py — shared-AcroForm-field split guard
-                   # (stops mapped values fanning out to a field's other
+pikepdf>=8.0       # shared-AcroForm-field split guard (via maine-forms-engine;
+                   # stops mapped values fanning out to a field's other
                    # appearances, e.g. OTH-029 `2_5`); fills skip the split
                    # (with a warning + result flag) if it is missing
 

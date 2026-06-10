@@ -82,7 +82,10 @@ forms/<FORM_ID>/        one self-contained folder per form
 
 catalog/                cross-form indices (families, workflows, courts)
   pdf_manifest.json     per-form source URL + size + SHA-256 for fetching blanks
-engine/                 reference fill + audit engine (optional to use)
+engine/                 reference fill + audit engine (optional to use) — the core
+                        modules are thin shims over the shared `maine-forms-engine`
+                        package (required; see requirements.txt); this repo was the
+                        extraction donor, so behavior is unchanged
   recipes/              per-form fill recipes for the trickier forms
 docs/
   architecture.md       how the pieces fit together

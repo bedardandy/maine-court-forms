@@ -42,6 +42,17 @@ family, all fictional) live at `tools/smoke/fact_patterns.json` — useful as
 routing/extraction test inputs and as worked examples of what the canonical
 fact object is built from (`tools/smoke_fact_patterns.py` runs them end-to-end).
 
+## Shared engine
+
+`engine/` core, the drift tools (`tools/{check_upstream,fetch_pdfs}.py`), and
+`tools/accessibility/` are thin shims over the
+[`maine-forms-engine`](https://github.com/bedardandy/maine-forms-engine)
+package (in `requirements.txt`; **required**) — this repo was the extraction
+donor, so the package defaults ARE this repo's behavior. The shims keep every
+documented `engine.*` / `tools/*` command and import path working unchanged;
+the recipes, `fill_and_audit`, the addendum renderer, and the rich MCP server
+(`tools/mcp_server.py`) stay in this repo.
+
 ## Rules
 - **Not legal advice.** Filled output is a draft; it must be verified against the
   official form before filing. Always say so.
