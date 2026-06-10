@@ -61,6 +61,11 @@ inspect the PDF (or run `tools/vision_audit.py` for placement-vs-label).
 Report: what was filled, the trust tier, any **unresolved/missing facts**,
 and that it must be verified before filing.
 
+Example intake fact patterns (one realistic plain-language narrative per form
+family, all fictional) live at `tools/smoke/fact_patterns.json` — useful as
+routing/extraction test inputs and as worked examples of what the canonical
+fact object is built from (`tools/smoke_fact_patterns.py` runs them end-to-end).
+
 ## MCP (recommended for agents)
 
 Register the server so the agent calls tools directly:

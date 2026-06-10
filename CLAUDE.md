@@ -30,6 +30,11 @@ the protocol in **`docs/agent-workflow.md`**. In short:
 `find_forms` / `get_form` / `fill_form` as tools — register with
 `claude mcp add maine-court-forms -- python3 tools/mcp_server.py`.
 
+Example intake fact patterns (one realistic plain-language narrative per form
+family, all fictional) live at `tools/smoke/fact_patterns.json` — useful as
+routing/extraction test inputs and as worked examples of what the canonical
+fact object is built from (`tools/smoke_fact_patterns.py` runs them end-to-end).
+
 ## Rules
 - **Not legal advice.** Filled output is a draft; it must be verified against the
   official form before filing. Always say so.
