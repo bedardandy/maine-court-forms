@@ -159,7 +159,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("irequest_thatthe_courtgrantme", "X", "request"))
 
     # Date of signature (both MJBVB forms have `date` and `date1`)
-    sig_date = (case.get("filing_date") or case.get("event_date", ""))
+    sig_date = (case.get("filing_date") or case.get("event_date") or "")
     if _set(out, "date", sig_date):
         changes.append(("date", sig_date, "date"))
     if _set(out, "date1", sig_date):

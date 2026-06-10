@@ -52,9 +52,11 @@ minor-child roles; width-fit is wired into the mapping fill path.
    authored forms. NB: the schema's `label` field is the AcroForm field *name*,
    not the printed text (despite `architecture.md`'s wording) — which is why
    vision mapping exists.
-3. **One family-shaped sample represents all forms.** `examples/sample_case.json`
-   is a generic `Doe v. Roe` family case; criminal/tax/probate forms' real fields
-   are barely exercised, so coverage/audit numbers skew family-law.
+3. **Samples are per-form now.** `examples/sample_case.json` is generated from
+   each form's own canonical keys (`tools/gen_sample_cases.py`); forms where a
+   tailored sample isn't meaningful keep the generic `Doe v. Roe` case marked
+   `"generic": true`. Coverage/audit numbers no longer skew family-law, but the
+   synthesized fact values are placeholders, not realistic narratives.
 4. **LLM drafts are good-enough starting points**, not verified mappings.
 5. **MJB portal URLs are stable** (the fetch manifest depends on it).
 

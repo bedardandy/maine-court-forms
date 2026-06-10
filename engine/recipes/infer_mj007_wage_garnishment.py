@@ -119,7 +119,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("undefined_7", affiant, "sig-name"))
 
     # Page-2 — date + perjury checkbox + personally appeared
-    sig_date = case.get("filing_date") or case.get("event_date", "")
+    sig_date = case.get("filing_date") or case.get("event_date") or ""
     sig_date_us = sig_date
     if "-" in sig_date_us and len(sig_date_us) >= 10:
         y, m, d = sig_date_us[:10].split("-")

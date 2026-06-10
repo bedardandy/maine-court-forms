@@ -43,7 +43,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     pl_name = plaintiff.get("full_name", "") or facts.get("fdp_lender",
                                                               "Bank of Maine, N.A.")
     df_name = defendant.get("full_name", "")
-    sig_date_us = _iso_to_us(case.get("filing_date") or case.get("event_date", ""))
+    sig_date_us = _iso_to_us(case.get("filing_date") or case.get("event_date") or "")
     docket = case.get("docket_no", "")
 
     # Captions (shared)

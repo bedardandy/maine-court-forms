@@ -303,7 +303,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                         tribal_id, "tribal-id"))
 
     # Signature dates
-    sig_date = (case.get("filing_date") or case.get("event_date", ""))
+    sig_date = (case.get("filing_date") or case.get("event_date") or "")
     if _set(out, "date_mmddyyyy", sig_date):
         changes.append(("date_mmddyyyy", sig_date, "sig-date"))
 

@@ -293,7 +293,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         # the date on each signature line; `undefined_2/4` hold the
         # printed name beside the signature.
         sig_date_us = _iso_to_us(
-            case.get("filing_date") or case.get("event_date", ""))
+            case.get("filing_date") or case.get("event_date") or "")
         signer_blocks = [
             ("date_mmddyyyy_2", "undefined_2", juvenile.get("full_name", "")),
             ("date_mmddyyyy_3", "undefined_3", parent.get("full_name", "")),

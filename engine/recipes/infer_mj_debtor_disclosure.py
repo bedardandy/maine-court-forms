@@ -124,7 +124,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                         swear, "swear"))
 
     # Date of signature
-    sig_date = (case.get("filing_date") or case.get("event_date", ""))
+    sig_date = (case.get("filing_date") or case.get("event_date") or "")
     if sig_date and "T" in sig_date:
         sig_date = sig_date[:10]  # strip ISO time suffix
     if _set(out, "date_mmddyyyy", sig_date):

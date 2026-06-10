@@ -99,7 +99,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         _force("address", ", ".join(p for p in (c_addr, c_csz) if p), "gs008-addr")
         _force("phone_number", consenter.get("phone", ""), "gs008-phone")
         _force("email", consenter.get("email", ""), "gs008-email")
-        sig_date = case.get("filing_date") or case.get("event_date", "")
+        sig_date = case.get("filing_date") or case.get("event_date") or ""
         if "-" in str(sig_date):
             y,m,d = str(sig_date)[:10].split("-"); sig_date = f"{m}/{d}/{y}"
         if _set(out, "dated", sig_date):
@@ -194,7 +194,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             changes.append(("telephone", consenter["phone"], "phone"))
 
     # Dated — filing date
-    dated = case.get("filing_date") or case.get("event_date", "")
+    dated = case.get("filing_date") or case.get("event_date") or ""
     if _set(out, "dated", dated):
         changes.append(("dated", dated, "dated"))
 

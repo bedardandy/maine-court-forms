@@ -142,7 +142,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # page-2 medical narrative `reasons_are_as_follows_1`.
 
     # Date of signature
-    sig_date = (case.get("filing_date") or case.get("event_date", ""))
+    sig_date = (case.get("filing_date") or case.get("event_date") or "")
     if _set(out, "date", _iso_to_us(sig_date)):
         changes.append(("date", _iso_to_us(sig_date), "date"))
     if _set(out, "date_2", _iso_to_us(sig_date)):

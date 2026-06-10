@@ -113,7 +113,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                             "info-court"))
 
     # Signature date + signer
-    sig_date_us = case.get("filing_date") or case.get("event_date", "")
+    sig_date_us = case.get("filing_date") or case.get("event_date") or ""
     if "-" in sig_date_us and len(sig_date_us) >= 10:
         y, m, d = sig_date_us[:10].split("-")
         sig_date_us = f"{m}/{d}/{y}"

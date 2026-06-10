@@ -127,7 +127,11 @@ def get_form(form_id: str) -> dict:
         # without; facts.used = every canonical key the fill can consume.
         "facts": mp.get("facts") or {"required": [], "used": canonical_keys},
         "skill": (fdir / "SKILL.md").read_text()[:4000] if (fdir / "SKILL.md").exists() else "",
-        "sample_case": json.loads((fdir / "examples" / "sample_case.json").read_text()),
+        "sample_case": (sample := json.loads(
+            (fdir / "examples" / "sample_case.json").read_text())),
+        # True = the sample is the shared generic placeholder, not tailored
+        # to this form's keys (tools/gen_sample_cases.py).
+        "sample_case_generic": bool(sample.get("generic")),
     }
 
 
