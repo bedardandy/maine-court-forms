@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fetch blank source PDFs from the official Maine Judicial Branch portal.
 
-The library does not redistribute the blank PDFs (see KICKOFF.md task 3 —
+The library does not redistribute the blank PDFs (see LICENSE.md —
 licensing). Instead each form folder ships its metadata, and this tool pulls
 the official blank into ``forms/<FORM_ID>/<FORM_ID>.pdf`` on demand, verifying
 each download against the size + SHA-256 recorded in ``catalog/pdf_manifest.json``.

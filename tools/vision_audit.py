@@ -5,7 +5,7 @@ Fills a form from its mapping.json + canonical sample (engine.fill_via_mapping),
 renders each page, and asks a local vision-language model to flag *filled*
 fields that are truncated, overflowing/overlapping, or whose value clearly
 doesn't match the printed label. This is the verification edge for promoting a
-draft `mapping.json` toward "verified" (KICKOFF task 4): a clean audit is
+draft `mapping.json` toward "verified" (see docs/STATUS.md): a clean audit is
 evidence the mapped values land correctly; findings point at the fields to fix.
 
     python3 tools/vision_audit.py --sample 12

@@ -1,8 +1,7 @@
 # Project status, assumptions & gaps
 
 A living snapshot of where the library stands, the assumptions baked in, and the
-known gaps. Pairs with `architecture.md` (how it fits together) and `KICKOFF.md`
-(how it was bootstrapped).
+known gaps. Pairs with `architecture.md` (how it fits together).
 
 ## Overview
 

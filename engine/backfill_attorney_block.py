@@ -184,7 +184,7 @@ def backfill_case(case_obj: dict) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--in", dest="in_path", type=pathlib.Path,
-                    default=pathlib.Path("router/synthetic_cases.jsonl"))
+                    required=True, help="path to a synthetic_cases.jsonl (BUILD-TIME EVAL INPUT — not shipped in this repo)")
     ap.add_argument("--out", dest="out_path", type=pathlib.Path, default=None)
     ap.add_argument("--no-backup", action="store_true",
                     help="Skip writing .before_attorney_backfill backup")

@@ -163,9 +163,8 @@ def main() -> int:
     ap.add_argument("--out", type=pathlib.Path, required=True)
     ap.add_argument("--case-id", type=str, default=None,
                     help="Override case_id (otherwise inferred from path).")
-    ap.add_argument("--cases-path", type=pathlib.Path,
-                    default=CASES_PATH_DEFAULT,
-                    help="synthetic_cases.jsonl source for respondent.dob")
+    ap.add_argument("--cases-path", type=pathlib.Path, required=True,
+                    help="path to a synthetic_cases.jsonl (BUILD-TIME EVAL INPUT — not shipped in this repo) (source for respondent.dob)")
     ap.add_argument("--schema", type=pathlib.Path, default=None)
     args = ap.parse_args()
 

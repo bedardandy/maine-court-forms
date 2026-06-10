@@ -275,8 +275,8 @@ def main() -> int:
     ap.add_argument("--schema", type=pathlib.Path, default=None)
     ap.add_argument("--event-date", type=str, default=None)
     ap.add_argument("--case-id", type=str, default=None)
-    ap.add_argument("--cases-path", type=pathlib.Path,
-                    default=CASES_PATH_DEFAULT)
+    ap.add_argument("--cases-path", type=pathlib.Path, required=True,
+                    help="path to a synthetic_cases.jsonl (BUILD-TIME EVAL INPUT — not shipped in this repo)")
     args = ap.parse_args()
 
     case_id = args.case_id or _extract_case_id(args.filled)

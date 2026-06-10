@@ -4,7 +4,7 @@
 For each schema-only form, resolves its ``mapping.json`` against a canonical
 fact object (each form's ``examples/sample_case.json`` by default) and reports
 how complete the mapping is (mapped fields / total fields). This is triage for
-the per-form verification work (KICKOFF task 4): the lowest-coverage forms are
+the per-form verification work (see docs/STATUS.md): the lowest-coverage forms are
 where a human/agent has the most to add. Needs no PDFs.
 
     python3 tools/mapping_coverage.py            # summary

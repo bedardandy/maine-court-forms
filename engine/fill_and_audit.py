@@ -221,10 +221,10 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
 def fill_one(form_id: str, case: dict, out_dir: pathlib.Path,
              schema_path: pathlib.Path | None = None,
              pdf_path: pathlib.Path | None = None) -> dict:
-    # Paths default to the engine-repo layout, but callers (e.g. the OSS
-    # engine/fill.py entrypoint) can pass the per-form folder's schema.json
-    # and blank PDF directly so this works against the form-by-form library.
-    schema_path = schema_path or (REPO_ROOT / "repo" / "forms" / form_id
+    # Paths default to this repo's form-by-form layout; callers (e.g. the
+    # engine/fill.py entrypoint) can also pass schema.json / blank PDF
+    # explicitly.
+    schema_path = schema_path or (REPO_ROOT / "forms" / form_id
                                   / "schema.json")
     if not schema_path.exists():
         return {"form_id": form_id, "ok": False, "error": "no schema"}
