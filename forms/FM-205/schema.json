@@ -10,12 +10,6 @@
     "case_constant": 3,
     "narrative_derived": 26
   },
-  "by_risk_tier": {
-    "green": 40
-  },
-  "by_data_type": {
-    "text": 40
-  },
   "_skill_metadata_override": {},
   "fields": [
     {
@@ -31,43 +25,9 @@
         240,
         61
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "defendant",
@@ -82,43 +42,9 @@
         240,
         106
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "defendant",
-      "party": "defendant",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "defendant"
     },
     {
       "field_id": "location_town",
@@ -133,43 +59,9 @@
         575,
         75
       ],
-      "data_constraints": {},
       "category": "case_constant",
       "subcategory": "county",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "docket_no",
@@ -184,43 +76,9 @@
         577,
         89
       ],
-      "data_constraints": {},
       "category": "case_constant",
       "subcategory": "docket_no",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "the_real_estate_described_in_a_deed_located_at_street_address_if_any",
@@ -235,43 +93,9 @@
         576,
         173
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "in_the_townmunicipality_of_if_any",
@@ -286,43 +110,9 @@
         324,
         187
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "and_recorded_in_the",
@@ -337,43 +127,9 @@
         576,
         187
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "county_registry_of_deeds_at_book",
@@ -388,43 +144,9 @@
         252,
         200
       ],
-      "data_constraints": {},
       "category": "case_constant",
       "subcategory": "county",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "page",
@@ -439,43 +161,9 @@
         324,
         200
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "exclusive_possession_and_sale_of_real_estate_except_as_otherwise_specifically_provided",
@@ -490,43 +178,9 @@
         50,
         229
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "plaintiff",
@@ -541,43 +195,9 @@
         206,
         310
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "defendant_shall_have_the_right_to_exclusive_possession_of_the_real",
@@ -592,43 +212,9 @@
         259,
         310
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "defendant",
-      "party": "defendant",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "defendant"
     },
     {
       "field_id": "monthly_installment_payments_for_the_mortgages",
@@ -643,43 +229,9 @@
         103,
         337
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "real_estate_taxes",
@@ -694,43 +246,9 @@
         350,
         337
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "insurance",
@@ -745,43 +263,9 @@
         444,
         337
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "utility_charges",
@@ -796,43 +280,9 @@
         103,
         350
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "other",
@@ -847,43 +297,9 @@
         186,
         350
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "undefined",
@@ -898,43 +314,9 @@
         576,
         349
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "the_real_estate_shall_be_sold_when_the_following_occurs_1",
@@ -949,43 +331,9 @@
         576,
         407
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "at_the_following_price",
@@ -1000,43 +348,9 @@
         103,
         458
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "d_when_the_real_estate_is_sold_as_provided_in_subparagraph_c_above_it_shall_be_listed_for_sale_with_a_licensed_real",
@@ -1051,43 +365,9 @@
         360,
         457
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "at_a_price_agreed_upon_by_the_parties_if_the_parties_are_unable_to_agree_the_listing_price_shall_be_the_fair",
@@ -1102,43 +382,9 @@
         103,
         471
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "highest_bona_fide_genuine_or_sincere_offer_which_equals_or_exceeds",
@@ -1153,43 +399,9 @@
         455,
         564
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "other",
@@ -1204,43 +416,9 @@
         576,
         645
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "text2",
@@ -1255,43 +433,9 @@
         418,
         660
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "to_the_plaintiff_and",
@@ -1306,43 +450,9 @@
         567,
         658
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "real_estate_awarded_to_party",
@@ -1357,43 +467,9 @@
         49,
         59
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "plaintiff_2",
@@ -1408,43 +484,9 @@
         217,
         73
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "defendant",
@@ -1459,43 +501,9 @@
         270,
         73
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "defendant",
-      "party": "defendant",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "defendant"
     },
     {
       "field_id": "plaintiff_2",
@@ -1510,43 +518,9 @@
         121,
         86
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "defendant_shall_be_solely_responsible_for_payment_of_any_and_all_existing_or_future_debts",
@@ -1561,43 +535,9 @@
         174,
         86
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "defendant",
-      "party": "defendant",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "defendant"
     },
     {
       "field_id": "2_other_1",
@@ -1612,43 +552,9 @@
         576,
         239
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "plaintiff_3",
@@ -1663,43 +569,9 @@
         261,
         261
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "plaintiff",
-      "party": "plaintiff",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "plaintiff"
     },
     {
       "field_id": "defendant_shall_be_responsible_for_recording_the_abstract",
@@ -1714,43 +586,9 @@
         315,
         261
       ],
-      "data_constraints": {},
       "category": "party_attr",
       "subcategory": "defendant",
-      "party": "defendant",
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": true,
-        "llm_eligible": false,
-        "human_required": false,
-        "source": "case_dict"
-      },
-      "risk_score": 0,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": "defendant"
     },
     {
       "field_id": "other_2",
@@ -1765,43 +603,9 @@
         49,
         314
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "1",
@@ -1816,43 +620,9 @@
         577,
         611
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "date_mmddyyyy",
@@ -1867,43 +637,9 @@
         251,
         649
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "date",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "undefined_2",
@@ -1918,43 +654,9 @@
         575,
         649
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "magistrate",
@@ -1969,43 +671,9 @@
         345,
         662
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     },
     {
       "field_id": "judge_maine_district_court",
@@ -2020,43 +688,9 @@
         412,
         662
       ],
-      "data_constraints": {},
       "category": "narrative_derived",
       "subcategory": "free_text",
-      "party": null,
-      "writable_when": null,
-      "required_when": null,
-      "choice_group": null,
-      "choice_value": null,
-      "formula": null,
-      "depends_on": [],
-      "validators": [],
-      "fill_strategy": {
-        "deterministic": false,
-        "llm_eligible": true,
-        "human_required": false,
-        "source": "llm_over_narrative"
-      },
-      "risk_score": 5,
-      "risk_tier": "green",
-      "risk_breakdown": {
-        "category_base": 5,
-        "eval_wrong": 0,
-        "eval_oc": 0,
-        "eval_miscompr": 0
-      },
-      "hand_review": {
-        "reasons": []
-      },
-      "eval_evidence": {
-        "wrong": 0,
-        "overconfident": 0,
-        "underconfident": 0,
-        "misunderstood": 0,
-        "matches": 0,
-        "not_applicable": 0,
-        "patterns_scored": 0
-      }
+      "party": null
     }
   ]
 }

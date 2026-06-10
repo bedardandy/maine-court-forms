@@ -5,6 +5,10 @@ reports/
 **/*.filled.pdf
 **/*.flat.pdf
 **/*.audit.json
+# ...but each form's schema.audit.json IS tracked: it's the build-time
+# research half of schema.json (split out by tools/split_schema.py), not a
+# run artifact.
+!forms/*/schema.audit.json
 *.pixmap.png
 
 # Scratch vision-crop renders dumped at the repo root by the mapping/audit

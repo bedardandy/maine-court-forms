@@ -27,7 +27,14 @@ field labels + recipes ───────────────────
 - `field_id` is a normalized, stable handle for the AcroForm widget; the
   printed `label` is the human text nearest the widget (best-effort and
   occasionally off-by-one on dense forms — recipes correct these).
-- `by_category` / `by_risk_tier` summarize fields for triage.
+- `by_category` summarizes fields for triage.
+- `schema.json` is the **lean, agent-facing** field inventory. The build-time
+  research metadata the mapping/eval toolchain produced per field
+  (`risk_score`/`risk_tier`/`risk_breakdown`/`eval_evidence`/`hand_review`/
+  `fill_strategy`/`validators`/... plus the `by_risk_tier`/`by_data_type`
+  rollups) lives in the sibling `schema.audit.json`, split out by
+  `tools/split_schema.py` (`merge_audit()` reconstructs the full record for
+  build tools). Nothing on the fill path reads the audit file.
 
 ## Fill tiers
 

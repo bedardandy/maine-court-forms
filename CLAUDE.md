@@ -43,5 +43,11 @@ fact object is built from (`tools/smoke_fact_patterns.py` runs them end-to-end).
   placement before filing.
 - **Never invent canonical fact-keys** — reuse the shape in
   `docs/integrations/README.md`.
+- **Schemas are split lean/audit.** `forms/<ID>/schema.json` is the lean
+  field inventory (field_id/type/page/rect/label/category) — cheap to read.
+  `forms/<ID>/schema.audit.json` holds build-time research metadata
+  (risk/eval scores, fill strategies) for the mapping toolchain; you never
+  need it to route, extract, or fill (`tools/split_schema.py` maintains the
+  split).
 - Blank PDFs and run artifacts stay out of git (see `.gitignore`).
 - Licensed Apache-2.0 (`LICENSE`).

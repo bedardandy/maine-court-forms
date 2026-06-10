@@ -27,6 +27,7 @@ Official blank form: [FM-234](https://mjbportal.courts.maine.gov/CourtForms/Form
 |---|---|
 | `FM-234.pdf` | Blank fillable source form |
 | `schema.json` | AcroForm field schema (id, type, rect, page, label) |
+| `schema.audit.json` | Build-time research metadata (risk/eval) — not needed to fill |
 | `fields.csv` | Human-friendly field listing |
 | `form.yaml` | Machine-readable metadata |
 | `SKILL.md` | Agent fill guide (facts needed, field mapping) |

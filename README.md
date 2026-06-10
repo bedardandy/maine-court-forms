@@ -70,7 +70,9 @@ should surface along with any missing facts.
 ```
 forms/<FORM_ID>/        one self-contained folder per form
   <FORM_ID>.pdf         blank source form — fetched on demand, not in git
-  schema.json           AcroForm field schema (id, type, rect, page, label)
+  schema.json           lean AcroForm field schema (id, type, rect, page, label)
+  schema.audit.json     build-time research metadata (risk/eval scores) —
+                        agents and the fill path never need it
   fields.csv            human-friendly field listing
   form.yaml             metadata: title, category, court, governing law, tags
   README.md             human doc: purpose, who files, related forms, source

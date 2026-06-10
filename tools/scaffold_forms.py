@@ -5,7 +5,10 @@ For each form it assembles a folder under forms/<FORM_ID>/ containing the
 full artifact set:
 
     <FORM_ID>.pdf       blank fillable source form (from the PDF stash)
-    schema.json         AcroForm field schema (id, type, rect, page, label)
+    schema.json         lean AcroForm field schema (id, type, rect, page,
+                        label, category) — the agent/runtime-facing file
+    schema.audit.json   build-time research metadata (risk/eval/strategy)
+                        split out by tools/split_schema.py
     fields.csv          human-friendly field listing
     form.yaml           machine metadata (title/category/court/law/tags/...)
     README.md           human doc: purpose, who files, related, source URL
@@ -36,6 +39,8 @@ import sys
 import yaml
 
 OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(OSS_ROOT))
+from tools.split_schema import split_schema as split_schema_dict  # noqa: E402
 
 # This is a Maine Judicial Branch library. Federal IRS forms and Maine Revenue
 # Service (MRS-*) tax forms are out of scope — the MRS forms moved to the
@@ -148,6 +153,8 @@ def build_readme(form_id, meta, idx, has_pdf=True):
     lines += [
         "| `schema.json` | AcroForm field schema (id, type, rect, page, "
         "label) |",
+        "| `schema.audit.json` | Build-time research metadata (risk/eval) — "
+        "not needed to fill |",
         "| `fields.csv` | Human-friendly field listing |",
         "| `form.yaml` | Machine-readable metadata |",
         "| `SKILL.md` | Agent fill guide (facts needed, field mapping) |",
@@ -283,9 +290,15 @@ def scaffold_one(form_id, ctx):
     out.mkdir(parents=True, exist_ok=True)
     (out / "examples").mkdir(exist_ok=True)
 
-    # 1. schema.json + fields.csv (copy verbatim from engine repo)
-    shutil.copyfile(engine / "repo" / "forms" / form_id / "schema.json",
-                    out / "schema.json")
+    # 1. schema.json (split lean/audit) + fields.csv. The engine repo's full
+    # schema carries build-time research metadata that agents never need;
+    # ship the lean field inventory as schema.json and the research keys as
+    # schema.audit.json (see tools/split_schema.py).
+    lean, audit = split_schema_dict(schema)
+    (out / "schema.json").write_text(json.dumps(lean, indent=2) + "\n")
+    if audit is not None:
+        (out / "schema.audit.json").write_text(
+            json.dumps(audit, indent=2) + "\n")
     fcsv = engine / "repo" / "forms" / form_id / "fields.csv"
     if fcsv.exists():
         shutil.copyfile(fcsv, out / "fields.csv")

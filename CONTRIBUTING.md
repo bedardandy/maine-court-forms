@@ -18,7 +18,8 @@ python3 tools/scaffold_forms.py \
   --forms AD-001,AD-022
 ```
 
-It writes `schema.json`, `fields.csv`, `form.yaml`, `README.md`,
+It writes `schema.json` (lean) + `schema.audit.json` (build-time research
+metadata — see `tools/split_schema.py`), `fields.csv`, `form.yaml`, `README.md`,
 `SKILL.md`, `mapping.json`, and copies the PDF. It never edits the source
 repos.
 
