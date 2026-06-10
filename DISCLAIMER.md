@@ -15,8 +15,8 @@ upon.
 
 **Drafts only — verify everything.** All output is a draft that may be incomplete
 or incorrect. The field mappings are produced by automated and AI/LLM methods
-and carry trust tiers (`recipe` = authoritative; `ai-mapped` / `draft-heuristic`
-/ `vision-mapped` / `opus-adjudicated` = unverified — see each form's
+and carry trust tiers (`recipe` = form-specific engine code; `verified` /
+`opus-adjudicated` = machine-reviewed, not attorney-reviewed — see each form's
 `mapping.json` `status`). Court forms and the law change over time. Before any
 form is signed, filed, or relied upon, a licensed attorney must verify it against
 the **current official form** and the **applicable law**. The experimental

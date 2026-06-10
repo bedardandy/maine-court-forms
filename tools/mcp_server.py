@@ -54,6 +54,17 @@ def _ensure_pdf(form_id: str) -> str | None:
         return f"fetch failed: {e}"
 
 
+def _trust_tier(status: str | None) -> str:
+    """Map a mapping.json status to the trust tier surfaced to agents."""
+    if status == "recipe":
+        return "recipe"
+    if status in ("verified", "opus-adjudicated"):
+        return "reviewed"
+    if status == "no-mappable-fields":
+        return "not-fillable"
+    return "draft — verify the filled output"
+
+
 @mcp.tool()
 def find_forms(query: str) -> dict:
     """Route a fact pattern / matter description to candidate Maine court forms.
@@ -88,9 +99,10 @@ def get_form(form_id: str) -> dict:
         "court": meta.get("court"),
         "n_fields": schema.get("n_fields") or len(schema.get("fields", [])),
         "mapping_status": mp.get("status"),
-        "trust": ("authoritative" if mp.get("status") == "recipe"
-                  else "reviewed" if mp.get("status") in ("opus-reviewed", "vision-mapped")
-                  else "draft — verify the filled output"),
+        # Shipped mapping.json statuses: verified (render-verified mapping),
+        # recipe (form-specific engine code), opus-adjudicated (model-
+        # adjudicated mapping), no-mappable-fields (nothing to fill).
+        "trust": _trust_tier(mp.get("status")),
         "canonical_keys_used": canonical_keys,
         "skill": (fdir / "SKILL.md").read_text()[:4000] if (fdir / "SKILL.md").exists() else "",
         "sample_case": json.loads((fdir / "examples" / "sample_case.json").read_text()),
@@ -122,13 +134,14 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
                        schema_path=fdir / "schema.json",
                        pdf_path=fdir / f"{form_id}.pdf")
     else:
-        # use the curated mapping.json (ai/vision/opus-reviewed) directly
+        # use the curated mapping.json (verified / opus-adjudicated) directly
         res = fill_via_mapping(form_id, facts, pathlib.Path(out_dir))
     res["mapping_status"] = status
+    res["trust"] = _trust_tier(status)
     res["caveat"] = ("Verify against the official form."
-                     if status == "recipe" else
-                     "Mapping is an un-audited draft — check field placement and "
-                     "fill in any unresolved facts.")
+                     if status in ("recipe", "verified", "opus-adjudicated")
+                     else "Mapping is an un-audited draft — check field "
+                          "placement and fill in any unresolved facts.")
     return res
 
 

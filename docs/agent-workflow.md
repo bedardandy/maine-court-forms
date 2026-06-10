@@ -20,9 +20,10 @@ the form(s) the fact pattern requires.
 - Read `forms/<ID>/SKILL.md` (facts needed + field-by-field guide) and
   `forms/<ID>/form.yaml` (court, category, governing law).
 - Check `forms/<ID>/mapping.json` `status` — the **trust tier**:
-  - `recipe` → authoritative (audit-verified)
-  - `opus-reviewed` / `vision-mapped` → reviewed draft
-  - `ai-mapped` / `draft-heuristic` → unverified draft — **verify the output**
+  - `recipe` → form-specific engine recipe (audit-verified)
+  - `verified` / `opus-adjudicated` → reviewed mapping (render-verified /
+    model-adjudicated) — still check the output before filing
+  - `no-mappable-fields` → nothing to fill (informational form)
 - `catalog/vision_audit.json` records which forms render clean.
 
 **3. Extract — build the canonical fact object.**

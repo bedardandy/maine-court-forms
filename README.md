@@ -139,8 +139,10 @@ Each form's `form.yaml` carries an `automation_status`:
   splits, off-by-one labels, narrative blanks) and have been visually
   verified. `mapping.json` points at the recipe.
 - **`schema-only`** — the form has a complete field schema and a
-  *draft-heuristic* `mapping.json` derived from field labels. Good enough to
-  start; needs review before production use.
+  `mapping.json` whose `status` is its trust tier: `verified`
+  (render-verified mapping), `opus-adjudicated` (model-adjudicated), or
+  `no-mappable-fields` (nothing to fill). Reviewed by machine, not by an
+  attorney — check the output before relying on it.
 
 ## Quickstart (reading a form)
 
@@ -155,8 +157,10 @@ print(meta["title"], "—", meta["field_count"], "fields")
 
 ## Status
 
-Field schemas are complete for all **342 forms**. Of those, **71 are recipe-tier**
-(dedicated, audit-verified fill recipes) and **279 are schema-only** (draft-heuristic
-mappings — good to start, verify before production use). The `docs/integrations/`
+Field schemas are complete for all **342 forms**. By `mapping.json` status:
+**66 recipe-tier** (dedicated, audit-verified fill recipes), **208 verified**
+(render-verified mappings), **6 opus-adjudicated**, and **62 with no mappable
+fields** (informational forms). Machine-reviewed, not attorney-reviewed —
+verify before production use. The `docs/integrations/`
 adapter specs (docassemble, LangChain/LangGraph, PandaDoc, Pi harness, MCP) are
 **specified, and not all are built yet** — contributions welcome.

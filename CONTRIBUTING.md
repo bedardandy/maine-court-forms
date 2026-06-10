@@ -37,7 +37,7 @@ just heuristic:
 
 ## Mapping quality bar
 
-- `mapping.json` `status: draft-heuristic` → auto-derived, **not** trusted.
+- `mapping.json` `status` is the trust tier. Shipped values: `recipe` (engine recipe), `verified` (render-verified mapping), `opus-adjudicated` (model-adjudicated), `no-mappable-fields`. Intermediate pipeline statuses (`draft-heuristic`, `ai-mapped`, `vision-mapped`, `opus-reviewed`) are written by tools/ during remapping and must be promoted before shipping.
 - `status: recipe` → authoritative; do not hand-edit (regenerate from the
   recipe in `engine/recipes/`).
 - Never invent canonical fact-keys ad hoc — reuse the shape in

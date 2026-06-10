@@ -20,13 +20,17 @@ consumes those folders; five integration adapters are *specified* in
 
 | Tier | Count | Trust |
 |---|---|---|
-| `recipe` (engine recipe, vision-audit-verified upstream) | 71 | authoritative |
-| `vision-mapped` (set-of-marks VL, reads visible labels) | 61 | drafted, partly audited |
-| `ai-mapped` (text LLM over field labels) | 211 | drafted, partly audited |
-| `draft-heuristic` (regex label match only) | 7 | weak (100+-field giants only) |
+| `recipe` (engine recipe, vision-audit-verified upstream) | 66 | audit-verified fill code |
+| `verified` (mapping render-verified by the audit loop) | 208 | reviewed mapping |
+| `opus-adjudicated` (model-adjudicated mapping) | 6 | reviewed mapping |
+| `no-mappable-fields` (informational form, nothing to fill) | 62 | n/a |
 
-Verification ledger: `catalog/vision_audit.json` — 89 audited, 83 render clean.
-A single-pass VL audit is **not** full verification.
+Intermediate pipeline statuses (`draft-heuristic`, `ai-mapped`,
+`vision-mapped`, `opus-reviewed`) are written by `tools/` during remapping
+and no longer appear in the shipped `forms/` tree.
+
+Verification ledger: `catalog/vision_audit.json`. "Verified" means
+machine-reviewed (render + audit loop), **not** attorney-reviewed.
 
 ## Pipeline (built & demonstrated)
 
@@ -57,20 +61,12 @@ minor-child roles; width-fit is wired into the mapping fill path.
 
 ## Gaps & open items
 
-- **Licensing unchosen** (`LICENSE.md`) — blocks any public release.
-- **No adapter is built** — the portable-substrate premise is unproven; nothing
-  consumes `mapping.json` in production (`fill_via_mapping.py` is a verify tool).
-- **No tests / CI** — cheap wins available with no cluster/PDFs: validate every
-  `mapping.json` key against the contract, run `map_form` over all schemas,
-  confirm fixtures resolve.
-- **7 forms (100+-field giants) remain draft-heuristic** — text mapping
-  overflows the model context and vision set-of-marks overcrowds the page;
-  field-list chunking would be the real fix.
-- **LLM mappings are largely un-audited** — only ~140 of the ~272 ai/vision-
-  mapped forms have been through the vision audit; the rest are drafts.
+- **Adapters**: the MCP server and codex plugin are built; the remaining
+  `docs/integrations/` adapters (docassemble, LangChain/LangGraph, PandaDoc,
+  Pi harness) are specified but not built.
 - **Provenance is split**: `form.yaml: automation_status` still reads
-  `schema-only` for every LLM/vision-mapped form; nothing promotes clean-audited
-  forms to a "verified" tier.
+  `schema-only` (273) / `recipe` (69) and lags the finer-grained
+  `mapping.json` status; the mapping status is the real signal.
 - **Audit is family-sample biased** and only renders the first 3–4 pages; the
   sample carries 2 children (forms with more child rows fill only those 2).
 - **Carryovers:** an Opus re-run of the mappers is pending API auth; engine bug

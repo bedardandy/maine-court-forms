@@ -10,7 +10,8 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    matter workflows (`catalog/workflows.json`, `catalog/forms_index.json`).
 2. **Understand:** read `forms/<ID>/SKILL.md` (facts needed) + `form.yaml`;
    check `forms/<ID>/mapping.json` `status` for the **trust tier**
-   (`recipe` = authoritative; `ai-mapped`/`draft-heuristic` = unverified).
+   (`recipe` = form-specific engine code; `verified`/`opus-adjudicated` =
+   reviewed mapping; `no-mappable-fields` = nothing to fill).
 3. **Extract:** build the **canonical fact object** (`{matter, parties, party,
    facts}` — spec in `docs/integrations/README.md`, example in `examples/`) from
    the fact pattern. Don't invent values; omit unknowns.
@@ -28,8 +29,9 @@ the protocol in **`docs/agent-workflow.md`**. In short:
 ## Rules
 - **Not legal advice.** Filled output is a draft; it must be verified against the
   official form before filing. Always say so.
-- **Respect the trust tier.** For `ai-mapped`/`draft-heuristic` forms, tell the
-  user the mapping is unverified and to check field placement.
+- **Respect the trust tier.** Even `verified`/`opus-adjudicated` mappings are
+  machine-reviewed, not attorney-reviewed — tell the user to check field
+  placement before filing.
 - **Never invent canonical fact-keys** — reuse the shape in
   `docs/integrations/README.md`.
 - Blank PDFs and run artifacts stay out of git (see `.gitignore`).

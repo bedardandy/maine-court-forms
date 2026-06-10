@@ -35,10 +35,10 @@ follow it directly.
 2. **Understand & check trust.** Read `forms/<ID>/SKILL.md` (facts needed,
    field-by-field guide) and `forms/<ID>/form.yaml` (court, category, governing
    law). Read `forms/<ID>/mapping.json` `status` — the **trust tier**:
-   - `recipe` → authoritative (audit-verified).
-   - `opus-reviewed` / `vision-mapped` → reviewed draft.
-   - `ai-mapped` / `draft-heuristic` → **unverified** — tell the user to check
-     field placement.
+   - `recipe` → form-specific engine recipe (audit-verified).
+   - `verified` / `opus-adjudicated` → reviewed mapping — still tell the user
+     to check field placement before filing.
+   - `no-mappable-fields` → nothing to fill (informational form).
 
 3. **Build the canonical fact object** from the fact pattern (full spec in
    `docs/integrations/README.md`, worked example in `examples/`). Save as
