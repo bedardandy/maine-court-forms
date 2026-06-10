@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import logging
 import os
 import pathlib
 
@@ -181,13 +182,20 @@ def fill_via_mapping(form_id: str, facts: dict, out_dir: pathlib.Path,
     # The detached appearance is renamed + blanked, so the mapped value lands
     # only on its intended box. The repo blank is never modified.
     n_split = 0
+    split_skipped = None
     try:
         split_src = out_dir / f"{form_id}.split.pdf"
         n_split = split_to_copy(pdf, split_src, form_id, forms_root)
         if n_split:
             pdf = split_src
-    except Exception:  # noqa: BLE001 — never block a fill on the split step
+    except Exception as e:  # noqa: BLE001 — never block a fill on the split step
         n_split = 0
+        split_skipped = f"{type(e).__name__}: {e}"
+        logging.getLogger(__name__).warning(
+            "%s: shared-field split step skipped (%s) — mapped values may "
+            "fan out to a shared field's other appearances; "
+            "pip install pikepdf to enable the split guard", form_id,
+            split_skipped)
     out_pdf = out_dir / f"{form_id}.filled.pdf"
     fill_form(str(pdf), field_data, str(out_pdf),
               form_id=form_id, addendum_policy="none")
@@ -196,9 +204,12 @@ def fill_via_mapping(form_id: str, facts: dict, out_dir: pathlib.Path,
             (out_dir / f"{form_id}.split.pdf").unlink()
         except OSError:
             pass
-    return {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
-            "mapped_keys": res["mapped_keys"], "resolved": res["resolved"],
-            "fields_written": len(field_data), "fields_split": n_split}
+    out = {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
+           "mapped_keys": res["mapped_keys"], "resolved": res["resolved"],
+           "fields_written": len(field_data), "fields_split": n_split}
+    if split_skipped:
+        out["split_step_skipped"] = split_skipped
+    return out
 
 
 def main() -> int:

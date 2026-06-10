@@ -3,6 +3,10 @@
 # Core fill path (engine/) + scaffold tool (tools/):
 PyMuPDF>=1.24      # fitz — read AcroForm schema + write/flatten filled PDFs
 PyYAML>=6.0        # form.yaml / metadata
+pikepdf>=8.0       # engine/field_split.py — shared-AcroForm-field split guard
+                   # (stops mapped values fanning out to a field's other
+                   # appearances, e.g. OTH-029 `2_5`); fills skip the split
+                   # (with a warning + result flag) if it is missing
 
 # Agent MCP server (tools/mcp_server.py — find_forms / get_form / fill_form):
 mcp[cli]>=1.0      # only needed to run the MCP server; the CLIs work without it
