@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-FM-GS-JV-PA-PC-292 — Motion for Special Findings
 
 **Form Number:** AD-FM-GS-JV-PA-PC-292, Rev. 08/24

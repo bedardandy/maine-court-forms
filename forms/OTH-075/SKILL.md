@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-075 — If you put up bail for yourself or for someone else and you signed the back of the bail
 
 **Form Number:** OTH-075, Rev. 07/25

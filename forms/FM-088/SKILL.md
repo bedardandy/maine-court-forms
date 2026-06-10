@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-088 — Instructions — Motion to Modify
 
 **Form Number:** FM-088, Rev. 08/24

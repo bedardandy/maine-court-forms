@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-007 — Request to Extend Time For
 
 **Form Number:** FDP-007, Rev. 05/12

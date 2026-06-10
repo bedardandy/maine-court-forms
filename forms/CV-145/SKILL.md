@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-145 — Report of ADR Conference and Order
 
 **Form Number:** CV-145, Rev. 01/02

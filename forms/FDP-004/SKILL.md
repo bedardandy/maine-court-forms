@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-004 — Motion to Continue
 
 **Form Number:** FDP-004, Rev. 05/12

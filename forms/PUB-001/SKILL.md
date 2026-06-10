@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PUB-001 — A Guide To
 
 **Form Number:** PUB-001, Rev. Unknown

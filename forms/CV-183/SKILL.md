@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-183 — Complaint for Recovery Personal Property
 
 **Form Number:** CV-183, Rev. 06/14

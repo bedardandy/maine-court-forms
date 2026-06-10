@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-010 — Joint Motion to Stay
 
 **Form Number:** FDP-010, Rev. 06/13

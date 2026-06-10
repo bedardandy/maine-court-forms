@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-266 — Notification to the Court by Commissioner of
 
 **Form Number:** CR-266, Rev. 07/22

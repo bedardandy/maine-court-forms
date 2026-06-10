@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-042 — Packet — Motion to Modify
 
 **Form Number:** OTH-042, Rev. 08/24

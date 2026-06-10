@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-103 — Notice of Hearing
 
 **Form Number:** CV-FM-103

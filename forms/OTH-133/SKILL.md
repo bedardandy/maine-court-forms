@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-133 — GAL Mentor Request Form
 
 **Form Number:** OTH-133, Rev. 05/25

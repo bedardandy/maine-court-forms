@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-256 — Residential FED Information Sheet and Mediation Request
 
 **Form Number:** CV-256

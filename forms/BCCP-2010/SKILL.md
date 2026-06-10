@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # BCCP-2010 — Response to Complaint
 
 **Form Number:** BCCP-2010, Rev. Unknown

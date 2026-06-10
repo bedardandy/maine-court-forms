@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-JV-297 — Personal Identifying Information Attachment
 
 **Form Number:** CR-CV-JV-297

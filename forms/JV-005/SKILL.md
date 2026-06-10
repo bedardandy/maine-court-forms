@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-005 — Petition for Review of Detention of
 
 **Form Number:** JV-005, Rev. 10/23

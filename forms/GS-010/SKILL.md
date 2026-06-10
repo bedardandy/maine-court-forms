@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-010 — ORDER OF: (Check one)
 
 **Form Number:** GS-010, Rev. 10/23

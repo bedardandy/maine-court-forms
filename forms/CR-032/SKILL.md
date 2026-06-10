@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-032 — Motion and Affidavit for Assignment of Counsel
 
 **Form Number:** CR-032, Rev. 01/25

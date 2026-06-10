@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-004 — Consent of Person (12+) to Be Adopted
 
 **Form Number:** AD-004, Rev. 10/23

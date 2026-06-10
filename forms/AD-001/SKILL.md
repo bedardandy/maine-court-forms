@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-001 — Petition for Adoption and Change of Name
 
 **Form Number:** AD-001, Rev. 01/26

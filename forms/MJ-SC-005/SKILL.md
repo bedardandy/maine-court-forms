@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-SC-005 — Motion for Contempt
 
 **Form Number:** MJ-SC-005, Rev. 08/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-171 — Abstract of Divorce Decree
 
 **Form Number:** FM-171, Rev. 05/22

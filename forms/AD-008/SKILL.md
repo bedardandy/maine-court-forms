@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-008 — Report of Disbursements
 
 **Form Number:** AD-008, Rev. 09/19

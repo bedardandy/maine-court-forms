@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-154 — Court Interpreter Request
 
 **Form Number:** OTH-154, Rev. Unknown

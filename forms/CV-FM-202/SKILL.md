@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-202 — Affidavit that Service was Completed by Alternate
 
 **Form Number:** CV-FM-202, Rev. 08/20

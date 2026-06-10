@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-267 — Affidavit and Request for Issuance of Subpoena Under UIDDA
 
 **Form Number:** CV-267

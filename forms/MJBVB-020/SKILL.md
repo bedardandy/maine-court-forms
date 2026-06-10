@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-020 — Notice of Appeal
 
 **Form Number:** MJBVB-020, Rev. Unknown

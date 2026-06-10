@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # NC-003 — Waiver and Agreement
 
 **Form Number:** NC-003, Rev. 10/21

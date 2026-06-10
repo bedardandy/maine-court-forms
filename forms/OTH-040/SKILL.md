@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-040 — Packet — Divorce without Minor Children
 
 **Form Number:** OTH-040, Rev. 12/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-243 — Request for Abstract of Divorce Decree
 
 **Form Number:** FM-243, Rev. 02/21

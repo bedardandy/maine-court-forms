@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-017 — Waiver of Notice
 
 **Form Number:** JV-017, Rev. 12/21

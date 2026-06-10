@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-012 — Notice of Appeal to the Law Court
 
 **Form Number:** JV-012, Rev. 09/21

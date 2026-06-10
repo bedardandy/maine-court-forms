@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-011-W — Notice to Parent, Guardian, or Legal Custodian
 
 **Form Number:** JV-011-W, Rev. 09/21

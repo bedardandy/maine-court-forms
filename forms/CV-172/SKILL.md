@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-172 — Newspaper Cover Letter (Service by Publication)
 
 **Form Number:** CV-172

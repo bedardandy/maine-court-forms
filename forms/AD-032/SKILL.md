@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-032 — Instructions for Adoptions Filed in District Court
 
 **Form Number:** AD-032, Rev. Unknown

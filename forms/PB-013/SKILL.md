@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-013 — Instructions for Submission of VS-9 or
 
 **Form Number:** PB-013, Rev. 01/21

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-238 — Maine Treatment Court Plea Agreement
 
 **Form Number:** CR-238, Rev. 03/25

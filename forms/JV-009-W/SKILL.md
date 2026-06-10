@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-009-W — Notice to Parents and Legal Guardians
 
 **Form Number:** JV-009-W, Rev. 12/21

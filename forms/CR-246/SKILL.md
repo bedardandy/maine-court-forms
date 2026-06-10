@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-246 — Petition for Commencement
 
 **Form Number:** CR-246, Rev. 11/19

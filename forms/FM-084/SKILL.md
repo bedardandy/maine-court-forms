@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-084 — Child Support Table
 
 **Form Number:** FM-084, Rev. 01/23

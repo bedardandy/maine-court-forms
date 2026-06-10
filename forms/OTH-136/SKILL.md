@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-136 — Child Support in Maine
 
 **Form Number:** OTH-136, Rev. 03/25

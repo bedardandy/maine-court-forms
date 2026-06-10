@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-015 — Affidavit of Confidential Address
 
 **Form Number:** PA-015, Rev. 01/23

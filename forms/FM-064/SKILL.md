@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-064 — Petition for Emancipation
 
 **Form Number:** FM-064, Rev. 02/20

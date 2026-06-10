@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-271 — Consent or Objection to Appointment of Court-Paid Referee
 
 **Form Number:** CV-FM-271

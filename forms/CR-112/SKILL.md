@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-112 — Agreement of Defendant and Order
 
 **Form Number:** CR-112, Rev. 10/21

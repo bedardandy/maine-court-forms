@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-258 — Request for Notice to the Secretary of State
 
 **Form Number:** CR-258, Rev. 05/22

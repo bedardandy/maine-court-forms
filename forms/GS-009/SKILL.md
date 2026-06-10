@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-009 — PETITION FOR: (Check one)
 
 **Form Number:** GS-009, Rev. 10/23

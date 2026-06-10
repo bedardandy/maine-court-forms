@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-029 — Consent of Agency to Adoption
 
 **Form Number:** AD-029, Rev. 05/22

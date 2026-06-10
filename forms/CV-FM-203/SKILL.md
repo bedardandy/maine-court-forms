@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-203 — Request for Hearing (Foreign Order Registration)
 
 **Form Number:** CV-FM-203

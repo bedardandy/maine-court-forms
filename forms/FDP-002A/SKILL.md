@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-002A — Foreclosure Mediation
 
 **Form Number:** FDP-002A, Rev. 09/14

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-242 — Petition to Advance to Phase 2
 
 **Form Number:** CR-242, Rev. 11/19

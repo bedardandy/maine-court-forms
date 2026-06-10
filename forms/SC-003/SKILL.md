@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-003 — Request for SC Disclosure Hearing
 
 **Form Number:** SC-003, Rev. 02/20

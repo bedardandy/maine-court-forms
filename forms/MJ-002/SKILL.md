@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-002 — Request for Civil Order of Arrest/Order of
 
 **Form Number:** MJ-002, Rev. 06/14

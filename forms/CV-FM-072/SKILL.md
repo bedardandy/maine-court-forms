@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-072 — Motion for Service by Alternate Means and
 
 **Form Number:** CV-FM-072, Rev. 08/20

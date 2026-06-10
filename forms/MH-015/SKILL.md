@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MH-015 — Request and Order for Protective
 
 **Form Number:** MH-015, Rev. 08/24

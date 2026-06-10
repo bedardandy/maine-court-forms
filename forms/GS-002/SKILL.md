@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-002 — Order of Appointment Of
 
 **Form Number:** GS-002, Rev. 10/23

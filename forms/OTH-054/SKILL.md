@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-054 — Detailed Instructions for Requesting Elevated Access to
 
 **Form Number:** OTH-054, Rev. 08/22

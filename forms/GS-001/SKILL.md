@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-001 — Petition to Appoint Guardian of Minor
 
 **Form Number:** GS-001, Rev. 10/23

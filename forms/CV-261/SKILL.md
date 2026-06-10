@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-261 — Please check the appropriate box for the case being filed and follow instructions
 
 **Form Number:** CV-261, Rev. 08/24

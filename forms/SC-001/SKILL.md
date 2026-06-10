@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-001 — Statement of Claim
 
 **Form Number:** SC-001, Rev. 10/21

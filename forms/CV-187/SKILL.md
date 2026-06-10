@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-187 — Notice of Appeal – Recovery of Personal Property
 
 **Form Number:** CV-187, Rev. 06/14

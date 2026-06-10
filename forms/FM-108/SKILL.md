@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-108 — Important Notice about Mediation
 
 **Form Number:** FM-108, Rev. 02/20

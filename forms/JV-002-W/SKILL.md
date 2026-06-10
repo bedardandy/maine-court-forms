@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-002-W — Juvenile Summons
 
 **Form Number:** JV-002-W, Rev. 12/21

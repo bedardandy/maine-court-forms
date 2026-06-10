@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-041 — Notice to Individual Inspecting a Juvenile
 
 **Form Number:** JV-041, Rev. 12/21

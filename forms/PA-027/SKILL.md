@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-027 — Certification for Electronic Filing of Complaint or
 
 **Form Number:** PA-027, Rev. 01/26

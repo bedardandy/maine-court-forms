@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PC-044 — Before this Court and through this written document, I hereby give my consent to the foster care placement
 
 **Form Number:** PC-044, Rev. 10/23

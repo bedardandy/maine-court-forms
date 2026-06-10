@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-008 — Acceptance of Appointment By
 
 **Form Number:** GS-008, Rev. 09/19

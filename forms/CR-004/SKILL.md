@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-004 — Bail Lien
 
 **Form Number:** CR-004, Rev. 03/25

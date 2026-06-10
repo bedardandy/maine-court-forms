@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-037 — Sexual Assault and Domestic Violence Help
 
 **Form Number:** PA-037, Rev. 08/25

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-006-W — Conditions of Release
 
 **Form Number:** JV-006-W, Rev. 10/21

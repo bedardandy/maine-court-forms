@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-225 — Answer & Counterclaim for Annulment
 
 **Form Number:** FM-225, Rev. 07/22

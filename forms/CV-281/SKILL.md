@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-281 — Affidavit and Request to Register a Canadian Money Judgment
 
 **Form Number:** CV-281

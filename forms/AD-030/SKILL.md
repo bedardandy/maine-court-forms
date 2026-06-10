@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-030 — Notice of Intent to Adopt
 
 **Form Number:** AD-030, Rev. 10/23

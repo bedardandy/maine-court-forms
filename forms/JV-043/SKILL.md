@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-043 — Petition to Seal Juvenile Case Records
 
 **Form Number:** JV-043, Rev. 12/21

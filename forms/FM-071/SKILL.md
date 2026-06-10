@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-071 — Objection to Final Order of a Magistrate
 
 **Form Number:** FM-071, Rev. 02/20

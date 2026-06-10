@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-235 — Witness and Exhibit List
 
 **Form Number:** FM-235, Rev. 05/20

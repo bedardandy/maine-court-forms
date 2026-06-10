@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-090 — Instructions — Motion for Contempt
 
 **Form Number:** FM-090, Rev. 12/20

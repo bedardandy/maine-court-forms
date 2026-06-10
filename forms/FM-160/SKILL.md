@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-160 — Waiver of Right to Object and Waiver of Appeal
 
 **Form Number:** FM-160, Rev. 02/20

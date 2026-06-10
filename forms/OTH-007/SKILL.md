@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-007 — Media Notification – Requested
 
 **Form Number:** OTH-007, Rev. 12/23

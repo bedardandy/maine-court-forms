@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-017 — Child Support Worksheet
 
 **Form Number:** GS-017, Rev. 10/19

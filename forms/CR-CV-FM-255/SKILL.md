@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-FM-255 — Notice Regarding Electronic Service
 
 **Form Number:** CR-CV-FM-255, Rev. 12/20

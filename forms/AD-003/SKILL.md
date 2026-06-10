@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-003 — Consent of Other Than Parent or Minor
 
 **Form Number:** AD-003, Rev. 02/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-010 — Guardianship Case File Checklist
 
 **Form Number:** PB-010, Rev. 05/22

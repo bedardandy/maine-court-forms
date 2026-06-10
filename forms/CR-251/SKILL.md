@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-251 — seen without a written referral from my primary physician
 
 **Form Number:** CR-251, Rev. Unknown

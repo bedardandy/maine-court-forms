@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-003 — Termination of Surety Agreement
 
 **Form Number:** CR-003, Rev. 11/22

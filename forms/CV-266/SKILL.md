@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-266 — Affidavit and Request to Register a Foreign State Money Judgment Under UEFJA
 
 **Form Number:** CV-266

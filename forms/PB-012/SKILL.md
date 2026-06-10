@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-012 — Minor Name Change Case File Checklist
 
 **Form Number:** PB-012, Rev. 11/21

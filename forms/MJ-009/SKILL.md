@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-009 — Motion and Affidavit for Order to Withhold
 
 **Form Number:** MJ-009, Rev. 08/20

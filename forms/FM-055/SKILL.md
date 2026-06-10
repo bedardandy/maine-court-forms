@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-055 — Verification of Diligent Job Search
 
 **Form Number:** FM-055, Rev. 08/20

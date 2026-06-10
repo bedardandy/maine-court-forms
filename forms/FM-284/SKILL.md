@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-284 — Affidavit and Request to Register
 
 **Form Number:** FM-284, Rev. 01/23

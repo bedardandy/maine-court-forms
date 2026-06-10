@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-283 — Affidavit and Request to Register a Foreign Child
 
 **Form Number:** FM-283, Rev. 12/25

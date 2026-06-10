@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-006 — Complaint for Parentage, Parental Rights
 
 **Form Number:** FM-006, Rev. 07/22

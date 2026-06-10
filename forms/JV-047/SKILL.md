@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-047 — Request for Abstract to the Secretary of State
 
 **Form Number:** JV-047, Rev. 09/22

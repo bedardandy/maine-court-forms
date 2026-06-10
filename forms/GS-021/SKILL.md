@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-021 — Appointment of Guardian
 
 **Form Number:** GS-021, Rev. 10/23

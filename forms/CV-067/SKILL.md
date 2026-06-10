@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-067 — Application to Proceed Without Payment of Fees
 
 **Form Number:** CV-067

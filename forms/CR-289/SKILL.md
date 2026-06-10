@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-289 — Motion to Seal Criminal Conviction for
 
 **Form Number:** CR-289, Rev. 10/24

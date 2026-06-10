@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-007 — Notice of Small Claims Appeal
 
 **Form Number:** SC-007, Rev. 02/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-024 — Notice of Relinquishment of Weapons to Be
 
 **Form Number:** PA-024, Rev. 09/21

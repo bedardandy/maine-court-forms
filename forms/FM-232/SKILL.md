@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-232 — Complaint for Determination of De Facto
 
 **Form Number:** FM-232, Rev. 07/22

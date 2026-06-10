@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-152 — Please note, the following changes to Maine law are effective after the printing of this
 
 **Form Number:** OTH-152, Rev. Unknown

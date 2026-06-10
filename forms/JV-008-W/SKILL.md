@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-008-W — report to the juvenile community corrections officer (JCCO) immediately and report thereafter as the officer may direct
 
 **Form Number:** JV-008-W, Rev. 09/18

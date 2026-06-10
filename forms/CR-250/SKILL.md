@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-250 — Maine Treatment Court Plea Agreement
 
 **Form Number:** CR-250, Rev. 03/25

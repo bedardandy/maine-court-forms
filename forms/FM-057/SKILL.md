@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-057 — Affidavit of Confidential Address
 
 **Form Number:** FM-057, Rev. 08/20

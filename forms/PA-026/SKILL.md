@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-026 — • If you are served with a TEMPORARY or PERMANENT Protection Order that orders you to
 
 **Form Number:** PA-026, Rev. 09/21

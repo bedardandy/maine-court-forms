@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-011 — Private Party Adoption Case File Checklist
 
 **Form Number:** PB-011, Rev. 06/25

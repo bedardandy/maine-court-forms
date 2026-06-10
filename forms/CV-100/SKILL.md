@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-100 — Instructions for Filing a Residential FED Case
 
 **Form Number:** CV-100

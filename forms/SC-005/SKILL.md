@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-005 — Acknowledgment of Service
 
 **Form Number:** SC-005, Rev. 02/20

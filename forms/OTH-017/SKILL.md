@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-017 — Request for Transcript
 
 **Form Number:** OTH-017, Rev. Unknown

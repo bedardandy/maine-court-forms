@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-012 — I am a minor over the age of 14 and I am the subject of this guardianship proceeding
 
 **Form Number:** GS-012, Rev. 02/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-006 — ☐ Unified Criminal Docket
 
 **Form Number:** CR-006, Rev. 07/15

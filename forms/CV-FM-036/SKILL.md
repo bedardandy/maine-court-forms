@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-036 — Acknowledgment of Receipt of Summons and
 
 **Form Number:** CV-FM-036, Rev. 08/24

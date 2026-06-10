@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-013 — Guardian Ad Litem Roster Application
 
 **Form Number:** OTH-013, Rev. Unknown

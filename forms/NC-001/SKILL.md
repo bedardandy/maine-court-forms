@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # NC-001 — Petition for Change of Name
 
 **Form Number:** NC-001, Rev. 09/19

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-018 — Guardianship
 
 **Form Number:** GS-018, Rev. 06/22

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-135 — Pursuant to Administrative Order JB-25-01
 
 **Form Number:** OTH-135, Rev. Unknown

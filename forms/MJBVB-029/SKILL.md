@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-029 — ➢ Please note: All appeals forms may be obtained in person at any court clerk’s office or on the
 
 **Form Number:** MJBVB-029, Rev. Unknown

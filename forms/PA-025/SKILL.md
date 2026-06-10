@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-025 — Notice of Relinquishment to Be Completed by
 
 **Form Number:** PA-025, Rev. 09/21

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-CR-162 — Notice of Appeal
 
 **Form Number:** CV-CR-162, Rev. 12/18

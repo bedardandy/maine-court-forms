@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-153 — Certificate of Prisoner’s Account
 
 **Form Number:** CR-153, Rev. 03/25

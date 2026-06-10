@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-014 — Status Report of The
 
 **Form Number:** GS-014, Rev. 09/19

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-187 — Answer & Counterclaim for Parentage,
 
 **Form Number:** FM-187, Rev. 07/22

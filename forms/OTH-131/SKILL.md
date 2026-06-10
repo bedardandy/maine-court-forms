@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-131 — Court Fee Waiver Application
 
 **Form Number:** OTH-131, Rev. Unknown

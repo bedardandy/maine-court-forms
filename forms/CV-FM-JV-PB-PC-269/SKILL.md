@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-JV-PB-PC-269 — Guardian ad Litem's Motion for Pre-Approval to Exceed the Voucher Cap
 
 **Form Number:** CV-FM-JV-PB-PC-269

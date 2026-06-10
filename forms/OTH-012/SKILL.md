@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-012 — Please Do Not Attach Medical Documentation to This Request
 
 **Form Number:** OTH-012, Rev. Unknown

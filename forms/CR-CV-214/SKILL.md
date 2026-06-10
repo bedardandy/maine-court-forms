@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-214 — Request for Inclusion on Juror Source List
 
 **Form Number:** CR-CV-214

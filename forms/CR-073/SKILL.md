@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-073 — ☐ Unified Criminal Docket
 
 **Form Number:** CR-073, Rev. 07/15

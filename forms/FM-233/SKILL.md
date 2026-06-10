@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-233 — Defendant’s Answer to Plaintiff’s Complaint
 
 **Form Number:** FM-233, Rev. 08/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-022 — Proof of Community Service/Public Service Performed
 
 **Form Number:** JV-022, Rev. 10/21

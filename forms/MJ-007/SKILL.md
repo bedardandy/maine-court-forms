@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-007 — Answer by Employer to “Order to Withhold
 
 **Form Number:** MJ-007, Rev. 08/20

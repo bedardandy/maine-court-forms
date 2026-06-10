@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-019 — with requests for disability accommodations
 
 **Form Number:** OTH-019, Rev. Unknown

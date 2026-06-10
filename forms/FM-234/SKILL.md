@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-234 — Petition for Pre-Birth Determination
 
 **Form Number:** FM-234, Rev. 02/20

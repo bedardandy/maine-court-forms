@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-057 — Guide to Small Claims Court
 
 **Form Number:** OTH-057, Rev. Unknown

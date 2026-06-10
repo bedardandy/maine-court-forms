@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-236 — Authorization to Release Information Within the Maine
 
 **Form Number:** CR-236, Rev. 07/18

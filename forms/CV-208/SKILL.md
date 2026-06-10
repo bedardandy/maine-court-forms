@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-208 — Request to Schedule Expedited Final Hearing (Foreclosure)
 
 **Form Number:** CV-208

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-008 — Petition for Expedited Enforcement
 
 **Form Number:** FM-008, Rev. 08/20

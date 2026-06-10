@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-018 — Motion to Reopen
 
 **Form Number:** MJBVB-018, Rev. Unknown

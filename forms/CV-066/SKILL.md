@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-066 — Petition and Order for Military Certification
 
 **Form Number:** CV-066

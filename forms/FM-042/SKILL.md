@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-042 — Certificate in Lieu of Financial Statement
 
 **Form Number:** FM-042, Rev. 08/20

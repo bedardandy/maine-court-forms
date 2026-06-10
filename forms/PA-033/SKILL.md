@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-033 — Affidavit and Request to Register a Foreign
 
 **Form Number:** PA-033, Rev. 01/23

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-020 — Decree of Adoption
 
 **Form Number:** AD-020, Rev. 10/19

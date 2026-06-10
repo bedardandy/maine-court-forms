@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-045 — Instructions for Filing a Forcible Entry and
 
 **Form Number:** OTH-045, Rev. 01/24

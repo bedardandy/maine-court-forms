@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-238 — UCCJEA/UIFSA Foreign Judgment Registration Form
 
 **Form Number:** FM-238, Rev. 08/24

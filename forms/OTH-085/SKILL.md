@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-085 — Case Number Request
 
 **Form Number:** OTH-085, Rev. 02/24

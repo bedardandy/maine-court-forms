@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-222 — Compliance Report of the Guardian Ad Litem
 
 **Form Number:** FM-222, Rev. 02/20

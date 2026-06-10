@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-287 — Application for Appointment as a Bail
 
 **Form Number:** CR-287, Rev. 02/23

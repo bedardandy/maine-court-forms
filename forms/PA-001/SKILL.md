@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-001 — Complaint for Protection from Abuse
 
 **Form Number:** PA-001, Rev. 09/25

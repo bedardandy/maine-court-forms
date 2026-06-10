@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-002B — Defendant’s Foreclosure Mediation Information
 
 **Form Number:** FDP-002B, Rev. 09/14

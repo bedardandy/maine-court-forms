@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-243 — Petition to Advance to Phase 3
 
 **Form Number:** CR-243, Rev. Unknown

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-134 — Administrative Order JB-25-01
 
 **Form Number:** OTH-134, Rev. 05/25

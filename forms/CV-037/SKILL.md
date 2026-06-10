@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-037 — Subpoena for Hearing on Motion
 
 **Form Number:** CV-037, Rev. 06/14

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-188 — Order for Service by Alternate Means
 
 **Form Number:** FM-188, Rev. 02/20

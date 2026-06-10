@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-056 — Certificate Regarding Real Estate
 
 **Form Number:** FM-056, Rev. 08/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-006 — Complaint for Protection from Harassment
 
 **Form Number:** PA-006, Rev. 09/25

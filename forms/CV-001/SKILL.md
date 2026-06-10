@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-001 — Civil Summary Sheet
 
 **Form Number:** CV-001, Rev. 12/21

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-288 — Process for Appointment as a
 
 **Form Number:** CR-288, Rev. 02/23

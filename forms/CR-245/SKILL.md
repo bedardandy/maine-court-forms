@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-245 — Petition to Advance to Phase 5
 
 **Form Number:** CR-245, Rev. 11/19

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-043 — Packet — Motion to Enforce
 
 **Form Number:** OTH-043, Rev. 08/24

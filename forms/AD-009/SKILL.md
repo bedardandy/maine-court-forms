@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-009 — Certificate of Counseling
 
 **Form Number:** AD-009, Rev. 09/19

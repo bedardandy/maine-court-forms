@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-046 — t for Abstract to the Secretary of State
 
 **Form Number:** JV-046, Rev. 09/22

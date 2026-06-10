@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-FM-JV-021 — Entry of Appearance
 
 **Form Number:** CR-CV-FM-JV-021, Rev. 12/20

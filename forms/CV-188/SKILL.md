@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-188 — Request for Issuance of Writ of Possession for
 
 **Form Number:** CV-188, Rev. 06/14

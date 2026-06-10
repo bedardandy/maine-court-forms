@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-FM-260 — Motion for Alternative Format for Court Proceeding
 
 **Form Number:** CR-CV-FM-260

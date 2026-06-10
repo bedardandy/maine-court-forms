@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PC-043 — Motion to Extend Jeopardy Order Deadline
 
 **Form Number:** PC-043, Rev. 08/22

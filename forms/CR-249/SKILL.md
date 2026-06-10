@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-249 — Bail Contract Conditions ............................................................................................ 10
 
 **Form Number:** CR-249, Rev. Unknown

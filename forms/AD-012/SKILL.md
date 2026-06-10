@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-012 — Petition for Adoption Without Change of Name
 
 **Form Number:** AD-012, Rev. 10/23

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-052 — Federal Affidavit
 
 **Form Number:** FM-052, Rev. 08/20

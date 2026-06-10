@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-005 — Consent of Parent to Adoption (Identified Adoptive Parent)
 
 **Form Number:** AD-005, Rev. 10/25

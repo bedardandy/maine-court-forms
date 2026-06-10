@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-010-W — Notice to Juvenile of Right to Appeal to the Law Court
 
 **Form Number:** JV-010-W, Rev. 09/21

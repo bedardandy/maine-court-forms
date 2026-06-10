@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-204 — Affidavit of Service – Forcible Entry & Detainer
 
 **Form Number:** CV-204, Rev. 08/20

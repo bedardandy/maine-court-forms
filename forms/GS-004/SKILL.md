@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-004 — Order Appointing
 
 **Form Number:** GS-004, Rev. 10/23

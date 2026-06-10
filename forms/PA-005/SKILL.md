@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-005 — Protection Order Service Information
 
 **Form Number:** PA-005, Rev. 09/25

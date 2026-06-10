@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-237 — others without the express written consent of the individual participant.  I further agree to return,
 
 **Form Number:** CR-237, Rev. 07/18

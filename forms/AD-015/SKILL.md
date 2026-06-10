@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-015 — Petition for Adult Adoption
 
 **Form Number:** AD-015, Rev. 10/23

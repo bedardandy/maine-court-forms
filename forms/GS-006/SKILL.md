@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-006 — Affidavit of Notice For
 
 **Form Number:** GS-006, Rev. 10/23

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-006 — Consent of Parent to Adoption (Non-Identified Adoptive Parent)
 
 **Form Number:** AD-006, Rev. 10/23

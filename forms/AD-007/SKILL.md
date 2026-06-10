@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-007 — Confidential Statement to Accompany Petition for Adoption
 
 **Form Number:** AD-007, Rev. 09/19

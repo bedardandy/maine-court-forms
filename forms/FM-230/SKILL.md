@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-230 — Petition to Terminate Parental Rights
 
 **Form Number:** FM-230, Rev. 10/23

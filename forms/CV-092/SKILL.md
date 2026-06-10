@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-092 — How to File a Civil Appeal
 
 **Form Number:** CV-092

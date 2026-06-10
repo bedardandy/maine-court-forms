@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-PA-PB-PC-268 — Order Appointing Guardian ad Litem Under M.R. Civ. P. 17(b)
 
 **Form Number:** CV-FM-PA-PB-PC-268

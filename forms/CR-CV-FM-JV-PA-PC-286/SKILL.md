@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-CV-FM-JV-PA-PC-286 — Motion to Continue
 
 **Form Number:** CR-CV-FM-JV-PA-PC-286

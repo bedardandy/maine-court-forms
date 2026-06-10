@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-277 — Zoom Participant List
 
 **Form Number:** CV-FM-277

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-035 — Motion and Order to Continue Juvenile Case
 
 **Form Number:** JV-035, Rev. 12/21

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-003 — Motion for Appointment Of
 
 **Form Number:** GS-003, Rev. 10/23

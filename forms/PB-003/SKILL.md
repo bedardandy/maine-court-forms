@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-003 — Jurisdictional Affidavit
 
 **Form Number:** PB-003, Rev. 10/23

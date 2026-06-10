@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-JV-PB-PC-024 — Guardian ad Litem (GAL) Voucher
 
 **Form Number:** CV-FM-JV-PB-PC-024

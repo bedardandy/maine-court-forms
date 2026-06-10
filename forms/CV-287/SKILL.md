@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-287 — Debt Buyer Complaint
 
 **Form Number:** CV-287

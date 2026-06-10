@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-005 — education program due to a disability, please
 
 **Form Number:** OTH-005, Rev. Unknown

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-061 — Affidavit and Request for Default
 
 **Form Number:** CV-061, Rev. 10/22

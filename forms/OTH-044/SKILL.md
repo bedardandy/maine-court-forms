@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-044 — Packet — Motion for Contempt
 
 **Form Number:** OTH-044, Rev. 12/20

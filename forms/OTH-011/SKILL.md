@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-011 — DISABILITY ACCOMMODATION Request Form
 
 **Form Number:** OTH-011, Rev. 11/28

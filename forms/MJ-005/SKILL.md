@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-005 — Judgment Creditor
 
 **Form Number:** MJ-005, Rev. 06/14

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-227 — Response to Petition for Grandparent
 
 **Form Number:** FM-227, Rev. 08/20

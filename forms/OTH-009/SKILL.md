@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-009 — Record Search Request Instructions and Information
 
 **Form Number:** OTH-009, Rev. 10/15

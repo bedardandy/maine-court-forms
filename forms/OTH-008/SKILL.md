@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-008 — Please note: You must have a Maine Bar Number to submit this form. You will receive your Bar Number
 
 **Form Number:** OTH-008, Rev. 01/24

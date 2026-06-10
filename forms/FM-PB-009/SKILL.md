@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-PB-009 — Affidavit
 
 **Form Number:** FM-PB-009, Rev. 02/20

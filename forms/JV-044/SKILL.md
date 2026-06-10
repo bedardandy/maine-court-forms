@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-044 — Request to Make a Public Juvenile Petition
 
 **Form Number:** JV-044, Rev. 12/21

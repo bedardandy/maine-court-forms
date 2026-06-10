@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-002 — Family and Probate Matter Summary Sheet
 
 **Form Number:** FM-002, Rev. 07/20

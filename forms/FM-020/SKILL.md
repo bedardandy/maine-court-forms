@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-020 — Entry of Appearance
 
 **Form Number:** FM-020, Rev. 02/20

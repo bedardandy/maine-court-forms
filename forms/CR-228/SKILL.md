@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-228 — Request for Fine Payment Modification or
 
 **Form Number:** CR-228, Rev. 09/17

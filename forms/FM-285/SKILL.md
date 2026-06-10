@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-285 — Disclosure Form
 
 **Form Number:** FM-285, Rev. 01/23

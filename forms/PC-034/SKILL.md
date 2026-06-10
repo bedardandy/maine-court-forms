@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PC-034 — Compliance Report of the
 
 **Form Number:** PC-034, Rev. 02/20

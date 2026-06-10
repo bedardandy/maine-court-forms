@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-234 — Co-Occuring Disorders Court
 
 **Form Number:** CR-234, Rev. 04/22

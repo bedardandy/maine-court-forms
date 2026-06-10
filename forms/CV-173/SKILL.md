@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-173 — Verification (of Publication)
 
 **Form Number:** CV-173

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-076 — Affidavit and Request for Search Warrant
 
 **Form Number:** CR-076, Rev. 05/22

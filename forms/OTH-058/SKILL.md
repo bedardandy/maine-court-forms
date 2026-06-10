@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-058 — Either way you’ll need to file an affidavit (a sworn
 
 **Form Number:** OTH-058, Rev. Unknown

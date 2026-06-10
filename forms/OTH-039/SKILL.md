@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-039 — Packet — Divorce with Minor Children
 
 **Form Number:** OTH-039, Rev. 08/24

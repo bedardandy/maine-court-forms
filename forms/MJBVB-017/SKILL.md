@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-017 — Request for Extension of Time to Pay
 
 **Form Number:** MJBVB-017, Rev. Unknown

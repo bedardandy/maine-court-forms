@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-239 — Request to Travel Outside County of Residence
 
 **Form Number:** CR-239, Rev. 07/18

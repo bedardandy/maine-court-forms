@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PA-028 — Protection from Abuse or Protection from
 
 **Form Number:** PA-028, Rev. 09/25

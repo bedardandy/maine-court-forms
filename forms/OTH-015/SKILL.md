@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-015 — INTERPRETER Request Form
 
 **Form Number:** OTH-015, Rev. 10/18

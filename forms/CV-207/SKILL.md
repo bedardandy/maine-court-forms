@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-207 — Consent for Expedited Final Hearing (Foreclosure)
 
 **Form Number:** CV-207

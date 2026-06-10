@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-098 — Motion for Contempt (FM-068)
 
 **Form Number:** OTH-098, Rev. 08/24

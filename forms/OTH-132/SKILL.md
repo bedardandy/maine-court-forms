@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-132 — GAL Mentor Application
 
 **Form Number:** OTH-132, Rev. 05/25

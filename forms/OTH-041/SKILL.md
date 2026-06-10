@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-041 — Family Matter Summary Sheet (FM-002)
 
 **Form Number:** OTH-041, Rev. 08/24

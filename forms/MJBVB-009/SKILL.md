@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-009 — Motion to Amend Violation
 
 **Form Number:** MJBVB-009, Rev. Unknown

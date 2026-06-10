@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MH-014 — Petition to Dissolve Weapons Restriction Order
 
 **Form Number:** MH-014, Rev. 05/20

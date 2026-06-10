@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-028 — ► Please note: All forms referenced below can be obtained at any court clerk’s office or on the Maine
 
 **Form Number:** MJBVB-028, Rev. 04/25

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-123 — Application to Proceed Without
 
 **Form Number:** OTH-123, Rev. 06/20

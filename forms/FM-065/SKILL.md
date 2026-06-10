@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-065 — Request for Assignment of Counsel for
 
 **Form Number:** FM-065, Rev. 02/20

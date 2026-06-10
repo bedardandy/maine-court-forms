@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-195 — Request for Issuance of Writ of Possession
 
 **Form Number:** CV-195, Rev. 02/13

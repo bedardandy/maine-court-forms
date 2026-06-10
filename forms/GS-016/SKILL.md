@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # GS-016 — Child Support Affidavit
 
 **Form Number:** GS-016, Rev. 10/19

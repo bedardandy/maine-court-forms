@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJBVB-010 — Motion to Continue
 
 **Form Number:** MJBVB-010, Rev. Unknown

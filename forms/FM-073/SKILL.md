@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-073 — The parties in this matter request that the Case Management Conference be deferred so that the parties may
 
 **Form Number:** FM-073, Rev. 02/20

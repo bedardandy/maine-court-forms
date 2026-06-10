@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-003 — Motion to Waive Mediation in Foreclosure Action
 
 **Form Number:** FDP-003, Rev. 06/14

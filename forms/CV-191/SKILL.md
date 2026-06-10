@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-191 — Financial Affidavit
 
 **Form Number:** CV-191, Rev. 06/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-218 — Motion for Expedited Hearing
 
 **Form Number:** FM-218, Rev. 08/20

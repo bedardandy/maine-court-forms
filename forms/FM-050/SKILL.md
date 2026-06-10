@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-050 — Child Support Affidavit
 
 **Form Number:** FM-050, Rev. 01/23

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-016-W — Hearing Notice to Parents/Guardian/Legal Custodian
 
 **Form Number:** JV-016-W, Rev. 12/21

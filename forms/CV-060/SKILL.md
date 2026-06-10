@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-060 — Request for Withdrawal (Minor’s Settlement)
 
 **Form Number:** CV-060, Rev. 06/14

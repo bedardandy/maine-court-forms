@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-030 — Help for People Filing a Protection Order
 
 **Form Number:** OTH-030, Rev. 05/23

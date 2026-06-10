@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-034 — Motion for Transport
 
 **Form Number:** JV-034, Rev. 12/21

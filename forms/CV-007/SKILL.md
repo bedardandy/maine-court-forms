@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-007 — Complaint for Residential Forcible Entry
 
 **Form Number:** CV-007, Rev. 04/23

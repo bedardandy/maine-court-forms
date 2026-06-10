@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-064 — A Guide To
 
 **Form Number:** OTH-064, Rev. Unknown

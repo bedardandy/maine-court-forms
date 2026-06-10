@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-218 — Instructions for Filing Summary Recovery of Personal Property Case
 
 **Form Number:** CV-218

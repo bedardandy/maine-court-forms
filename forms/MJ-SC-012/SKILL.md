@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # MJ-SC-012 — Affidavit and Agreement
 
 **Form Number:** MJ-SC-012, Rev. 08/20

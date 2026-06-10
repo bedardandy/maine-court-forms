@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-PB-299 — Attorney Voucher
 
 **Form Number:** CV-FM-PB-299

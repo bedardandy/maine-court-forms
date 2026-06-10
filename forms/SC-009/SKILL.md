@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-009 — What happens at a Small Claims hearing?
 
 **Form Number:** SC-009, Rev. 02/20

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-JV-253 — Notification That Observation Is No Longer
 
 **Form Number:** CR-JV-253, Rev. 11/20

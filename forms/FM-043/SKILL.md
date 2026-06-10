@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-043 — Financial Statement
 
 **Form Number:** FM-043, Rev. 01/21

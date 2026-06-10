@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-201 — Instructions for Service by Alternate Means
 
 **Form Number:** CV-FM-201

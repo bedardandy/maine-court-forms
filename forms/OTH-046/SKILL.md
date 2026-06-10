@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-046 — Instructions for Filing a Summary Personal Property Recovery Case
 
 **Form Number:** OTH-046, Rev. 09/09

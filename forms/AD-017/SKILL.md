@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-017 — Report of Preliminary Investigation
 
 **Form Number:** AD-017, Rev. 10/19

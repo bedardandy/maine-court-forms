@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-222 — Application for Transfer to Business and Consumer Docket
 
 **Form Number:** CV-222

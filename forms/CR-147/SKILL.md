@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-147 — ☐ Unified Criminal Docket
 
 **Form Number:** CR-147, Rev. 07/15

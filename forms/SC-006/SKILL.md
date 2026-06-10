@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # SC-006 — Affidavit and Request for Service
 
 **Form Number:** SC-006, Rev. 01/25

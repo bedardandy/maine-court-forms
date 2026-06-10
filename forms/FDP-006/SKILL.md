@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FDP-006 — Request to Include in Foreclosure Mediation
 
 **Form Number:** FDP-006, Rev. 05/12

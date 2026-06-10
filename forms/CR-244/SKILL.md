@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-244 — Petition to Advance to Phase 4
 
 **Form Number:** CR-244, Rev. 11/19

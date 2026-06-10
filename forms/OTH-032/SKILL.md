@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # OTH-032 — Help for People Filing a Protection Order
 
 **Form Number:** OTH-032, Rev. 05/23

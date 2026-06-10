@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-248 — Prohibited Substances Agreement
 
 **Form Number:** CR-248, Rev. Unknown

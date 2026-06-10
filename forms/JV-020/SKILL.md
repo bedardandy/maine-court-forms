@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-020 — Important Notice
 
 **Form Number:** JV-020, Rev. 10/21

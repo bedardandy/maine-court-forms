@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # JV-040 — Notice of Discharge
 
 **Form Number:** JV-040, Rev. 12/21

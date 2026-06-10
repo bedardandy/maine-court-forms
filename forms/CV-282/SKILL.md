@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-282 — Petition to Recognize a Foreign Country Money Judgment
 
 **Form Number:** CV-282

@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-230 — Statement of Prosecuting Attorney Regarding
 
 **Form Number:** CR-230, Rev. 10/21

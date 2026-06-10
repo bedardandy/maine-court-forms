@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # FM-PC-003 — Family Matters and Child Protection
 
 **Form Number:** FM-PC-003, Rev. 10/21

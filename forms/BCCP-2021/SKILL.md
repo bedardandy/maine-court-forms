@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # BCCP-2021 — Important Notice to Defendant
 
 **Form Number:** BCCP-2021, Rev. 10/21

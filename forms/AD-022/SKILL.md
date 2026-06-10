@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # AD-022 — Petition for Adoption by Domestic Partner
 
 **Form Number:** AD-022, Rev. 10/19

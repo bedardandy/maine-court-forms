@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # PB-004 — Disclosure Form
 
 **Form Number:** PB-004, Rev. 09/19

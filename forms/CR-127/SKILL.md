@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CR-127 — Notice of Fine and Plea/Answer
 
 **Form Number:** CR-127, Rev. 07/15

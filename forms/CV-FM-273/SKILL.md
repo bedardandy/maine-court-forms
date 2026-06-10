@@ -1,4 +1,3 @@
-<!-- Reused from prior skills stash; verify against schema.json. -->
 # CV-FM-273 — Notice Preserving Right to Object to Court-Paid Referee's Report
 
 **Form Number:** CV-FM-273
