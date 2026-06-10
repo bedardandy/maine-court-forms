@@ -121,6 +121,11 @@ def resolve_mapping(form_id: str, facts: dict,
     if mapping.get("status") == "recipe":
         return {"form_id": form_id, "status": "recipe", "skipped": True,
                 "reason": "mapping.json is a pointer; use engine.fill"}
+    if mapping.get("status") == "no-mappable-fields":
+        return {"form_id": form_id, "status": "no-mappable-fields",
+                "skipped": True,
+                "reason": "form has no mappable fields (informational/"
+                          "court-completed form); nothing to fill"}
     m = mapping.get("map") or {}
     fid_value, unresolved = {}, []
     for fid, key in m.items():
@@ -157,9 +162,16 @@ def fill_via_mapping(form_id: str, facts: dict, out_dir: pathlib.Path,
                 "error": f"blank PDF not found: {pdf} (run tools/fetch_pdfs.py)"}
     # Guard: the on-disk blank must be the revision this mapping was built
     # against (catalog/pdf_manifest.json). A mismatch warns by default; set
-    # MCF_VERIFY_BLANK=strict to refuse, =off to skip.
-    verify.guard_blank(form_id, forms_root,
-                       mode=os.environ.get("MCF_VERIFY_BLANK", "warn"))
+    # MCF_VERIFY_BLANK=strict to refuse, =off to skip. The outcome is also
+    # captured into the result dict (callers rarely see Python warnings).
+    blank_mode = os.environ.get("MCF_VERIFY_BLANK", "warn")
+    import warnings as _warnings
+    with _warnings.catch_warnings(record=True) as _blank_warns:
+        _warnings.simplefilter("always")
+        blank_ok = verify.guard_blank(form_id, forms_root, mode=blank_mode)
+    blank_detail = "; ".join(str(w.message) for w in _blank_warns) or None
+    for w in _blank_warns:  # re-emit so warning-based callers still see it
+        _warnings.warn_explicit(w.message, w.category, w.filename, w.lineno)
     # Width-fit overflowing values to their widget's char budget (mirrors the
     # engine's fill_one pass): names initial-collapse, addresses postal-
     # abbreviate, so a long real-world value shrinks instead of clipping.
@@ -206,9 +218,24 @@ def fill_via_mapping(form_id: str, facts: dict, out_dir: pathlib.Path,
             pass
     out = {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
            "mapped_keys": res["mapped_keys"], "resolved": res["resolved"],
-           "fields_written": len(field_data), "fields_split": n_split}
+           "coverage": (round(res["resolved"] / res["mapped_keys"], 3)
+                        if res["mapped_keys"] else 0.0),
+           "unresolved": [{"field_id": fid, "key": key}
+                          for fid, key in res["unresolved"]],
+           "fields_written": len(field_data), "fields_split": n_split,
+           "blank_verify": {"mode": blank_mode, "ok": blank_ok,
+                            "detail": blank_detail}}
     if split_skipped:
         out["split_step_skipped"] = split_skipped
+    if res["resolved"] == 0 and res["mapped_keys"]:
+        # A zero-resolved fill is a blank PDF — almost always a fact-object
+        # shape problem (engine-shape case passed to the canonical-mapping
+        # path). Surface it as a failure instead of a silent near-blank.
+        out["ok"] = False
+        out["error"] = (f"0 of {res['mapped_keys']} mapped keys resolved — "
+                        "no fields were filled. Check that the fact object "
+                        "is canonical-shape ({matter, parties, party, "
+                        "facts}); see docs/integrations/README.md.")
     return out
 
 
