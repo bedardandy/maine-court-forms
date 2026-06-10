@@ -1,7 +1,7 @@
 {
   "form_id": "OTH-030",
   "status": "verified",
-  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check. Hand-fixed (sentinel-render confirmed): the plaintiff/defendant 'Telephone number' widgets are named 'if_different_mailing_address[_2]' in the AcroForm but sit physically on the telephone line; re-keyed to party.phone / parties.defendant.phone, and the defendant present-address + DOB re-keyed from the filer (party.*) to parties.defendant.*. Sentinel-render sweep also caught 'defendants_military_service' (an AcroForm field misnamed — physically the Minor's Name cell of the against-a-defendant minor table) keyed to parties.defendant.full_name; re-keyed to parties.child_1.full_name.",
+  "note": "Filled from the canonical sample and audited clean by 3x5-sample Qwen-VL cluster consensus + deterministic party-attribution check. Hand-fixed (sentinel-render confirmed): the plaintiff/defendant 'Telephone number' widgets are named 'if_different_mailing_address[_2]' in the AcroForm but sit physically on the telephone line; re-keyed to party.phone / parties.defendant.phone, and the defendant present-address + DOB re-keyed from the filer (party.*) to parties.defendant.*. Sentinel-render sweep also caught 'defendants_military_service' (an AcroForm field misnamed \u2014 physically the Minor's Name cell of the against-a-defendant minor table) keyed to parties.defendant.full_name; re-keyed to parties.child_1.full_name.",
   "map": {
     "location_town": "matter.court_location",
     "docket_no": "matter.docket_number",
@@ -67,5 +67,30 @@
     "dob_6": "party.date_of_birth",
     "s": "party.signature"
   },
-  "model": "qwen3.6-27b+opus-4-7"
+  "model": "qwen3.6-27b+opus-4-7",
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.filing_by_email",
+      "facts.understand_email_filing_format",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.child_1.full_name",
+      "parties.defendant.address",
+      "parties.defendant.date_of_birth",
+      "parties.defendant.full_name",
+      "parties.defendant.phone",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.date_of_birth",
+      "party.email",
+      "party.phone",
+      "party.signature",
+      "party.state"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

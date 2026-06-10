@@ -13,5 +13,21 @@
     "during_the_past_six_months_the_prisoners_average_monthly_balance_was": "facts.average_monthly_balance",
     "during_the_past_six_months_the_prisoners_average_deposits_were": "facts.average_deposits",
     "date_mmddyyyy": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.average_deposits",
+      "facts.average_monthly_balance",
+      "facts.current_balance",
+      "facts.institution_name",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

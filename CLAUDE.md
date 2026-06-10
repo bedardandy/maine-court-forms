@@ -9,7 +9,10 @@ the protocol in **`docs/agent-workflow.md`**. In short:
 1. **Route:** `python3 tools/find_forms.py "<the situation>"` → candidate forms +
    matter workflows (`catalog/workflows.json`, `catalog/forms_index.json`).
 2. **Understand:** read `forms/<ID>/SKILL.md` (facts needed) + `form.yaml`;
-   check `forms/<ID>/mapping.json` `status` for the **trust tier**
+   `forms/<ID>/mapping.json` `facts` declares which canonical keys are
+   **required** (caption party names — the form is facially incomplete
+   without them) vs merely **used**, so you can ask targeted intake
+   questions; check `mapping.json` `status` for the **trust tier**
    (`recipe` = form-specific engine code; `verified`/`opus-adjudicated` =
    reviewed mapping; `no-mappable-fields` = nothing to fill).
 3. **Extract:** build the **canonical fact object** (`{matter, parties, party,

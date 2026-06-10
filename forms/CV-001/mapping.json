@@ -30,5 +30,35 @@
     "date_mmddyyyy": "today()",
     "undefined_4": "party.signature",
     "printed_name_of_plaintiff_or_attorney": "party.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.adr_process_date",
+      "facts.neutral_name",
+      "facts.panel_chair_name",
+      "facts.panel_finding_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.address",
+      "parties.attorney.email",
+      "parties.attorney.full_name",
+      "parties.attorney.phone",
+      "parties.defendant.address",
+      "parties.defendant.full_name",
+      "parties.defendant.phone",
+      "parties.plaintiff.address",
+      "parties.plaintiff.email",
+      "parties.plaintiff.full_name",
+      "parties.plaintiff.phone",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

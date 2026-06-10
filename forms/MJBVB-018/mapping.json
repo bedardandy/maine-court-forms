@@ -19,5 +19,24 @@
     "extra_text": "matter.docket_number",
     "number_of_days": "facts.fine_due_days",
     "date_1": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name"
+    ],
+    "used": [
+      "facts.fine_due_days",
+      "facts.issuing_agency",
+      "facts.offense_date",
+      "facts.offense_location",
+      "facts.reason_for_request",
+      "facts.violation_description",
+      "matter.docket_number",
+      "parties.defendant.address",
+      "parties.defendant.date_of_birth",
+      "parties.defendant.full_name",
+      "parties.defendant.phone"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

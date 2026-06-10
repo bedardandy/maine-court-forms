@@ -13,5 +13,22 @@
     "bar_no_if_applicable": "parties.attorney.bar_number",
     "in_re": "facts.case_title",
     "county": "matter.court_county"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.case_title",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.bar_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

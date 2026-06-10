@@ -13,5 +13,21 @@
     "datemmddyyyy": "today()",
     "personallyappearedtheabove_named": "parties.plaintiff.full_name",
     "text1": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.jurisdiction_basis",
+      "facts.other_proceedings_details",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

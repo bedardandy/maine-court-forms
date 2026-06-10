@@ -23,5 +23,32 @@
     "personallyappearedtheabove_namedplaintiff": "party.full_name",
     "plaintiff": "parties.plaintiff.full_name",
     "defendant": "parties.defendant.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.address",
+      "parties.attorney.bar_number",
+      "parties.attorney.city",
+      "parties.attorney.email",
+      "parties.attorney.full_name",
+      "parties.attorney.phone",
+      "parties.attorney.state",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.city",
+      "party.email",
+      "party.full_name",
+      "party.phone",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -43,5 +43,40 @@
     },
     "removed": [],
     "notes": "week_3 caption lists payment intervals (week/two weeks/month) and carries no '$', unlike every genuine amount field on the form, so it's the payment frequency not an amount; all other keys match their captions (location_town=court header, my_home_phone_is_2/text1 are address lines auto-named after the phone label, Date \u25ba is the signature line)."
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.cash_on_hand",
+      "facts.disability_income_amount",
+      "facts.employer_name",
+      "facts.employment_income_amount",
+      "facts.expected_income_amount",
+      "facts.expected_start_work_date",
+      "facts.extension_days",
+      "facts.fines_due_date",
+      "facts.hearing_date",
+      "facts.hearing_time",
+      "facts.payment_frequency",
+      "facts.payment_start_date",
+      "facts.reason_for_request",
+      "facts.tanf_benefits_amount",
+      "facts.tax_refund_amount",
+      "facts.total_fines_owed",
+      "facts.unemployment_compensation_amount",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "party.address",
+      "party.date_of_birth",
+      "party.full_name",
+      "party.phone",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

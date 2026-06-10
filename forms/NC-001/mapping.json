@@ -2,5 +2,29 @@
   "form_id": "NC-001",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*nc001*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.copetitioner_relationship_to_minor",
+      "facts.name_change_reason",
+      "facts.nc_documents_checked",
+      "facts.new_name_for_minor",
+      "facts.petitioner_relationship_to_minor",
+      "matter.court_location",
+      "matter.docket_number",
+      "matter.filing_date",
+      "parties.adoptee",
+      "parties.attorney",
+      "parties.child_1",
+      "parties.co_petitioner",
+      "parties.copetitioner",
+      "parties.juvenile",
+      "parties.minor",
+      "parties.petitioner",
+      "parties.plaintiff"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

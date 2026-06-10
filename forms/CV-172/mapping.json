@@ -14,5 +14,24 @@
     "4_2": "facts.newspaper_phone",
     "to_whom_it_may_concern": "parties.plaintiff.full_name",
     "v": "parties.defendant.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.newspaper_address",
+      "facts.newspaper_city_state_zip",
+      "facts.newspaper_name",
+      "facts.newspaper_phone",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.full_name",
+      "party.phone"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

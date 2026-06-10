@@ -12,5 +12,21 @@
     "date_mmddyyyy": "today()",
     "to_a_correctional_facility_this_transfer_will_occur_as_soon_as_practicable_upon_termination": "party.signature",
     "department_of_health_and_human_services": "party.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.commitment_order_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -15,5 +15,24 @@
     "undefined": "facts.court_address",
     "date_mmddyyyy": "today()",
     "undefined_2": "facts.clerk_signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.clerk_signature",
+      "facts.court_address",
+      "facts.hearing_date",
+      "facts.hearing_time",
+      "facts.hearing_type",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

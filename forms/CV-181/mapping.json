@@ -15,5 +15,24 @@
     "in_debt_or_damage_and": "facts.costs_amount",
     "undefined": "facts.writ_return_date",
     "plaintiff": "parties.plaintiff.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.costs_amount",
+      "facts.debt_amount",
+      "facts.original_writ_date",
+      "facts.writ_return_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

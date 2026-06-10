@@ -26,5 +26,30 @@
     "mailing_address_1": "parties.plaintiff.address",
     "mailing_address_1_2": "parties.defendant.address",
     "plaintiffpetitioner": "parties.plaintiff.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.state_or_foreign_country",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.address",
+      "parties.attorney.email",
+      "parties.attorney.full_name",
+      "parties.attorney.phone",
+      "parties.defendant.address",
+      "parties.plaintiff.address",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.email",
+      "party.full_name",
+      "party.phone",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

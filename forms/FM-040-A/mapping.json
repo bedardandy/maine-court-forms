@@ -2,5 +2,19 @@
   "form_id": "FM-040-A",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*fm040a*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.additional_expenses",
+      "facts.children_count",
+      "facts.higher_income_gross_weekly",
+      "facts.higher_income_parent",
+      "facts.lower_income_gross_weekly",
+      "matter.court_location",
+      "matter.docket_number"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

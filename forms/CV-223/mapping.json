@@ -14,5 +14,23 @@
     "list_case_caption_and_county_in_which_currently_pending_1": "facts.related_case_caption_1",
     "date_mmddyyyy": "today()",
     "list_case_caption_and_county_in_which_currently_pending_2": "facts.related_case_caption_2"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.estimated_length_of_trial",
+      "facts.related_case_caption_1",
+      "facts.related_case_caption_2",
+      "facts.trial_start_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

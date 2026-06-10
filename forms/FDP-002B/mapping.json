@@ -16,5 +16,26 @@
     "county": "matter.court_county",
     "location_town": "matter.docket_number",
     "has_the_homeowner_moved_out_of_the_property_under_foreclosure": "facts.date_moved_out"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.date_moved_out",
+      "facts.gross_monthly_income",
+      "facts.preparer_name_title_phone",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.address",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

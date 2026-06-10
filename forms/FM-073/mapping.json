@@ -11,5 +11,20 @@
     "or": "facts.plaintiff_mediation_fee_amount",
     "or_2": "facts.defendant_mediation_fee_amount",
     "date_mmddyyyy": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.defendant_mediation_fee_amount",
+      "facts.plaintiff_mediation_fee_amount",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

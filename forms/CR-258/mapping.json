@@ -12,5 +12,20 @@
     "date_mmddyyyy": "today()",
     "undefined": "party.signature",
     "printed_name_and_bar_number": "parties.attorney.bar_number"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name"
+    ],
+    "used": [
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.bar_number",
+      "parties.attorney.full_name",
+      "parties.defendant.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

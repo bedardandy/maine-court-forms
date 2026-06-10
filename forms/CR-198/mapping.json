@@ -29,5 +29,30 @@
     },
     "removed": [],
     "notes": "'Defendant Location (Town)' is the defendant's town (parties.defendant.city), not the court's location; all other keys match their captions."
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.comments",
+      "facts.completion_deadline",
+      "facts.itemization_of_hours",
+      "facts.organization_address",
+      "facts.organization_name",
+      "facts.organization_phone",
+      "facts.organization_representative_name",
+      "facts.supervisor_name",
+      "facts.supervisor_phone",
+      "facts.total_hours_needed",
+      "matter.court_county",
+      "matter.docket_number",
+      "parties.defendant.city",
+      "parties.defendant.full_name",
+      "party.date_of_birth",
+      "party.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

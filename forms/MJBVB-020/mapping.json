@@ -20,5 +20,24 @@
     "address_ofappellantor_attorney_2": "party.city",
     "address_ofappellantor_attorney_3": "party.state",
     "bar_number": "parties.attorney.bar_number"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.citation_number",
+      "facts.judgment_date",
+      "facts.statement_of_issues",
+      "facts.violation_number",
+      "parties.attorney.bar_number",
+      "parties.defendant.full_name",
+      "party.address",
+      "party.city",
+      "party.full_name",
+      "party.state"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

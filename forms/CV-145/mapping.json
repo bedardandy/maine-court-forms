@@ -28,5 +28,24 @@
     "text4": "party.signature",
     "text2": "party.signature",
     "date_mmddyyyy": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.adr_conference_date",
+      "facts.other_participant",
+      "facts.settlement_filing_deadline_days",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.full_name",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

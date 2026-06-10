@@ -18,5 +18,25 @@
     "weeks_and_that_the_first_publication_was_made_on_mmddyyyy": "facts.publication_date",
     "date_mmddyyyy": "today()",
     "printed_name": "party.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.county",
+      "facts.newspaper_county",
+      "facts.newspaper_name",
+      "facts.publication_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

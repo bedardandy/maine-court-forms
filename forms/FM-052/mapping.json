@@ -19,5 +19,26 @@
     "or_3": "parties.plaintiff.city",
     "undefined_2": "parties.defendant.city",
     "plaintiff": "parties.plaintiff.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.defendant_employer_name",
+      "facts.defendant_employer_town",
+      "facts.other_facts",
+      "facts.other_facts_continued",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.bar_number",
+      "parties.defendant.city",
+      "parties.defendant.full_name",
+      "parties.plaintiff.city",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

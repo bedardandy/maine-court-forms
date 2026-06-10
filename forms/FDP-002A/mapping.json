@@ -2,5 +2,38 @@
   "form_id": "FDP-002A",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*fdp002a*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.advances_escrow_past_due",
+      "facts.current_escrow_payments",
+      "facts.current_fmv",
+      "facts.current_interest_payment",
+      "facts.current_interest_rate",
+      "facts.current_mortgage_payment",
+      "facts.current_principal_payment",
+      "facts.current_unpaid_balance",
+      "facts.fdp_attend_by_telephone",
+      "facts.fdp_investor",
+      "facts.fdp_preparer_firm",
+      "facts.fdp_preparer_name",
+      "facts.fdp_preparer_phone",
+      "facts.fdp_preparer_title",
+      "facts.future_interest_advanced_escrow",
+      "facts.months_past_due",
+      "facts.original_amortization_term",
+      "facts.original_interest_rate",
+      "facts.original_loan_amount",
+      "facts.past_due_interest",
+      "facts.pmi_monthly",
+      "facts.property_insurance_monthly",
+      "facts.property_taxes_monthly",
+      "facts.remaining_mortgage_term",
+      "parties.defendant",
+      "parties.plaintiff"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

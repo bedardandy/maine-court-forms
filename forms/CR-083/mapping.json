@@ -14,5 +14,19 @@
     "date_3": "today()",
     "return_to_which_court": "facts.order_text",
     "date_4": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name"
+    ],
+    "used": [
+      "facts.order_text",
+      "facts.transfer_court",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

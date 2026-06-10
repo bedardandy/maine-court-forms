@@ -17,5 +17,24 @@
     "payment_address": "facts.payment_recipient",
     "date_def_signed": "today()",
     "defendant_signature": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name"
+    ],
+    "used": [
+      "facts.fine_amount",
+      "facts.offense_description",
+      "facts.payment_recipient",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "matter.filing_date",
+      "parties.defendant.city",
+      "parties.defendant.full_name",
+      "parties.defendant.state",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

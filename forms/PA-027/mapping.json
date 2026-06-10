@@ -13,5 +13,21 @@
     "i_want_to_file_this_matter_in_court_locationtown_name": "matter.court_location",
     "date_mmddyyyy": "today()",
     "s": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.email",
+      "party.phone",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

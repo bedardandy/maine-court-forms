@@ -14,5 +14,22 @@
     "datemmddyyyy": "today()",
     "name_of_obligor": "facts.obligor_full_name",
     "per": "facts.payment_frequency"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.obligee_full_name",
+      "facts.obligor_full_name",
+      "facts.payment_amount",
+      "facts.payment_frequency",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

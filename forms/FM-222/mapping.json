@@ -17,5 +17,27 @@
     "name": "party.full_name",
     "address_1": "party.address",
     "4_fulfillment_of_duties_on_mmddyyyy": "facts.order_date"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.contact_date_1",
+      "facts.contact_date_2",
+      "facts.contact_location_1",
+      "facts.contact_location_2",
+      "facts.order_date",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

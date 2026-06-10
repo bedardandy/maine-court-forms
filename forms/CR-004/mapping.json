@@ -38,5 +38,33 @@
     },
     "removed": [],
     "notes": "Surety posting bail is the filing party (party.*), not plaintiff; 'City/Town of residence' is party.city not last_name; 'County of residence' has no party attr so facts.county_of_residence."
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.bond_date",
+      "facts.county_of_residence",
+      "facts.lien_amount_numeric",
+      "facts.lien_amount_words",
+      "facts.offense_reason",
+      "facts.property_county",
+      "facts.property_street",
+      "facts.property_town",
+      "facts.returnable_city_town",
+      "facts.returnable_court_name",
+      "facts.returnable_division_county",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "party.address",
+      "party.city",
+      "party.full_name",
+      "party.state"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

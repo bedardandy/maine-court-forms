@@ -35,5 +35,38 @@
     "plaintiff": "parties.plaintiff.full_name",
     "defendant": "parties.defendant.full_name",
     "relationship_to_minor_child_2": "facts.relationship_to_minor_child"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.child_1_place_of_birth",
+      "facts.child_2_place_of_birth",
+      "facts.guardian_ad_litem_address",
+      "facts.guardian_ad_litem_name",
+      "facts.legal_residence",
+      "facts.place_of_birth",
+      "facts.relationship_to_minor_child",
+      "facts.tribe_name",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.child_1.address",
+      "parties.child_1.date_of_birth",
+      "parties.child_1.full_name",
+      "parties.child_2.address",
+      "parties.child_2.date_of_birth",
+      "parties.child_2.full_name",
+      "parties.child_3.date_of_birth",
+      "parties.child_3.full_name",
+      "parties.defendant.address",
+      "parties.defendant.date_of_birth",
+      "parties.defendant.full_name",
+      "parties.plaintiff.address",
+      "parties.plaintiff.date_of_birth",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

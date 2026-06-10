@@ -17,5 +17,23 @@
     "date_mmddyyyy": "today()",
     "i_understand_that_i_must_send_a_copy_of_this_request_to_the_party_seeking_to_register_the_order_in_the_state_of_maine": "party.signature",
     "plaintiffpetitioner": "parties.plaintiff.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.reason_for_hearing",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

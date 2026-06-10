@@ -9,5 +9,16 @@
     "date_2": "today()",
     "participant": "party.full_name",
     "docket_numbers": "matter.docket_number"
+  },
+  "facts": {
+    "required": [
+      "party.full_name"
+    ],
+    "used": [
+      "facts.other_information_to_be_released",
+      "matter.docket_number",
+      "party.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

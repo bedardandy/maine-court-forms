@@ -18,5 +18,25 @@
     "undefined_2": "party.signature",
     "printed_name": "party.full_name",
     "address_1": "party.address"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.judgment_date",
+      "facts.jury_trial_facts",
+      "facts.questions_of_law",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -13,5 +13,21 @@
     "the_address_of_rental_property_is": "facts.rental_property_address",
     "date_mmddyyyy": "today()",
     "undefined": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "party.full_name"
+    ],
+    "used": [
+      "facts.rental_property_address",
+      "parties.other_party.email",
+      "parties.other_party.full_name",
+      "parties.other_party.phone",
+      "party.email",
+      "party.full_name",
+      "party.phone",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

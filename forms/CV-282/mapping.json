@@ -46,5 +46,42 @@
     "total_judgment_amount_in_foreign_currency": "facts.foreign_judgment_amount",
     "amount_of_the_judgment_in_usd_as_of_the_date_entered": "facts.judgment_amount_usd",
     "amount_of_the_judgment_sought_to_be_recognized": "facts.amount_sought_to_be_recognized"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.amount_sought_to_be_recognized",
+      "facts.exchange_rate",
+      "facts.foreign_country_name",
+      "facts.foreign_court_name",
+      "facts.foreign_defendant",
+      "facts.foreign_docket_number",
+      "facts.foreign_judgment_amount",
+      "facts.foreign_judgment_country",
+      "facts.foreign_judgment_date",
+      "facts.foreign_plaintiff",
+      "facts.judgment_amount_usd",
+      "facts.judgment_in_favor_of",
+      "facts.name_and_relationship_to_party",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.full_name",
+      "parties.defendant.address",
+      "parties.defendant.email",
+      "parties.defendant.full_name",
+      "parties.defendant.phone",
+      "parties.plaintiff.address",
+      "parties.plaintiff.email",
+      "parties.plaintiff.full_name",
+      "parties.plaintiff.phone",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

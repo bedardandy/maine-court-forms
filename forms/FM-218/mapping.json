@@ -22,5 +22,31 @@
     "signature_electronic_or_actual": "party.signature",
     "notary": "party.full_name",
     "location": "matter.court_location"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.adverse_effects_on_child",
+      "facts.adverse_effects_on_financial_support",
+      "facts.adverse_effects_on_health_or_financial_standing",
+      "facts.adverse_effects_on_parental_rights",
+      "facts.estimated_hearing_duration_hours_checkbox",
+      "facts.estimated_hearing_duration_minutes",
+      "facts.estimated_hearing_duration_minutes_checkbox",
+      "facts.motion_description",
+      "facts.other_party_full_name",
+      "facts.other_reason",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -21,5 +21,20 @@
     },
     "removed": [],
     "notes": "'Defendant Location (Town)' is the defendant's city, not court_location; the second 'Date (mm/dd/yyyy): \u25ba' field is a date\u2192today(), not a signature."
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.bail_amount",
+      "matter.court_county",
+      "matter.docket_number",
+      "parties.defendant.city",
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -16,5 +16,25 @@
     "personally_appeared_the_abovenamed": "party.full_name",
     "plaintiffpetitioner": "parties.plaintiff.full_name",
     "defendantrespondent": "parties.defendant.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.belief_reason",
+      "facts.other_name",
+      "facts.other_party",
+      "facts.other_role_name",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

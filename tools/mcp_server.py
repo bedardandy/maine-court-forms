@@ -121,6 +121,10 @@ def get_form(form_id: str) -> dict:
         # adjudicated mapping), no-mappable-fields (nothing to fill).
         "trust": _trust_tier(mp.get("status")),
         "canonical_keys_used": canonical_keys,
+        # Targeted-intake declaration (tools/derive_required_facts.py):
+        # facts.required = caption facts the form is facially incomplete
+        # without; facts.used = every canonical key the fill can consume.
+        "facts": mp.get("facts") or {"required": [], "used": canonical_keys},
         "skill": (fdir / "SKILL.md").read_text()[:4000] if (fdir / "SKILL.md").exists() else "",
         "sample_case": json.loads((fdir / "examples" / "sample_case.json").read_text()),
     }

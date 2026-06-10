@@ -14,5 +14,24 @@
     "undefined_3": "party.signature",
     "plaintiffpetitioner": "parties.plaintiff.full_name",
     "defendantrespondent": "parties.defendant.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.obligor_ssn_part1",
+      "facts.obligor_ssn_part2",
+      "facts.obligor_ssn_part3",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -2,5 +2,31 @@
   "form_id": "JV-012",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*jv012*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.attorney_bar",
+      "facts.attorney_name",
+      "facts.jv012_agency_addr_1",
+      "facts.jv012_agency_addr_2",
+      "facts.jv012_appeal_type",
+      "facts.jv012_appellant_role",
+      "facts.jv012_custody_status",
+      "facts.jv012_entered_date",
+      "facts.jv012_notice_text",
+      "facts.jv012_transcript_ordered",
+      "matter.court_location",
+      "matter.docket_number",
+      "matter.filing_date",
+      "parties.appellants_attorney",
+      "parties.attorney",
+      "parties.child_1",
+      "parties.defendant",
+      "parties.juvenile",
+      "parties.minor"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

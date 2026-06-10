@@ -17,5 +17,25 @@
     "2": "party.city",
     "3": "party.state",
     "personally_appeared_the_abovenamed": "party.full_name"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.address",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.city",
+      "party.full_name",
+      "party.signature",
+      "party.state"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

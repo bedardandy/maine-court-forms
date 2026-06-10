@@ -14,5 +14,24 @@
     "undefined": "party.signature",
     "printed_name_and_bar_number_if_applicable": "party.full_name",
     "i_request_preparation_of_a_transcript_at_state_expense_for_the_following_reasons_1": "facts.transcript_reasons"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.in_re_subject",
+      "facts.transcript_reasons",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

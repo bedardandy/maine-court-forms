@@ -15,5 +15,24 @@
     "address_of_appellant_or_attorney_1": "party.address",
     "text1": "party.full_name",
     "printed_name_of_appellant_or_appellants_attorney": "parties.attorney.bar_number"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.order_date",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.bar_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

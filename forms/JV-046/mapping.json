@@ -14,5 +14,21 @@
     "3_date_of_offense_mmddyyyy": "facts.offense_date",
     "4_date_of_adjudicatory_hearing_mmddyyyy": "facts.hearing_date",
     "6_juveniles_date_of_birth_mmddyyyy": "parties.defendant.date_of_birth"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name"
+    ],
+    "used": [
+      "facts.hearing_date",
+      "facts.offense_date",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.full_name",
+      "parties.defendant.date_of_birth",
+      "parties.defendant.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

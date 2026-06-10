@@ -16,5 +16,24 @@
     "take": "parties.defendant.full_name",
     "date_mmddyyyy": "today()",
     "undefined": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.agency_name",
+      "facts.ari_number",
+      "facts.county",
+      "facts.court_ori",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.date_of_birth",
+      "parties.defendant.full_name",
+      "party.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

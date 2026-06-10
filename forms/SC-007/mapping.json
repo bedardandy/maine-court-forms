@@ -32,5 +32,24 @@
       "detail": "Text '123 Main Street' overlaps the line above it.",
       "votes": 3
     }
-  ]
+  ],
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.appeal_grounds",
+      "facts.judgment_amount",
+      "facts.judgment_date",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.address",
+      "parties.defendant.full_name",
+      "parties.plaintiff.address",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

@@ -41,6 +41,7 @@ import yaml
 OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(OSS_ROOT))
 from tools.split_schema import split_schema as split_schema_dict  # noqa: E402
+from tools.derive_required_facts import facts_block_from_mapping  # noqa: E402
 
 # This is a Maine Judicial Branch library. Federal IRS forms and Maine Revenue
 # Service (MRS-*) tax forms are out of scope — the MRS forms moved to the
@@ -172,7 +173,28 @@ def build_readme(form_id, meta, idx, has_pdf=True):
     return "\n".join(lines)
 
 
-def build_skill(form_id, meta, fields, prior_skill, has_recipe):
+def _facts_section(facts_block):
+    """Render mapping.json's "facts" intake declaration for SKILL.md."""
+    if not facts_block or not (facts_block.get("required")
+                               or facts_block.get("used")):
+        return []
+    lines = ["## Facts to collect", ""]
+    req = facts_block.get("required") or []
+    if req:
+        lines += ["Required (the form is facially incomplete without "
+                  "these):", ""]
+        lines += [f"- `{k}`" for k in req]
+        lines += [""]
+    used = [k for k in (facts_block.get("used") or []) if k not in req]
+    if used:
+        lines += ["Also consumed when supplied:", ""]
+        lines += [f"- `{k}`" for k in used]
+        lines += [""]
+    return lines
+
+
+def build_skill(form_id, meta, fields, prior_skill, has_recipe,
+                facts_block=None):
     if prior_skill and prior_skill.strip():
         header = (f"<!-- Reused from prior skills stash; verify against "
                   f"schema.json. -->\n")
@@ -182,7 +204,10 @@ def build_skill(form_id, meta, fields, prior_skill, has_recipe):
                 "\n> **Note:** a dedicated fill recipe exists for this form "
                 f"in `engine/recipes/`. The recipe is the authoritative "
                 "field mapping; this doc is the human-readable companion.\n")
-        return header + prior_skill.rstrip() + "\n" + recipe_note
+        facts = "\n".join(_facts_section(facts_block))
+        if facts:
+            facts = "\n" + facts
+        return header + prior_skill.rstrip() + "\n" + recipe_note + facts
 
     lines = [
         f"# {form_id} — {meta['title']}",
@@ -199,6 +224,7 @@ def build_skill(form_id, meta, fields, prior_skill, has_recipe):
         "`field_id`.",
         "",
     ]
+    lines += _facts_section(facts_block)
     if has_recipe:
         lines += [
             "> A dedicated fill recipe exists in `engine/recipes/` and "
@@ -321,11 +347,16 @@ def scaffold_one(form_id, ctx):
     ps = skills_stash / form_id / "SKILL.md" if skills_stash else None
     if ps and ps.exists():
         prior = ps.read_text()
-    (out / "SKILL.md").write_text(
-        build_skill(form_id, meta, fields, prior, has_recipe))
+    mapping = build_mapping(form_id, fields, has_recipe)
+    # Targeted-intake declaration: which canonical keys the form needs vs
+    # can consume (tools/derive_required_facts.py; surfaced by MCP get_form).
+    mapping["facts"] = facts_block_from_mapping(mapping, schema,
+                                                form_id=form_id)
+    (out / "mapping.json").write_text(json.dumps(mapping, indent=2))
 
-    (out / "mapping.json").write_text(
-        json.dumps(build_mapping(form_id, fields, has_recipe), indent=2))
+    (out / "SKILL.md").write_text(
+        build_skill(form_id, meta, fields, prior, has_recipe,
+                    facts_block=mapping["facts"]))
 
     # 4. example fact pattern (reuse a family probe case if present)
     ex = ctx["example_case"]

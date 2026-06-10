@@ -2,5 +2,25 @@
   "form_id": "PA-010",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*pa010*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.pa010_action",
+      "facts.pa010_dissolve_short",
+      "facts.pa010_modify_reasons",
+      "facts.pa010_modify_short",
+      "facts.pa010_relief_items",
+      "facts.perjury_acknowledged",
+      "matter.court_location",
+      "matter.docket_number",
+      "matter.filing_date",
+      "parties.defendant",
+      "parties.petitioner",
+      "parties.plaintiff",
+      "parties.respondent"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }

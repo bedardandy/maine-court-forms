@@ -13,5 +13,21 @@
     "automatically_terminated": "today()",
     "text1": "party.signature",
     "prejudice_and_that_any_temporary_order_based_on_the_complaint_be_terminated_for_the_following_reasons_1": "facts.reason_for_dismissal"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.complaint_date",
+      "facts.reason_for_dismissal",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

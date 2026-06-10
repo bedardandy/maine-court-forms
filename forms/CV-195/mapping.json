@@ -19,5 +19,25 @@
     "address_1": "party.address",
     "address_2": "party.city",
     "address_3": "party.zip"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.full_name"
+    ],
+    "used": [
+      "facts.judgment_date",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.address",
+      "party.city",
+      "party.full_name",
+      "party.signature",
+      "party.zip"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

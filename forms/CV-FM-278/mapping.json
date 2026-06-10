@@ -11,5 +11,20 @@
     "docket_no": "matter.docket_number",
     "on_mmddyyyy": "facts.settlement_conference_date",
     "date_mmddyyyy": "today()"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.settlement_conference_date",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

@@ -26,5 +26,23 @@
     "date_mmddyyyy": "today()",
     "attorney_at_law_bar_number": "parties.attorney.bar_number",
     "undefined_2": "party.signature"
+  },
+  "facts": {
+    "required": [
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name"
+    ],
+    "used": [
+      "facts.property_description",
+      "facts.property_location_address",
+      "facts.property_location_city",
+      "matter.court_location",
+      "matter.docket_number",
+      "parties.attorney.bar_number",
+      "parties.defendant.full_name",
+      "parties.plaintiff.full_name",
+      "party.signature"
+    ],
+    "derived_by": "tools/derive_required_facts.py"
   }
 }

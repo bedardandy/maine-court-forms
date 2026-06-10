@@ -2,5 +2,37 @@
   "form_id": "OTH-133",
   "status": "recipe",
   "note": "Authoritative mapping lives in engine/recipes/infer_*oth133*.py (RECIPE3 dispatch). This file is a placeholder; do not hand-edit \u2014 regenerate from the recipe.",
-  "map": {}
+  "map": {},
+  "facts": {
+    "required": [],
+    "used": [
+      "facts.docket_no",
+      "facts.issues",
+      "facts.oth_issue_summary",
+      "facts.oth_names_of_counsel",
+      "facts.oth_prior_mentor",
+      "facts.oth_request_date",
+      "facts.oth_requester_address",
+      "facts.oth_requester_city",
+      "facts.oth_requester_email",
+      "facts.oth_requester_firm",
+      "facts.oth_requester_name",
+      "facts.oth_requester_phone",
+      "facts.oth_requester_zip",
+      "facts.summary",
+      "matter.case_type",
+      "matter.court_county",
+      "matter.court_location",
+      "matter.court_type",
+      "matter.docket_number",
+      "matter.filing_date",
+      "parties.attorney",
+      "parties.defendant",
+      "parties.petitioner",
+      "parties.plaintiff",
+      "parties.respondent"
+    ],
+    "note": "Recipe-tier form: keys harvested statically from the registered engine recipe, which is presence-gated (fills only from facts you supply \u2014 nothing hard-fails, so nothing is marked required). A bare parties.<role> entry means the recipe may read any attribute of that party. The generic engine field map also consumes the standard basics (docket, court, party names) where the form has those widgets.",
+    "derived_by": "tools/derive_required_facts.py"
+  }
 }
