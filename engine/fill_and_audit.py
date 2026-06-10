@@ -163,7 +163,8 @@ _NOTARY_SIGNER_FIDS = (
     "personally_appeared_the_abovenamed_consenting_parent",
 )
 # "I swear under penalty of perjury..." radio appears in dozens of forms
-# with slight suffix variants. Always defaults to checked ("X").
+# with slight suffix variants. Checked ONLY on an explicit
+# case.facts.perjury_acknowledged boolean — never auto-sworn.
 _PERJURY_SWEAR_FIDS = (
     "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these",
     "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
@@ -178,8 +179,12 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
     Returns count of fills added."""
     court = case.get("court") or {}
     parties = case.get("parties") or {}
+    facts = case.get("facts") or {}
+    # Jurat county ONLY from real case data (was defaulted "Cumberland",
+    # fabricating where the oath was taken). Unknown -> leave blank for
+    # the notary to complete.
     county = (case.get("notary_county")
-              or court.get("county", "Cumberland"))
+              or court.get("county", ""))
     state = "Maine"
     # Best-guess signer: first available party with a name.
     signer = ""
@@ -191,7 +196,7 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
             break
     added = 0
     for fid in _NOTARY_COUNTY_FIDS:
-        if fid in kv and not kv.get(fid):
+        if fid in kv and not kv.get(fid) and county:
             kv[fid] = county
             added += 1
     for fid in _NOTARY_STATE_FIDS:
@@ -202,10 +207,14 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
         if fid in kv and not kv.get(fid) and signer:
             kv[fid] = signer
             added += 1
-    for fid in _PERJURY_SWEAR_FIDS:
-        if fid in kv and not kv.get(fid):
-            kv[fid] = "X"
-            added += 1
+    # The perjury oath belongs to the signer; check it ONLY when the
+    # case explicitly says so (was auto-checked on every form that had
+    # the box).
+    if facts.get("perjury_acknowledged") is True:
+        for fid in _PERJURY_SWEAR_FIDS:
+            if fid in kv and not kv.get(fid):
+                kv[fid] = "X"
+                added += 1
     return added
 
 
