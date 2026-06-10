@@ -14,6 +14,18 @@ This is a court order form used in money judgment cases. Typically completed by 
 
 - **14 M.R.S. § 3127-B**
 
+## Computed lines (printed arithmetic)
+
+Declared in `computations.json` (evaluated by the shared engine on the mapping fill path). Omit a computed key (with its inputs supplied) and the engine fills it from the formula printed on the form (`computed_fields` in the result); supply it and your value is written **as-is** — a contradiction only adds a `COMPUTATION_MISMATCH` warning.
+
+| computed key | printed instruction |
+|---|---|
+| `facts.disposable_earnings` | 3. Judgment Debtor’s Disposable Earnings (line (1) minus line (2)) |
+| `facts.excess_over_minimum_wage` | 6. Subtract line (5) from line (3) and enter answer here: |
+| `facts.maximum_withholding_amount` | 8. Enter the least of the amounts of lines (4), (6) or (7): |
+| `facts.total_deductions` | Total of lines 2(a)-(f) |
+| `facts.twenty_five_percent_amount` | 4. Multiply amount on line (3) by .25 and enter answer here: |
+
 ## Field Mappings
 
 | Field Name | Type | Page | Notes |

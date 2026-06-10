@@ -1,0 +1,53 @@
+{
+  "form_id": "MJ-007",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is.",
+  "computed": {
+    "facts.total_deductions": {
+      "op": "sum",
+      "inputs": [
+        "facts.federal_income_tax",
+        "facts.social_security_tax",
+        "facts.state_income_tax",
+        "facts.medicare_tax",
+        "facts.state_employee_retirement",
+        "facts.other_withholding"
+      ],
+      "formula_text": "Total of lines 2(a)-(f)"
+    },
+    "facts.disposable_earnings": {
+      "op": "difference",
+      "inputs": [
+        "facts.gross_pay_amount",
+        "facts.total_deductions"
+      ],
+      "formula_text": "3. Judgment Debtor’s Disposable Earnings (line (1) minus line (2))"
+    },
+    "facts.twenty_five_percent_amount": {
+      "op": "product",
+      "inputs": [
+        "facts.disposable_earnings",
+        0.25
+      ],
+      "formula_text": "4. Multiply amount on line (3) by .25 and enter answer here:",
+      "note": "the .25 multiplier is printed on the form"
+    },
+    "facts.excess_over_minimum_wage": {
+      "op": "difference",
+      "inputs": [
+        "facts.disposable_earnings",
+        "facts.state_minimum_wage"
+      ],
+      "formula_text": "6. Subtract line (5) from line (3) and enter answer here:"
+    },
+    "facts.maximum_withholding_amount": {
+      "op": "min",
+      "inputs": [
+        "facts.twenty_five_percent_amount",
+        "facts.excess_over_minimum_wage",
+        "facts.court_ordered_payment"
+      ],
+      "formula_text": "8. Enter the least of the amounts of lines (4), (6) or (7):",
+      "note": "when line (7) is N/A (no court-ordered payment) the case value is non-numeric and this line is left for the filer, with a report note"
+    }
+  }
+}

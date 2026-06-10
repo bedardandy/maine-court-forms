@@ -1,0 +1,164 @@
+"""Computed fields (computations.json, yellow light): artifacts + wiring.
+
+Offline parts validate the shipped ``forms/<ID>/computations.json`` files
+(load through the shared engine, every key mapped, samples balance); the
+verbatim and end-to-end parts are PDF-dependent and skip when the blank is
+unfetched (CI).
+
+Shipped surveys: MJ-007 (wage-withholding answer — deduction total,
+disposable earnings, the printed .25 multiplier, minimum-wage excess, and
+the least-of-three maximum) and FM-040 (child support worksheet — combined
+adjusted gross income, children x table amount). The other printed math in
+the tree is conditional ("if biweekly, multiply x 2") or its inputs are
+unmapped (GS-017's 7a/7b), so it is deliberately not declared.
+"""
+import json
+import pathlib
+import re
+import sys
+import tempfile
+import unittest
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+
+from maine_forms_engine.computations import (  # noqa: E402
+    evaluate, load_computations)
+from engine.fill_via_mapping import fill_via_mapping  # noqa: E402
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+FORMS = ROOT / "forms"
+
+
+def _forms_with_computations():
+    return sorted(d.parent.name for d in FORMS.glob("*/computations.json"))
+
+
+def _norm(s: str) -> str:
+    """Whitespace/leader-dot/fill-in-blank normalization for verbatim match."""
+    s = s.replace("—", "-").replace("–", "-")
+    s = re.sub(r"_{2,}", " ", s)
+    s = re.sub(r"\.{3,}", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+class ComputationsArtifacts(unittest.TestCase):
+    def test_surveyed_forms_present(self):
+        self.assertEqual(_forms_with_computations(), ["FM-040", "MJ-007"])
+
+    def test_loads_and_keys_are_mapped(self):
+        for fid in _forms_with_computations():
+            with self.subTest(form=fid):
+                comp = load_computations(FORMS / fid)  # validates ops/cycles
+                mapping = json.loads((FORMS / fid / "mapping.json").read_text())
+                mapped = set(mapping["map"].values())
+                for key, spec in comp["computed"].items():
+                    self.assertIn(key, mapped)
+                    for raw in spec["inputs"]:
+                        if isinstance(raw, str):
+                            self.assertIn(raw.lstrip("-"), mapped)
+                    self.assertTrue(spec.get("formula_text", "").strip())
+
+    def test_sample_cases_balance(self):
+        for fid in _forms_with_computations():
+            with self.subTest(form=fid):
+                comp = load_computations(FORMS / fid)
+                case = json.loads(
+                    (FORMS / fid / "examples" / "sample_case.json").read_text())
+                r = evaluate(comp, case)
+                self.assertEqual(r["warnings"], [])
+                self.assertEqual(r["notes"], [])
+                self.assertEqual(r["computed"], [])
+
+    def test_formula_text_is_printed_verbatim(self):
+        import fitz
+        ran = 0
+        for fid in _forms_with_computations():
+            pdf = FORMS / fid / f"{fid}.pdf"
+            if not pdf.exists():
+                continue
+            ran += 1
+            doc = fitz.open(str(pdf))
+            text = _norm(" ".join(p.get_text() for p in doc))
+            doc.close()
+            comp = load_computations(FORMS / fid)
+            for key, spec in comp["computed"].items():
+                with self.subTest(form=fid, key=key):
+                    self.assertIn(_norm(spec["formula_text"]), text)
+        if not ran:
+            self.skipTest("no local blank PDFs (CI / unfetched)")
+
+
+class ComputationsEndToEnd(unittest.TestCase):
+    """MJ-007: 'Total of lines 2(a)-(f)' computed vs supplied-contradiction."""
+
+    FORM = "MJ-007"
+    TOTAL_WIDGET = "2"  # line (2) total-deductions widget
+
+    def setUp(self):
+        if not (FORMS / self.FORM / f"{self.FORM}.pdf").exists():
+            self.skipTest("blank not fetched")
+        self.case = json.loads(
+            (FORMS / self.FORM / "examples" / "sample_case.json").read_text())
+
+    def _widget(self, pdf_path):
+        import fitz
+        doc = fitz.open(pdf_path)
+        try:
+            for page in doc:
+                for w in page.widgets() or []:
+                    if w.field_name == self.TOTAL_WIDGET:
+                        return w.field_value
+        finally:
+            doc.close()
+        return None
+
+    def test_omitted_total_is_computed_and_filled(self):
+        del self.case["facts"]["total_deductions"]
+        # downstream lines that depend on the total stay supplied — they
+        # must NOT warn, because the computed total feeds them topologically
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            by_key = {e["key"]: e for e in r["computed_fields"]}
+            self.assertEqual(by_key["facts.total_deductions"]["value"],
+                             "300.00")
+            self.assertEqual(by_key["facts.total_deductions"]["formula_text"],
+                             "Total of lines 2(a)-(f)")
+            self.assertEqual(r["computation_warnings"], [])
+            self.assertEqual(self._widget(r["out_pdf"]), "300.00")
+
+    def test_supplied_contradiction_written_as_is_with_warning(self):
+        self.case["facts"]["total_deductions"] = "999.00"
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            warns = {w["key"]: w for w in r["computation_warnings"]}
+            w = warns["facts.total_deductions"]
+            self.assertEqual(w["code"], "COMPUTATION_MISMATCH")
+            self.assertEqual(w["supplied"], "999.00")
+            self.assertEqual(w["computed"], "300.00")
+            self.assertEqual(w["formula_text"], "Total of lines 2(a)-(f)")
+            # supplied value wins in the PDF — never enforced/overridden;
+            # and it feeds line (3) downstream, which then warns too
+            self.assertEqual(self._widget(r["out_pdf"]), "999.00")
+            self.assertIn("facts.disposable_earnings", warns)
+
+    def test_na_court_ordered_payment_skips_least_of_with_note(self):
+        # the form prints: line (7) may be N/A — then line (8) is the
+        # filer's, with a report note instead of a guess
+        self.case["facts"]["court_ordered_payment"] = "N/A"
+        del self.case["facts"]["maximum_withholding_amount"]
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            self.assertNotIn("facts.maximum_withholding_amount",
+                             {e["key"] for e in r["computed_fields"]})
+            self.assertTrue(any(
+                n["key"] == "facts.maximum_withholding_amount"
+                for n in r.get("computation_notes", [])))
+            self.assertIsNone(self._widget(r["out_pdf"]) if
+                              self.TOTAL_WIDGET == "8" else None)
+
+
+if __name__ == "__main__":
+    unittest.main()

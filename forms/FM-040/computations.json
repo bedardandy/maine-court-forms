@@ -1,0 +1,23 @@
+{
+  "form_id": "FM-040",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is.",
+  "computed": {
+    "facts.combined_adjusted_gross_income": {
+      "op": "sum",
+      "inputs": [
+        "facts.adjusted_gross_income_primary",
+        "facts.adjusted_gross_income_non_primary"
+      ],
+      "formula_text": "c. (Add lines 7a and 7b.)"
+    },
+    "facts.basic_weekly_support_total": {
+      "op": "product",
+      "inputs": [
+        "facts.total_number_of_children",
+        "facts.amount_from_table"
+      ],
+      "formula_text": "Total number of children (a) multiplied by amount from table (b) = 9c.",
+      "note": "the printed line carries fill-in blanks between (a), (b) and 9c"
+    }
+  }
+}

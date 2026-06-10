@@ -15,6 +15,15 @@ This worksheet/financial form is used to calculate or document financial informa
 - **19-A M.R.S. §  2001**
 - **19-A M.R.S. §§ 2001**
 
+## Computed lines (printed arithmetic)
+
+Declared in `computations.json` (evaluated by the shared engine on the mapping fill path). Omit a computed key (with its inputs supplied) and the engine fills it from the formula printed on the form (`computed_fields` in the result); supply it and your value is written **as-is** — a contradiction only adds a `COMPUTATION_MISMATCH` warning.
+
+| computed key | printed instruction |
+|---|---|
+| `facts.basic_weekly_support_total` | Total number of children (a) multiplied by amount from table (b) = 9c. |
+| `facts.combined_adjusted_gross_income` | c. (Add lines 7a and 7b.) |
+
 ## Field Mappings
 
 | Field Name | Type | Page | Notes |
