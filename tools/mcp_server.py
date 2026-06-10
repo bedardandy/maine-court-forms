@@ -16,6 +16,7 @@ tools surface each form's mapping trust tier and any unresolved/missing facts.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import pathlib
 import ssl
@@ -33,25 +34,41 @@ OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
 mcp = FastMCP("maine-court-forms")
 
 
-def _ensure_pdf(form_id: str) -> str | None:
-    """Fetch the blank PDF from the manifest if it isn't on disk. Returns error or None."""
+def _ensure_pdf(form_id: str) -> tuple[str | None, str]:
+    """Fetch the blank PDF from the manifest if it isn't on disk.
+
+    Returns (error, pdf_verify) — error is None on success; pdf_verify is the
+    SHA-256 verdict against catalog/pdf_manifest.json ("match",
+    "mismatch — upstream form may have been revised", "no-manifest-hash",
+    or "on-disk — not re-verified here" for pre-existing blanks, which
+    engine.verify.guard_blank checks at fill time).
+    """
     pdf = OSS_ROOT / "forms" / form_id / f"{form_id}.pdf"
     if pdf.exists():
-        return None
+        return None, "on-disk — not re-verified here"
     manifest = json.loads((OSS_ROOT / "catalog" / "pdf_manifest.json").read_text())
     entry = manifest.get("forms", {}).get(form_id)
     if not entry:
-        return f"no PDF and no manifest entry for {form_id}"
+        return f"no PDF and no manifest entry for {form_id}", "no-manifest-entry"
     try:
         req = urllib.request.Request(entry["url"], headers={"User-Agent": "mcf-mcp"})
         data = urllib.request.urlopen(req, timeout=30,
                                       context=ssl.create_default_context()).read()
         if data[:5] != b"%PDF-":
-            return "fetched file is not a PDF"
+            return "fetched file is not a PDF", "not-a-pdf"
+        expected = entry.get("sha256")
+        got = hashlib.sha256(data).hexdigest()
+        if not expected:
+            verdict = "no-manifest-hash"
+        elif got == expected:
+            verdict = "match"
+        else:
+            verdict = (f"mismatch — upstream form may have been revised "
+                        f"(manifest {expected[:12]}…, fetched {got[:12]}…)")
         pdf.write_bytes(data)
-        return None
+        return None, verdict
     except Exception as e:  # noqa: BLE001
-        return f"fetch failed: {e}"
+        return f"fetch failed: {e}", "fetch-failed"
 
 
 def _trust_tier(status: str | None) -> str:
@@ -116,16 +133,17 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
     Args:
         form_id: e.g. "AD-001".
         facts: a canonical fact object — {matter, parties, party, facts} (see
-               get_form's sample_case). An engine-shape case is also accepted.
+               get_form's sample_case). An engine-shape case is accepted only
+               for recipe-tier forms; the mapping path rejects it.
         out_dir: where to write the filled PDF.
     Returns ok, out_pdf, fields written, and the mapping trust tier to surface.
     """
     fdir = OSS_ROOT / "forms" / form_id
     if not fdir.exists():
         return {"ok": False, "error": f"unknown form {form_id}"}
-    err = _ensure_pdf(form_id)
+    err, pdf_verify = _ensure_pdf(form_id)
     if err:
-        return {"ok": False, "error": err}
+        return {"ok": False, "error": err, "pdf_verify": pdf_verify}
     status = json.loads((fdir / "mapping.json").read_text()).get("status")
     if status == "recipe":
         # authoritative engine recipe — runs the form-specific fill logic
@@ -134,8 +152,23 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
                        schema_path=fdir / "schema.json",
                        pdf_path=fdir / f"{form_id}.pdf")
     else:
+        # The mapping path resolves CANONICAL keys (matter.* / parties.* /
+        # facts.*). An engine-shape case (top-level court/docket_no/...)
+        # would resolve almost nothing and produce a near-blank fill —
+        # reject it with a clear error instead.
+        engine_markers = {"court", "docket_no", "event_date", "filing_date",
+                           "case_id", "citation_no"} & set(facts)
+        if engine_markers and "matter" not in facts:
+            return {"ok": False, "pdf_verify": pdf_verify,
+                    "error": ("facts look engine-shape (top-level "
+                              f"{sorted(engine_markers)}); the mapping fill "
+                              "path needs the canonical fact object "
+                              "({matter, parties, party, facts} — see "
+                              "get_form's sample_case). Engine-shape cases "
+                              "are only accepted for recipe-tier forms.")}
         # use the curated mapping.json (verified / opus-adjudicated) directly
         res = fill_via_mapping(form_id, facts, pathlib.Path(out_dir))
+    res["pdf_verify"] = pdf_verify
     res["mapping_status"] = status
     res["trust"] = _trust_tier(status)
     res["caveat"] = ("Verify against the official form."
