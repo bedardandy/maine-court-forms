@@ -178,7 +178,7 @@ def fill_form(
     output_path: str | Path | None = None,
     *,
     tree: dict | None = None,
-    addendum_policy: str = "auto",
+    addendum_policy: str = "none",
     form_id: str | None = None,
 ) -> str:
     """Fill an AcroForm PDF with field data.
@@ -190,10 +190,12 @@ def fill_form(
         tree: Optional parsed tree YAML (dict). Used for two things:
             (a) prompt labels for the addendum question headers
             (b) per-tree `addendum_policy` override
-        addendum_policy: One of "auto" (default — append addendum pages
-            for overflowed answers), "none" (truncate overflow inline,
-            no addendum), or "court_form" (skip addendum, assume the
-            user will attach a court-published continuation form).
+        addendum_policy: One of "none" (default — truncate overflow
+            inline, no addendum), "court_form" (skip addendum, assume
+            the user will attach a court-published continuation form),
+            or "auto" (append addendum pages for overflowed answers —
+            requires the `engine.addendum` module, which is NOT shipped
+            in this repo; requesting it raises ValueError on overflow).
         form_id: Form identifier used in the addendum header. Defaults
             to the PDF filename stem.
 
@@ -378,7 +380,19 @@ def fill_form(
     # Addendum: render overflow pages and rewrite the last inline widget
     # of each overflowed field to point to the addendum entry.
     if overflowed and addendum_policy == "auto":
-        from .addendum import render_addendum_pages  # local import: optional
+        # The addendum renderer is not part of this repo's engine; fail
+        # with a clear message instead of an ImportError mid-fill.
+        try:
+            from .addendum import render_addendum_pages  # noqa: PLC0415
+        except ImportError as e:
+            doc.close()
+            raise ValueError(
+                f"addendum_policy='auto' requires the engine.addendum "
+                f"module (addendum-page rendering), which is not shipped "
+                f"in this repo — {len(overflowed)} field(s) overflowed. "
+                f"Use addendum_policy='none' (truncate inline) or "
+                f"'court_form' (attach the court continuation form)."
+            ) from e
         # For each overflowed field, addendum body = wrapped-last-line +
         # remainder. We replace the last widget's text with "See Addendum
         # QN" so the inline form is unambiguous and the addendum carries
