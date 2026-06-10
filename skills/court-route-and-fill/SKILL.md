@@ -1,5 +1,5 @@
 ---
-name: route-and-fill
+name: court-route-and-fill
 description: Go from a plain-language fact pattern to a filled Maine Judicial Branch court form. Use when the user describes a court situation (eviction, divorce/parental rights, small claims, protection from abuse, a civil or criminal matter) and wants the right form selected and filled. Routes to the form(s), reads the form's skill + trust tier, builds a canonical fact object, fetches the official blank PDF on demand, and fills it via the deterministic engine/ path.
 ---
 

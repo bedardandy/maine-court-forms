@@ -53,7 +53,7 @@ assist with: \<your situation\>"*. There are two on-ramps:
   ```bash
   claude mcp add maine-court-forms -- python3 tools/mcp_server.py
   ```
-  A **`.codex-plugin/`** manifest and a top-level **`skills/route-and-fill/`**
+  A **`.codex-plugin/`** manifest and a top-level **`skills/court-route-and-fill/`**
   skill ship for harnesses that consume those.
 - **Plain CLI workflow.** Route (`tools/find_forms.py`) → read the form's
   `SKILL.md` + trust tier → build a canonical fact object → fetch the PDF
@@ -91,7 +91,7 @@ tools/
   check_upstream.py     re-probe official URLs; flag forms the courts have revised
   mcp_server.py         MCP server: find_forms / get_form / fill_form
   scaffold_forms.py     regenerates the per-form folders from source data
-skills/route-and-fill/  top-level agent skill (the route -> fill protocol)
+skills/court-route-and-fill/  top-level agent skill (the route -> fill protocol)
 .mcp.json               MCP registration; .codex-plugin/ — codex/openclaw manifest
 Makefile                dev entry points: test / route / fetch / coverage / mcp
 NOTICE                  Maine Judicial Branch attribution for the blank forms
