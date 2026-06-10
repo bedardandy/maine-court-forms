@@ -36,6 +36,23 @@ def find_forms(query: str, k: int = 8) -> dict:
     idx = json.loads((OSS_ROOT / "catalog" / "forms_index.json").read_text())
     wf = json.loads((OSS_ROOT / "catalog" / "workflows.json").read_text())["workflows"]
 
+    # Exact form-id short-circuit. The tokenizer drops short tokens, so a
+    # query like "PA-001" routes poorly through the lexical path; when the
+    # query names known form id(s) verbatim (case-insensitive), return
+    # them directly.
+    by_id = {f["form"].upper(): f for f in idx}
+    id_tokens = re.findall(r"[A-Za-z]{2,5}(?:-[A-Za-z0-9]{1,4})+", query)
+    exact = [by_id[t.upper()] for t in id_tokens if t.upper() in by_id]
+    if exact:
+        return {
+            "query": query,
+            "workflows": [],
+            "forms": [
+                {"form": f["form"], "title": f["title"].split(" — ")[-1],
+                 "category": f.get("category", "")}
+                for f in exact[:k]],
+        }
+
     # workflows: match query against name/description/matter_types
     wf_hits = []
     for key, w in wf.items():
