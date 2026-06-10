@@ -532,7 +532,14 @@ def audit_one(form_id: str, filled_pdf: pathlib.Path,
     # prompt variant.
     prompt_file = ("alignment_audit_qwen.md" if auditor == "local"
                    else "alignment_audit.md")
-    prompt_template = (REPO_ROOT / "prompts" / prompt_file).read_text()
+    prompt_path = REPO_ROOT / "prompts" / prompt_file
+    if not prompt_path.exists():
+        raise FileNotFoundError(
+            f"vision-audit prompt not found: {prompt_path}. The prompts/ "
+            "directory is not shipped in this repo — the audit step is "
+            "optional research tooling. Run without --audit, or supply "
+            f"prompts/{prompt_file} to enable it.")
+    prompt_template = prompt_path.read_text()
 
     # Render each page once.
     img_paths = []
@@ -602,8 +609,12 @@ def main() -> int:
     ap.add_argument("--out-dir", type=pathlib.Path,
                     default=pathlib.Path("intermediate") /
                             datetime.datetime.utcnow().strftime("kv_%Y%m%dT%H%M%S"))
+    ap.add_argument("--audit", action="store_true",
+                    help="Also run the vision audit (opt-in: needs the "
+                         "prompts/ templates, which are not shipped, plus "
+                         "an Opus CLI or local VL endpoint)")
     ap.add_argument("--skip-audit", action="store_true",
-                    help="Only fill; don't run vision audit (saves $$)")
+                    help=argparse.SUPPRESS)  # legacy no-op; audit is opt-in
     ap.add_argument("--audit-repeats", type=int, default=1,
                     help="Run vision audit N times per page and "
                          "keep issues that appear in ⌈N/2⌉+ samples. "
@@ -640,7 +651,7 @@ def main() -> int:
                 **{k: v for k, v in fill_result["stats"].items()
                    if k != "by_category_filled"},
                 "fields_written_to_pdf": fill_result["fields_written_to_pdf"]}
-        if not args.skip_audit:
+        if args.audit and not args.skip_audit:
             audit = audit_one(form_id,
                               pathlib.Path(fill_result["out_pdf"]),
                               args.out_dir,
