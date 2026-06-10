@@ -70,27 +70,25 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                    or {})
     # Requester is the GAL, typically captured in the attorney record.
     # Pro-se / self-filing GALs use the plaintiff/petitioner record.
-    # Stock firm info kicks in if neither is present.
+    # ONLY real party data or explicit oth_requester_* facts — never a
+    # stock identity (was "Eleanor M. Walsh, Esq. / Walsh & Associates"
+    # with invented address, phone, and email).
     if not attorney.get("full_name"):
         attorney = {
             "full_name": facts.get("oth_requester_name",
-                                       petitioner.get("full_name",
-                                                        "Eleanor M. Walsh, Esq.")),
+                                       petitioner.get("full_name", "")),
             "address": facts.get("oth_requester_address",
-                                     petitioner.get("address",
-                                                       "44 Exchange Street")),
+                                     petitioner.get("address", "")),
             "city": facts.get("oth_requester_city",
-                                  petitioner.get("city",
-                                                    court.get("location","Portland"))),
+                                  petitioner.get("city", "")),
             "state": "ME",
             "zip": facts.get("oth_requester_zip",
-                                 petitioner.get("zip", "04101")),
+                                 petitioner.get("zip", "")),
             "phone": facts.get("oth_requester_phone",
-                                   petitioner.get("phone", "207-555-0149")),
+                                   petitioner.get("phone", "")),
             "email": facts.get("oth_requester_email",
-                                   petitioner.get("email", "atty@mainemail.com")),
-            "firm": facts.get("oth_requester_firm",
-                                  "Walsh & Associates LLP"),
+                                   petitioner.get("email", "")),
+            "firm": facts.get("oth_requester_firm", ""),
         }
 
     # Section A — Date of request (CORRECT widget id)
@@ -159,8 +157,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                 rec.get("attorney"), dict) else rec.get("attorney")
             if c:
                 names.append(f"{c} (counsel for {role})")
-        counsel = ("; ".join(names) if names
-                    else "Parties are self-represented (pro se).")
+        # When no counsel is in the record, leave blank — never assert
+        # the parties are pro se (was a stock "self-represented" line).
+        counsel = "; ".join(names)
     if counsel and _set(out, "1_2", counsel):
         changes.append(("1_2", counsel, "counsel(true)"))
 
@@ -170,19 +169,19 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         issues = facts.get("issues") or []
         if isinstance(issues, list) and issues:
             summary = ("Issues presented: " + "; ".join(issues) + ".")
-        else:
-            summary = (f"{case.get('case_type','civil').replace('_',' ').title()} "
-                        f"matter pending in "
-                        f"{court.get('name','Maine District Court')}, "
+        elif case.get("case_type") and court.get("name"):
+            # Compose only from real case/court data (the old fallback
+            # defaulted to "civil" + "Maine District Court").
+            summary = (f"{case['case_type'].replace('_',' ').title()} "
+                        f"matter pending in {court['name']}, "
                         f"{court.get('county') or court.get('location','')}.")
     if summary and _set(out, "1_3", summary):
         changes.append(("1_3", summary, "summary(true)"))
 
-    # Section E — History (prior mentor). prior_mentor_1 widget is CORRECT.
-    prior = facts.get("oth_prior_mentor",
-                       "No — no mentor services have previously been "
-                       "received for this case.")
-    if _set(out, "prior_mentor_1", prior):
+    # Section E — History (prior mentor) — ONLY when explicitly provided
+    # (was defaulted to "No prior mentor services", a factual assertion).
+    prior = facts.get("oth_prior_mentor", "")
+    if prior and _set(out, "prior_mentor_1", prior):
         changes.append(("prior_mentor_1", prior, "prior-mentor"))
 
     # Signature date (CORRECT widget id).

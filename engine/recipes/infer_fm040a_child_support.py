@@ -35,18 +35,30 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "docketno", case.get("docket_no", "")):
         changes.append(("docketno", case.get("docket_no",""), "caption-docket"))
 
-    # Higher / lower income parent identification
-    higher_parent = facts.get("higher_income_parent", "Plaintiff")
-    # Form has "Higher income parent is the Plaintiff/Defendant" widget
-    for fid in ("higher_income_parent_is_the_plaintiff_defendant",
-                 "higher_income_parent"):
-        if _set(out, fid, higher_parent):
-            changes.append((fid, higher_parent, "higher-parent-choice"))
+    # Higher / lower income parent identification — ONLY when explicitly
+    # provided (was defaulted to "Plaintiff", asserting which parent earns
+    # more).
+    higher_parent = facts.get("higher_income_parent", "")
+    if higher_parent:
+        # Form has "Higher income parent is the Plaintiff/Defendant" widget
+        for fid in ("higher_income_parent_is_the_plaintiff_defendant",
+                     "higher_income_parent"):
+            if _set(out, fid, higher_parent):
+                changes.append((fid, higher_parent, "higher-parent-choice"))
 
-    # Income / deductions (lines 1-8): support a basic schedule
-    income_hip = float(facts.get("higher_income_gross_weekly", "1200"))
-    income_lip = float(facts.get("lower_income_gross_weekly", "650"))
-    children_n = int(facts.get("children_count", "2"))
+    # Income / computation rows — the entire worksheet derives from the
+    # parents' incomes and the child count. Compute ONLY when all three
+    # inputs are explicitly provided (the old defaults invented $1200/$650
+    # weekly incomes, 2 children, and $75 of expenses, producing an
+    # entirely fabricated support obligation).
+    if not (facts.get("higher_income_gross_weekly")
+            and facts.get("lower_income_gross_weekly")
+            and facts.get("children_count")):
+        return out, changes
+
+    income_hip = float(facts["higher_income_gross_weekly"])
+    income_lip = float(facts["lower_income_gross_weekly"])
+    children_n = int(facts["children_count"])
 
     line_data = [
         ("1", f"{income_hip:,.2f}", "HIP gross weekly income"),
@@ -97,22 +109,25 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, fid, f"{enhanced_hip:,.2f}"):
             changes.append((fid, f"{enhanced_hip:,.2f}", "enhanced-hip"))
 
-    # Lines 19-22 (presumptive obligation, additional expenses, total)
+    # Lines 19-22 (presumptive obligation, additional expenses, total).
+    # Additional expenses ONLY when explicitly provided (was a $75
+    # default); the total row needs that input.
     presumptive = enhanced_hip  # simplified
-    additional = float(facts.get("additional_expenses", "75"))
-    total = presumptive + additional
     for fid in ("19", "line_19", "20", "line_20",
                  "20_presumptive_parental_support_obligation"):
         if _set(out, fid, f"{presumptive:,.2f}"):
             changes.append((fid, f"{presumptive:,.2f}", "presumptive"))
-    for fid in ("21", "line_21",
-                 "21_additional_expenses_to_be_shared_by_parents_in_proportio"):
-        if _set(out, fid, f"{additional:,.2f}"):
-            changes.append((fid, f"{additional:,.2f}", "additional"))
-    for fid in ("22", "line_22",
-                 "22_total_weekly_support_obligation_of_hip_to_be_paid_to_lip"):
-        if _set(out, fid, f"{total:,.2f}"):
-            changes.append((fid, f"{total:,.2f}", "total"))
+    if facts.get("additional_expenses"):
+        additional = float(facts["additional_expenses"])
+        total = presumptive + additional
+        for fid in ("21", "line_21",
+                     "21_additional_expenses_to_be_shared_by_parents_in_proportio"):
+            if _set(out, fid, f"{additional:,.2f}"):
+                changes.append((fid, f"{additional:,.2f}", "additional"))
+        for fid in ("22", "line_22",
+                     "22_total_weekly_support_obligation_of_hip_to_be_paid_to_lip"):
+            if _set(out, fid, f"{total:,.2f}"):
+                changes.append((fid, f"{total:,.2f}", "total"))
 
     return out, changes
 

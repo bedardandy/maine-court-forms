@@ -48,9 +48,13 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     plaintiff = (parties.get("plaintiff") or parties.get("petitioner") or {})
     defendant = (parties.get("defendant") or parties.get("respondent") or {})
 
-    # Movant: who is requesting confidentiality. Default = plaintiff.
-    movant_role = facts.get("fm057_movant_role", "plaintiff").lower()
-    movant = plaintiff if movant_role == "plaintiff" else defendant
+    # Movant: who is requesting confidentiality. ONLY when explicitly
+    # provided (was defaulted to "plaintiff") — guessing the movant risks
+    # protecting the wrong party's information and mis-attributing the
+    # sworn statement below.
+    movant_role = (facts.get("fm057_movant_role") or "").lower()
+    movant = {"plaintiff": plaintiff, "defendant": defendant}.get(
+        movant_role, {})
 
     # Caption
     if _set(out, "plaintiff", plaintiff.get("full_name", "")):
@@ -72,7 +76,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     elif movant_role == "defendant":
         # Already covered by `defendant`.
         pass
-    else:
+    elif movant_role:
         # Third movant box keyed by the very long fid
         if _set(out,
                 "other_party_that_party_makes_this_request_to_keep_the_following",
@@ -146,26 +150,16 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     elif movant_role == "defendant":
         if _set(out, "defendant_2", "X"):
             changes.append(("defendant_2", "X", "fm057-oath-df"))
-    if _set(out, "other_party_states_as_follows_under_oath",
-            "X" if movant_role not in ("plaintiff", "defendant") else ""):
-        # Only check this if movant is "other"; otherwise leave blank.
-        if movant_role not in ("plaintiff", "defendant"):
+    elif movant_role:
+        # Only check this if movant is explicitly "other".
+        if _set(out, "other_party_states_as_follows_under_oath", "X"):
             changes.append(("other_party_states_as_follows_under_oath",
                             "X", "fm057-oath-other"))
 
-    # ── y=345-438 reasons narrative (8 lines) ──
-    reasons = facts.get("fm057_reasons", [
-        "Disclosure of the requested information would create a "
-        "substantial risk to the health, safety or liberty of the "
-        f"{movant_role} and/or the children of the parties.",
-        f"The other party has engaged in a documented pattern of "
-        "threatening communications directed at the petitioner.",
-        f"The {movant_role} has obtained protective orders against the "
-        "other party that remain in effect.",
-        f"Public disclosure of the {movant_role}'s contact information "
-        "would defeat the purpose of those protective orders by exposing "
-        "the protected location.",
-    ])
+    # ── y=345-438 reasons narrative (8 lines) — ONLY when explicitly
+    # provided. The old default swore to invented safety-risk facts
+    # (threatening communications, protective orders in effect). ──
+    reasons = facts.get("fm057_reasons") or []
     if isinstance(reasons, str):
         reasons = [reasons]
     for i, line in enumerate(reasons[:8], start=1):
@@ -186,14 +180,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("undefined_7", movant.get("full_name",""),
                         "fm057-sigtext"))
 
-    # ── y=531 who is signing radio ──
+    # ── y=531 who is signing radio (only when movant is known) ──
     if movant_role == "plaintiff":
         if _set(out, "plaintiff_3", "X"):
             changes.append(("plaintiff_3", "X", "fm057-sign-pl"))
     elif movant_role == "defendant":
         if _set(out, "defendant_3", "X"):
             changes.append(("defendant_3", "X", "fm057-sign-df"))
-    else:
+    elif movant_role:
         if _set(out, "other_party", "X"):
             changes.append(("other_party", "X", "fm057-sign-other"))
 

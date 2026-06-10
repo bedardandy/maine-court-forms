@@ -60,9 +60,11 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         # text3=phone, text4=email, text5=street addr, text6=phone (dup)
         # city_state_zip = combined CSZ
         pl_addr = plaintiff.get("address", "")
-        pl_csz = (f"{plaintiff.get('city','')}, "
-                    f"{plaintiff.get('state','ME')} "
-                    f"{plaintiff.get('zip','')}".strip(", "))
+        pl_csz = ""
+        if plaintiff.get("city") or plaintiff.get("zip"):
+            pl_csz = (f"{plaintiff.get('city','')}, "
+                        f"{plaintiff.get('state','ME')} "
+                        f"{plaintiff.get('zip','')}".strip(", "))
         pl_phone = plaintiff.get("phone", "")
         pl_email = plaintiff.get("email", "")
         fills_2010 = [
@@ -72,14 +74,18 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             ("text4", pl_email),
             ("text5", pl_addr),
             ("text6", pl_phone),
-            ("text7", facts.get("bccp_claim_narrative",
-                "Plaintiff seeks damages of $4,500 against defendant for "
-                "breach of consumer-protection contract dated March 1, "
-                "2024. Defendant failed to deliver services as agreed.")),
+            # Claim narrative ONLY when explicitly provided — the old
+            # default invented a $4,500 claim and a March 1, 2024
+            # contract, i.e. the entire substance of the lawsuit.
+            ("text7", facts.get("bccp_claim_narrative", "")),
             ("city_state_zip", pl_csz),
             ("phone_number", pl_phone),
-            ("check_box8", "X"),  # default-checked acknowledgment
-            ("check_box9", "X"),  # default-checked acknowledgment
+            # Acknowledgment boxes ONLY on an explicit boolean fact —
+            # they are the filer's sworn acknowledgments.
+            ("check_box8",
+             "X" if facts.get("bccp_acknowledgment") is True else ""),
+            ("check_box9",
+             "X" if facts.get("bccp_acknowledgment") is True else ""),
         ]
         for fid, val in fills_2010:
             if val and _set(out, fid, val):
@@ -89,9 +95,11 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     is_2021 = "your_mailing_address" in out and "your_printed_name" in out
     if is_2021:
         df_addr = defendant.get("address", "")
-        df_csz = (f"{defendant.get('city','')}, "
-                    f"{defendant.get('state','ME')} "
-                    f"{defendant.get('zip','')}".strip(", "))
+        df_csz = ""
+        if defendant.get("city") or defendant.get("zip"):
+            df_csz = (f"{defendant.get('city','')}, "
+                        f"{defendant.get('state','ME')} "
+                        f"{defendant.get('zip','')}".strip(", "))
         df_full_addr = ", ".join(p for p in (df_addr, df_csz) if p)
         df_phone = defendant.get("phone", "")
         df_email = defendant.get("email", "")
@@ -100,12 +108,12 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                             else (df_phone or df_email))
         fills_2021 = [
             ("undefined", court.get("location", "")),
+            # Deny checkbox + answer narrative ONLY when the case actually
+            # provides the defendant's answer — the old default fabricated
+            # a denial referencing an invented March 1, 2024 contract.
             ("on_some_or_all_of_the_claims_raised_by_the_plaintiff_i_deny_at_least_some_of_the_plaintiffs_statements_in_the",
-             "X"),
-            ("text1", facts.get("bccp_defendant_answer",
-                "Defendant denies plaintiff's claims and asserts that "
-                "all services agreed under the March 1, 2024 contract "
-                "were delivered in full and on schedule.")),
+             "X" if facts.get("bccp_defendant_answer") else ""),
+            ("text1", facts.get("bccp_defendant_answer", "")),
             ("your_printed_name", defendant.get("full_name", "")),
             ("your_mailing_address", df_full_addr),
             ("your_phone_and_email_address", df_phone_email),

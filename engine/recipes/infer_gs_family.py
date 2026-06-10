@@ -68,8 +68,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("my_name_is", movant_name, "gs008-movant"))
     # GS-008 — guardianship duration + signer contact block
     if "guardian_of_minor_on_an_emergency_basis" in kv_map:
-        # Default: standard (non-emergency) guardianship until majority
-        duration = facts.get("gs008_duration", "until_majority")
+        # Duration ONLY when explicitly provided (was defaulted to
+        # "until_majority", choosing the guardianship's scope).
+        duration = facts.get("gs008_duration", "")
         dur_map = {
             "emergency": "no_more_than_90_days_guardianship_on_an_emergency_basis",
             "interim":   "no_more_than_six_6_months_or_pending_the_courts_final_order_unless_agreed_to_by_the",
@@ -80,10 +81,10 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             "interim":   "guardian_of_a_minor_on_an_interim_basis",
             "until_majority": "guardian_of_minor",
         }
-        for fid in (type_map.get(duration, "guardian_of_minor"),
-                     dur_map.get(duration, dur_map["until_majority"])):
-            if _set(out, fid, "X"):
-                changes.append((fid, "X", "gs008-duration"))
+        if duration in type_map:
+            for fid in (type_map[duration], dur_map[duration]):
+                if _set(out, fid, "X"):
+                    changes.append((fid, "X", "gs008-duration"))
         # Signer contact block (name_1 = signer, address, name_2, phone, email).
         # build_kv_map's narrative pass stamps these with the wrong party (the
         # defendant), so force-overwrite to the signer/consenter.
@@ -106,25 +107,29 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "text14", movant_name):
             changes.append(("text14", movant_name, "gs008-signer"))
 
-    # Section radio — default to CONSENT TO GUARDIAN (positive)
-    chosen_section = facts.get("gs_section", "consent")  # consent|objection|nomination
+    # Section radio — consent vs objection is the entire substance of
+    # the filing; select ONLY when explicitly provided (was defaulted to
+    # CONSENT, consenting to a guardianship on the signer's behalf).
+    chosen_section = facts.get("gs_section", "")  # consent|objection|nomination
     section_map = {
         "consent":    "consent_to_guardian",
         "objection":  "objection_to_guardian",
         "nomination": "nomination_of_guardian",
     }
-    sect_fid = section_map.get(chosen_section, "consent_to_guardian")
-    if _set(out, sect_fid, "X"):
+    sect_fid = section_map.get(chosen_section) if chosen_section else None
+    if sect_fid and _set(out, sect_fid, "X"):
         changes.append((sect_fid, "X", "section"))
 
     # Sub-radio — "Consent to the / Object to the [petition]"
-    sub_fid = ("consent_to_the" if chosen_section == "consent"
-               else "object_to_the")
-    if _set(out, sub_fid, "X"):
-        changes.append((sub_fid, "X", "sub-section"))
+    if chosen_section in ("consent", "objection"):
+        sub_fid = ("consent_to_the" if chosen_section == "consent"
+                   else "object_to_the")
+        if _set(out, sub_fid, "X"):
+            changes.append((sub_fid, "X", "sub-section"))
 
-    # Petition-type radio — default: final_appointment
-    pet_type = facts.get("gs_petition_type", "final_appointment")
+    # Petition-type radio — check ONLY when explicitly provided (was
+    # defaulted to final_appointment).
+    pet_type = facts.get("gs_petition_type", "")
     pet_map = {
         "interim":               "interim",
         "modification":          "petition_for_modification",
@@ -133,13 +138,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "resignation":           "petition_resignation",
         "final_appointment":     "final_appointment_of_the_proposed_guardian",
     }
-    pt_fid = pet_map.get(pet_type, "final_appointment_of_the_proposed_guardian")
-    if _set(out, pt_fid, "X"):
+    pt_fid = pet_map.get(pet_type) if pet_type else None
+    if pt_fid and _set(out, pt_fid, "X"):
         changes.append((pt_fid, "X", "petition-type"))
     # _2 duplicate column
-    pt_fid2 = pt_fid + "_2"
-    if _set(out, pt_fid2, "X"):
-        changes.append((pt_fid2, "X", "petition-type-2"))
+    if pt_fid:
+        pt_fid2 = pt_fid + "_2"
+        if _set(out, pt_fid2, "X"):
+            changes.append((pt_fid2, "X", "petition-type-2"))
 
     # "because" narrative reasons (numbered 1..3)
     reasons = facts.get("gs_reasons", [
@@ -213,11 +219,13 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "1_i", consenter.get("full_name", "")):
         changes.append(("1_i", consenter.get("full_name",""), "gs21-1i"))
 
-    pet_kind = facts.get("gs_petition_kind", "final")  # interim|final
+    # Interim/final — check ONLY when explicitly provided (was defaulted
+    # to "final").
+    pet_kind = facts.get("gs_petition_kind", "")  # interim|final
     if pet_kind == "interim":
         if _set(out, "interim", "X"):
             changes.append(("interim", "X", "gs21-interim"))
-    else:
+    elif pet_kind == "final":
         if _set(out, "final", "X"):
             changes.append(("final", "X", "gs21-final"))
         if _set(out, "final_appointment_of_the_proposed_guardian_and_sta", "X"):
@@ -232,13 +240,15 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             changes.append(("name_and_birthdate_of_the_minor_child",
                             minor_block, "gs21-minor"))
 
-    # Tribal info (default: not applicable)
-    tribe = facts.get("gs_minor_tribe", "Not applicable")
-    tribal_enroll = facts.get("gs_minor_tribal_enrollment", "N/A")
-    if _set(out, "name_of_minor_childs_tribe_and_childs_enrollment_n", tribe):
+    # Tribal info — ICWA-critical; fill ONLY when explicitly provided.
+    # Defaulting "Not applicable" asserted the child is not a tribal
+    # member, which affects jurisdiction.
+    tribe = facts.get("gs_minor_tribe", "")
+    tribal_enroll = facts.get("gs_minor_tribal_enrollment", "")
+    if tribe and _set(out, "name_of_minor_childs_tribe_and_childs_enrollment_n", tribe):
         changes.append(("name_of_minor_childs_tribe_and_childs_enrollment_n",
                         tribe, "gs21-tribe"))
-    if _set(out, "my_tribal_enrollment_number", tribal_enroll):
+    if tribal_enroll and _set(out, "my_tribal_enrollment_number", tribal_enroll):
         changes.append(("my_tribal_enrollment_number", tribal_enroll,
                         "gs21-tribal-id"))
 

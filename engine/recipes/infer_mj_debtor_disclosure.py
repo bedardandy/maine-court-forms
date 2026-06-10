@@ -85,14 +85,13 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("service_of_the_order_to_hold_and_answer_on_me_on",
                         svc_date, "service-date"))
 
-    # MJ-005 disclosure narratives — default to a clean "no debts/property"
-    # disclosure
-    hold_narrative = facts.get(
-        "mj_hold_narrative",
-        "None. I do not hold any debts owed to, or any property of, "
-        "the Judgment Debtor."
-    )
-    if _set(out, "i_hold_the_above_debts_or_property_but_i_do_not_",
+    # MJ-005 disclosure narratives — these are sworn statements about the
+    # disclosing party's assets. Fill ONLY when explicitly provided (the
+    # old defaults swore a clean "no debts/property" disclosure for every
+    # fill).
+    hold_narrative = facts.get("mj_hold_narrative", "")
+    if hold_narrative and _set(out,
+            "i_hold_the_above_debts_or_property_but_i_do_not_",
             hold_narrative):
         changes.append(("i_hold_the_above_debts_or_property_but_i_do_not_",
                         hold_narrative, "hold-narr"))
@@ -102,27 +101,25 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     #   text2 (y=216, 544w): "owed the following debts to the JD" content
     #   text3 (y=336, 543w): "hold the above" continuation / property
     #   text5 (y=474, 252w): printed-name signature
-    debts_narr = facts.get("mj005_debts_narrative",
-        "None. I do not currently owe any debts to the Judgment Debtor "
-        "and I do not hold any property belonging to the Judgment Debtor."
-    )
-    if _set(out, "text2", debts_narr):
+    debts_narr = facts.get("mj005_debts_narrative", "")
+    if debts_narr and _set(out, "text2", debts_narr):
         changes.append(("text2", debts_narr, "debts-narr"))
 
-    property_narr = facts.get("mj005_property_narrative",
-        "None. I have no property of the Judgment Debtor in my "
-        "possession, custody, or control."
-    )
-    if _set(out, "text3", property_narr):
+    property_narr = facts.get("mj005_property_narrative", "")
+    if property_narr and _set(out, "text3", property_narr):
         changes.append(("text3", property_narr, "property-narr"))
 
     # text5 is the signature print-name widget
     if _set(out, "text5", affiant):
         changes.append(("text5", affiant, "sig-print"))
 
+    # Sworn-statement line — write ONLY on an explicit boolean fact;
+    # never auto-swear an oath on the affiant's behalf.
     swear = ("I swear under penalty of perjury that the above statements "
              "are true and accurate to the best of my knowledge.")
-    if _set(out, "i_swear_under_penalty_of_perjury_that_the_above_", swear):
+    if (facts.get("perjury_acknowledged") is True
+            and _set(out, "i_swear_under_penalty_of_perjury_that_the_above_",
+                       swear)):
         changes.append(("i_swear_under_penalty_of_perjury_that_the_above_",
                         swear, "swear"))
 
@@ -165,102 +162,115 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # installment payments). Fills failed-payment narrative, installment
     # order date, payment amount + period, and total owed.
     if "courts_installment_order_dated_mmddyyyy" in kv_map:
-        inst_date = facts.get("mj009_installment_order_date",
-                                 case.get("filing_date", "2024-01-15"))
+        # Installment order date / payment terms / amounts — these state
+        # the terms of a real court order and the debt. Fill ONLY when
+        # explicitly provided (the old defaults invented an order date,
+        # $75/month terms, $1,250 owed and $120 costs).
+        inst_date = facts.get("mj009_installment_order_date", "")
         if "-" in str(inst_date):
             y, m, d = str(inst_date)[:10].split("-")
             inst_date_us = f"{m}/{d}/{y}"
         else:
             inst_date_us = inst_date
-        if _set(out, "courts_installment_order_dated_mmddyyyy", inst_date_us):
+        if inst_date_us and _set(out, "courts_installment_order_dated_mmddyyyy",
+                                   inst_date_us):
             changes.append(("courts_installment_order_dated_mmddyyyy",
                               inst_date_us, "mj009-inst-date"))
         pay_amt = facts.get("mj009_pay_amount",
-                                 facts.get("installment_amount", "75.00"))
+                                 facts.get("installment_amount", ""))
         pay_per = facts.get("mj009_pay_period",
-                                 facts.get("installment_period", "month"))
-        if _set(out, "pay", f"${pay_amt}"):
+                                 facts.get("installment_period", ""))
+        if pay_amt and _set(out, "pay", f"${pay_amt}"):
             changes.append(("pay", f"${pay_amt}", "mj009-pay"))
-        if _set(out, "per", pay_per):
+        if pay_per and _set(out, "per", pay_per):
             changes.append(("per", pay_per, "mj009-per"))
-        # Default-checked failure checkbox (check_box1 = installment-missed)
-        if _set(out, "check_box1", "X"):
+        # Failure checkbox — check ONLY on an explicit boolean fact (was
+        # auto-checked, asserting the debtor missed payments).
+        if (facts.get("mj009_failed_payment") is True
+                and _set(out, "check_box1", "X")):
             changes.append(("check_box1", "X", "mj009-failed-pay"))
-        owed = facts.get("mj009_owed_amount", "1,250.00")
-        if _set(out, "the_judgment_creditor_currently_owes_the_judgment_creditor",
+        owed = facts.get("mj009_owed_amount", "")
+        if owed and _set(out,
+                "the_judgment_creditor_currently_owes_the_judgment_creditor",
                 f"${owed}"):
             changes.append(("the_judgment_creditor_currently_owes_the_judgment_creditor",
                               f"${owed}", "mj009-owed"))
         # `undefined_2` is the "(plus interest of $___)" amount on the owed
-        # line — a dollar field, NOT a signature. Default interest to 0.00
-        # rather than fabricate a figure.
-        interest = facts.get("mj009_interest", "0.00")
-        if _set(out, "undefined_2", f"${interest}"):
+        # line — a dollar field, NOT a signature. When the owed amount is
+        # known, interest defaults to 0.00 rather than fabricating a
+        # figure (understates rather than invents).
+        interest = facts.get("mj009_interest", "0.00" if owed else "")
+        if interest and _set(out, "undefined_2", f"${interest}"):
             changes.append(("undefined_2", f"${interest}", "mj009-interest"))
-        costs = facts.get("mj009_costs", "120.00")
-        if _set(out, "plus_costs_of", f"${costs}"):
+        costs = facts.get("mj009_costs", "")
+        if costs and _set(out, "plus_costs_of", f"${costs}"):
             changes.append(("plus_costs_of", f"${costs}", "mj009-costs"))
-        try:
-            total = (float(str(owed).replace(",", ""))
-                     + float(str(interest).replace(",", ""))
-                     + float(str(costs).replace(",", "")))
-            if _set(out, "for_a_total_of", f"${total:,.2f}"):
-                changes.append(("for_a_total_of", f"${total:,.2f}",
-                                  "mj009-total"))
-        except Exception:
-            pass
+        if owed:
+            try:
+                total = (float(str(owed).replace(",", ""))
+                         + float(str(interest or 0).replace(",", ""))
+                         + float(str(costs or 0).replace(",", "")))
+                if _set(out, "for_a_total_of", f"${total:,.2f}"):
+                    changes.append(("for_a_total_of", f"${total:,.2f}",
+                                      "mj009-total"))
+            except Exception:
+                pass
 
-    # MJ-015 — installment-order owed-amount affidavit
-    employment_narr = facts.get("mj_employment_narrative",
-        "I have reason to believe that the Judgment Debtor is presently "
-        "employed by the named employer below and receiving regular wages, "
-        "and that an installment order is appropriate under 14 M.R.S. "
-        "§ 3126-A(8). To be served on the named employer for the "
-        "following reasons: the Judgment Debtor has not paid the "
-        "judgment voluntarily despite repeated demand.")
-    # Schema field_id is the long form ending in "_to_be_" — set both
-    # variants to be safe.
-    for fid in ("employment_information_pursuant_to_14_mrs_3126a8_to_be_",
-                 "employment_information_pursuant_to_14_mrs_3126a8_t"):
-        if _set(out, fid, employment_narr):
-            changes.append((fid, employment_narr, "mj15-employment"))
+    # MJ-015 — installment-order owed-amount affidavit. Employment
+    # narrative ONLY when explicitly provided (the old default asserted
+    # the debtor is employed and refused to pay despite demand).
+    employment_narr = facts.get("mj_employment_narrative", "")
+    if employment_narr:
+        # Schema field_id is the long form ending in "_to_be_" — set both
+        # variants to be safe.
+        for fid in ("employment_information_pursuant_to_14_mrs_3126a8_to_be_",
+                     "employment_information_pursuant_to_14_mrs_3126a8_t"):
+            if _set(out, fid, employment_narr):
+                changes.append((fid, employment_narr, "mj15-employment"))
 
-    install_date = (facts.get("installment_order_date")
-                    or case.get("event_date", ""))
-    if _set(out, "installment_order_dated_mmddyyyy", install_date):
+    install_date = facts.get("installment_order_date", "")
+    if install_date and _set(out, "installment_order_dated_mmddyyyy",
+                               install_date):
         changes.append(("installment_order_dated_mmddyyyy",
                         install_date, "mj15-install-date"))
 
-    judgment_balance = facts.get("mj_judgment_balance",
-        "the principal balance of the judgment plus accrued interest "
-        "totaling the amount stated below")
-    for fid in ("the_judgment_debtor_currently_owes_the_judgment_credito",
-                 "the_judgment_debtor_currently_owes_the_judgment_cr"):
-        if _set(out, fid, judgment_balance):
-            changes.append((fid, judgment_balance, "mj15-balance-narr"))
+    # Balance narrative — ONLY when explicitly provided (was a stock
+    # principal-plus-interest description).
+    judgment_balance = facts.get("mj_judgment_balance", "")
+    if judgment_balance:
+        for fid in ("the_judgment_debtor_currently_owes_the_judgment_credito",
+                     "the_judgment_debtor_currently_owes_the_judgment_cr"):
+            if _set(out, fid, judgment_balance):
+                changes.append((fid, judgment_balance, "mj15-balance-narr"))
 
-    # MJ-015 — sworn-statement (longer field_id variant)
+    # MJ-015 — sworn-statement (longer field_id variant); ONLY on an
+    # explicit boolean fact — never auto-swear.
     swear = ("I swear under penalty of perjury that the above statements "
              "are true and accurate to the best of my knowledge.")
-    for fid in ("i_swear_under_penalty_of_perjury_that_the_above_stateme",):
-        if _set(out, fid, swear):
-            changes.append((fid, swear, "mj15-swear-long"))
+    if facts.get("perjury_acknowledged") is True:
+        for fid in ("i_swear_under_penalty_of_perjury_that_the_above_stateme",):
+            if _set(out, fid, swear):
+                changes.append((fid, swear, "mj15-swear-long"))
 
     # MJ-015 amount line + signature. `undefined`/`undefined_2` collide with
     # other forms (see discriminator note above), so gate to MJ-015.
+    # Principal/costs ONLY when explicitly provided (were $2,450/$175
+    # stock amounts).
     if is_mj015:
-        principal = facts.get("mj_principal", "2,450.00")
-        costs = facts.get("mj_costs", "175.00")
-        try:
-            total = f"{float(principal.replace(',','')) + float(costs.replace(',','')):,.2f}"
-        except Exception:
-            total = principal
+        principal = facts.get("mj_principal", "")
+        costs = facts.get("mj_costs", "")
+        total = ""
+        if principal:
+            try:
+                total = f"{float(principal.replace(',','')) + float((costs or '0').replace(',','')):,.2f}"
+            except Exception:
+                total = principal
 
-        if _set(out, "undefined", principal):
+        if principal and _set(out, "undefined", principal):
             changes.append(("undefined", principal, "mj15-principal"))
-        if _set(out, "plus_costs_of", costs):
+        if costs and _set(out, "plus_costs_of", costs):
             changes.append(("plus_costs_of", costs, "mj15-costs"))
-        if _set(out, "for_a_total_of", total):
+        if total and _set(out, "for_a_total_of", total):
             changes.append(("for_a_total_of", total, "mj15-total"))
         # MJ-015 signature field aliased to undefined_2
         if _set(out, "undefined_2", affiant):

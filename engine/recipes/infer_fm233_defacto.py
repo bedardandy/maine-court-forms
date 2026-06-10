@@ -47,65 +47,70 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     _fc("text1", court.get("location", ""), "loc")
     _fc("location_town", case.get("docket_no", ""), "docket")
 
-# Defendant's admit-paragraphs narrative (item 1) — default: none.
-    admit = facts.get("admit_paragraphs", "None")
-    if _set(out, "1_defendant_admits_paragraphs", admit):
+# Defendant's admit/deny paragraphs — these ARE the answer's legal
+    # positions. Fill ONLY when explicitly provided (were defaulted to
+    # "None" admitted / "1, 2, 3, 4, 5, 6, 7, 8" denied).
+    admit = facts.get("admit_paragraphs", "")
+    if admit and _set(out, "1_defendant_admits_paragraphs", admit):
         changes.append(("1_defendant_admits_paragraphs", admit, "admit"))
     # Item 2 "denies paragraphs for determination of de facto parentage"
     # is a 241px NARRATIVE widget (not a checkbox). Set to the paragraph
-    # numbers being denied (default: 1-5).
-    deny_paragraphs = facts.get("deny_paragraphs",
-                                     "1, 2, 3, 4, 5, 6, 7, 8")
-    # Force-override since I previously set it to "X" (checkbox-style)
-    if out.get("for_determination_of_de_facto_parentage") in ("", "X", None):
+    # numbers being denied.
+    deny_paragraphs = facts.get("deny_paragraphs", "")
+    # Force-override since an earlier pass set it to "X" (checkbox-style)
+    if (deny_paragraphs
+            and out.get("for_determination_of_de_facto_parentage")
+                in ("", "X", None)):
         out["for_determination_of_de_facto_parentage"] = deny_paragraphs
         changes.append(("for_determination_of_de_facto_parentage",
                           deny_paragraphs, "deny-paragraphs"))
 
-    # Attached affidavit + deny order + attorney fees radios (default)
-    for fid in (
-        "i_have_attached_an_affidavit_describing_the_specific_facts_addressing_whether_the_plaintiff_has_a_de",
-        "enter_an_order_denying_plaintiffs_complaint_to_be_adjudicated_de_facto_parent",
-        "award_reasonable_attorney_fees_andor",
-    ):
-        if _set(out, fid, "X"):
+    # Attached affidavit + deny order + attorney fees radios — check ONLY
+    # on explicit boolean facts (were auto-checked, asserting an affidavit
+    # was attached and requesting relief on the defendant's behalf).
+    deny_branch = (
+        ("i_have_attached_an_affidavit_describing_the_specific_facts_addressing_whether_the_plaintiff_has_a_de",
+         "fm233_affidavit_attached"),
+        ("enter_an_order_denying_plaintiffs_complaint_to_be_adjudicated_de_facto_parent",
+         "fm233_request_denial"),
+        ("award_reasonable_attorney_fees_andor",
+         "fm233_request_fees"),
+    )
+    for fid, key in deny_branch:
+        if facts.get(key) is True and _set(out, fid, "X"):
             changes.append((fid, "X", "deny-branch"))
 
-    # "Other" radio + narrative
-    if _set(out, "other", "X"):
-        changes.append(("other", "X", "other"))
-    other_text = facts.get("fm233_other_relief",
-        "Such further relief as the Court deems just.")
-    if _set(out, "undefined", other_text):
-        changes.append(("undefined", other_text, "other-text"))
+    # "Other" radio + narrative — ONLY when explicitly provided
+    other_text = facts.get("fm233_other_relief", "")
+    if other_text:
+        if _set(out, "other", "X"):
+            changes.append(("other", "X", "other"))
+        if _set(out, "undefined", other_text):
+            changes.append(("undefined", other_text, "other-text"))
 
-    # Fact paragraphs 1 + 2
-    facts_list = facts.get("fm233_facts", [
-        "The plaintiff has not assumed a permanent parental role or "
-        "performed parental functions of the child to the same extent "
-        "as the legal parent for the period required by law.",
-        "Recognition of the plaintiff as a de facto parent would not "
-        "be in the child's best interest given the existing stable "
-        "household with the legal parent.",
-    ])
+    # Fact paragraphs 1 + 2 — ONLY when explicitly provided (the old
+    # default invented the defendant's factual contentions).
+    facts_list = facts.get("fm233_facts") or []
     if isinstance(facts_list, str):
         facts_list = [facts_list, ""]
     for i, p in enumerate(facts_list[:2], start=1):
         if p and _set(out, str(i), p):
             changes.append((str(i), p, f"para-{i}"))
 
-    # Declaration block — "true to best of knowledge" radio
-    if _set(out,
-            "i_hereby_declare_that_the_above_statements_are_true_to_the_best_of_my_knowledge_and_belief_i",
-            "X"):
-        changes.append((
-            "i_hereby_declare_that_the_above_statements_are_true_to_the_best_of_my_knowledge_and_belief_i",
-            "X", "declare"))
-    if _set(out, "information_to_the_court",
-            "I have not provided false information to the Court."):
-        changes.append(("information_to_the_court",
-                        "I have not provided false information to the Court.",
-                        "info-court"))
+    # Declaration block — ONLY on an explicit boolean fact; never declare
+    # truthfulness on the filer's behalf.
+    if facts.get("fm233_declaration") is True:
+        if _set(out,
+                "i_hereby_declare_that_the_above_statements_are_true_to_the_best_of_my_knowledge_and_belief_i",
+                "X"):
+            changes.append((
+                "i_hereby_declare_that_the_above_statements_are_true_to_the_best_of_my_knowledge_and_belief_i",
+                "X", "declare"))
+        if _set(out, "information_to_the_court",
+                "I have not provided false information to the Court."):
+            changes.append(("information_to_the_court",
+                            "I have not provided false information to the Court.",
+                            "info-court"))
 
     # Signature date + signer
     sig_date_us = case.get("filing_date") or case.get("event_date", "")

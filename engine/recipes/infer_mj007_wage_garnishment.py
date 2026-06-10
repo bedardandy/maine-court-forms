@@ -39,74 +39,83 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("judgment_debtor", debtor, "debtor"))
 
     # Affiant identity — schema has TWO affiant-name widgets
-    # (my_name_is_1 in the body, my_name_is_2 in the jurat block)
-    affiant = facts.get("affiant_name", "Lisa M. Carmichael")
-    employer = facts.get("employer_name", "Pine State Industries, Inc.")
-    capacity = facts.get("employer_capacity", "Payroll Administrator")
-    for fid in ("my_name_is_1", "my_name_is_2", "my_name_is"):
-        if _set(out, fid, affiant):
-            changes.append((fid, affiant, "affiant"))
-    if _set(out, "i_am_employed_by", employer):
+    # (my_name_is_1 in the body, my_name_is_2 in the jurat block).
+    # ONLY from explicit facts: the old defaults invented the affiant
+    # ("Lisa M. Carmichael"), employer, and job title.
+    affiant = facts.get("affiant_name", "")
+    employer = facts.get("employer_name", "")
+    capacity = facts.get("employer_capacity", "")
+    if affiant:
+        for fid in ("my_name_is_1", "my_name_is_2", "my_name_is"):
+            if _set(out, fid, affiant):
+                changes.append((fid, affiant, "affiant"))
+    if employer and _set(out, "i_am_employed_by", employer):
         changes.append(("i_am_employed_by", employer, "employer"))
-    if _set(out, "in_the_capacity_of", capacity):
+    if capacity and _set(out, "in_the_capacity_of", capacity):
         changes.append(("in_the_capacity_of", capacity, "capacity"))
 
-    # Pay frequency — default to "biweekly"
-    pay_freq = facts.get("pay_frequency", "biweekly")
+    # Pay frequency — ONLY when explicitly provided (was defaulted to
+    # "biweekly", asserting the debtor's pay schedule).
+    pay_freq = facts.get("pay_frequency", "")
     for fid in ("weekly", "biweekly", "monthly"):
         if fid == pay_freq:
             if _set(out, fid, "X"):
                 changes.append((fid, "X", "pay-freq"))
 
-    # Pay-stub line items
+    # Pay-stub line items — compute ONLY when the gross pay is explicitly
+    # provided (the old defaults invented a full fictional pay stub).
+    # Unstated deduction lines are treated as zero for the arithmetic but
+    # are only written to the form when explicitly provided.
     def F(v): return f"{float(v):,.2f}"
-    gross = F(facts.get("gross_pay", "850.00"))
-    fed = F(facts.get("federal_tax", "85.00"))
-    fica = F(facts.get("fica", "52.70"))
-    state = F(facts.get("state_tax", "32.00"))
-    medi = F(facts.get("medicare", "12.33"))
-    retire = F(facts.get("retirement", "42.50"))
-    courtwh = F(facts.get("court_withholding", "0.00"))
-    total_ded = (float(fed.replace(",","")) + float(fica.replace(",",""))
-                 + float(state.replace(",","")) + float(medi.replace(",",""))
-                 + float(retire.replace(",","")) + float(courtwh.replace(",","")))
-    disposable = float(gross.replace(",","")) - total_ded
-    line4 = disposable * 0.25
-    fed_min = float(facts.get("federal_min_wage", "290.00"))  # 30×7.25/wk × ?
-    line6 = max(0.0, disposable - fed_min)
-    line7 = float(facts.get("court_order_amount", "100.00"))
-    line8 = min(line4, line6, line7)
+    if facts.get("gross_pay"):
+        gross = F(facts["gross_pay"])
+        ded_items = {
+            "undefined":    facts.get("federal_tax"),
+            "text2":        facts.get("fica"),
+            "undefined_3":  facts.get("state_tax"),
+            "undefined_4":  facts.get("medicare"),
+            "undefined_5":  facts.get("retirement"),
+            "undefined_6":  facts.get("court_withholding"),
+        }
+        total_ded = sum(float(str(v).replace(",", ""))
+                        for v in ded_items.values() if v)
+        disposable = float(gross.replace(",", "")) - total_ded
+        line4 = disposable * 0.25
 
-    # Schema-derived widget mapping (verified by rect y-coords):
-    #   Item 1 → "1"
-    #   Item 2a-f (federal/FICA/state/Medicare/retirement/withholding)
-    #            → "undefined", "text2", "undefined_3", "undefined_4",
-    #              "undefined_5", "undefined_6"
-    #   Total of 2a-f → "2"
-    #   Item 3-8 → "3" through "8"
-    #   Signature → "undefined_7"
-    line_map = {
-        "1":            gross,
-        "undefined":    fed,
-        "text2":        fica,
-        "undefined_3":  state,
-        "undefined_4":  medi,
-        "undefined_5":  retire,
-        "undefined_6":  courtwh,
-        "2":            F(total_ded),
-        "3":            F(disposable),
-        "4":            F(line4),
-        "5":            F(fed_min),
-        "6":            F(line6),
-        "7":            F(line7),
-        "8":            F(line8),
-    }
-    for fid, val in line_map.items():
-        if _set(out, fid, val):
-            changes.append((fid, val, f"line-{fid}"))
+        # Schema-derived widget mapping (verified by rect y-coords):
+        #   Item 1 → "1"
+        #   Item 2a-f (federal/FICA/state/Medicare/retirement/withholding)
+        #            → "undefined", "text2", "undefined_3", "undefined_4",
+        #              "undefined_5", "undefined_6"
+        #   Total of 2a-f → "2"
+        #   Item 3-8 → "3" through "8"
+        #   Signature → "undefined_7"
+        line_map = {
+            "1":  gross,
+            "2":  F(total_ded),
+            "3":  F(disposable),
+            "4":  F(line4),
+        }
+        for fid, v in ded_items.items():
+            if v:
+                line_map[fid] = F(v)
+        # Lines 5-8 need the protected floor + court-order amount — both
+        # ONLY when explicitly provided (were $290 / $100 defaults).
+        if facts.get("federal_min_wage"):
+            fed_min = float(facts["federal_min_wage"])
+            line6 = max(0.0, disposable - fed_min)
+            line_map["5"] = F(fed_min)
+            line_map["6"] = F(line6)
+            if facts.get("court_order_amount"):
+                line7 = float(facts["court_order_amount"])
+                line_map["7"] = F(line7)
+                line_map["8"] = F(min(line4, line6, line7))
+        for fid, val in line_map.items():
+            if _set(out, fid, val):
+                changes.append((fid, val, f"line-{fid}"))
 
     # Page-2 jurat — signer name on undefined_7
-    if _set(out, "undefined_7", affiant):
+    if affiant and _set(out, "undefined_7", affiant):
         changes.append(("undefined_7", affiant, "sig-name"))
 
     # Page-2 — date + perjury checkbox + personally appeared
@@ -117,19 +126,22 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         sig_date_us = f"{m}/{d}/{y}"
     if _set(out, "date_mmddyyyy", sig_date_us):
         changes.append(("date_mmddyyyy", sig_date_us, "sig-date"))
-    # Perjury swear checkbox (full untruncated name)
-    for fid in (
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_an",
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
-    ):
-        if _set(out, fid, "X"):
-            changes.append((fid, "X", "perjury"))
+    # Perjury swear checkbox — check ONLY on an explicit boolean fact;
+    # never auto-swear an oath on the affiant's behalf.
+    if facts.get("perjury_acknowledged") is True:
+        for fid in (
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_an",
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
+        ):
+            if _set(out, fid, "X"):
+                changes.append((fid, "X", "perjury"))
     # Notary "personally appeared" — variant names
-    for fid in ("personally_appeared_the_above_named",
-                 "personally_appeared_the_abovenamed",
-                 "personallyappearedtheabovenamed"):
-        if _set(out, fid, affiant):
-            changes.append((fid, affiant, "notary-affiant"))
+    if affiant:
+        for fid in ("personally_appeared_the_above_named",
+                     "personally_appeared_the_abovenamed",
+                     "personallyappearedtheabovenamed"):
+            if _set(out, fid, affiant):
+                changes.append((fid, affiant, "notary-affiant"))
 
     return out, changes
 

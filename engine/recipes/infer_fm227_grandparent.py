@@ -66,40 +66,46 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("19a_mrs_18011805",
                         "19-A M.R.S. §§ 1801-1805", "statute"))
 
-    # Affidavit-attached + deny-petition checkboxes (default response)
-    for fid in (
-        "i_have_attached_an_affidavit_with_the_specific_facts_addressing_whether_the_petitioners_should_be",
-        "enter_an_order_denying_petitioners_petition_for_grandparent_or_greatgrandparent_visitation",
-    ):
-        if _set(out, fid, "X"):
+    # Affidavit-attached + deny-petition checkboxes — check ONLY on
+    # explicit boolean facts (were auto-checked, asserting an affidavit
+    # was attached and requesting denial on the respondent's behalf).
+    deny_branch = (
+        ("i_have_attached_an_affidavit_with_the_specific_facts_addressing_whether_the_petitioners_should_be",
+         "fm227_affidavit_attached"),
+        ("enter_an_order_denying_petitioners_petition_for_grandparent_or_greatgrandparent_visitation",
+         "fm227_request_denial"),
+    )
+    for fid, key in deny_branch:
+        if facts.get(key) is True and _set(out, fid, "X"):
             changes.append((fid, "X", "deny-branch"))
 
-    # Petition-type radio (default: grandparent visitation)
-    if _set(out, "petition_for_grandparent_or_greatgrandparent_visitation",
-            "X"):
+    # Petition-type radio — check ONLY when explicitly provided (was
+    # auto-checked "grandparent visitation").
+    if (facts.get("fm227_petition_type")
+            and _set(out,
+                "petition_for_grandparent_or_greatgrandparent_visitation",
+                "X")):
         changes.append((
             "petition_for_grandparent_or_greatgrandparent_visitation",
             "X", "petition-type"))
 
-    # Numbered fact paragraphs 1-4 (respondent's facts supporting denial).
-    # Each widget is 496 px wide; keep each ~80 chars to fit one line.
-    fact_paragraphs = facts.get("fm227_facts", [
-        "Respondent is a fit parent providing adequate care for the child.",
-        "Petitioner has not had a substantial relationship with the child.",
-        "Visitation would interfere with established family routines.",
-        "No extraordinary circumstances justify court-ordered visitation.",
-    ])
+    # Numbered fact paragraphs 1-4 (respondent's facts supporting denial)
+    # — ONLY when explicitly provided (the old default invented the
+    # respondent's factual contentions). Each widget is 496 px wide;
+    # keep each ~80 chars to fit one line.
+    fact_paragraphs = facts.get("fm227_facts") or []
     if isinstance(fact_paragraphs, str):
         fact_paragraphs = [fact_paragraphs, "", "", ""]
     for i, p in enumerate(fact_paragraphs[:4], start=1):
         if p and _set(out, str(i), p):
             changes.append((str(i), p, f"para-{i}"))
 
-    # Affirmation block (text is set by the schema as the prompt itself;
-    # check it as a confirmatory box)
-    if _set(out,
+    # Affirmation block — check ONLY on an explicit boolean fact; never
+    # auto-swear an oath on the respondent's behalf.
+    if (facts.get("perjury_acknowledged") is True
+            and _set(out,
             "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these",
-            "X"):
+            "X")):
         changes.append((
             "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these",
             "X", "swear"))

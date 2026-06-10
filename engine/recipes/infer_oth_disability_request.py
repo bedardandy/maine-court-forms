@@ -43,29 +43,25 @@ def _gather_inputs(case: dict) -> dict:
               or requester.get("phone_home") or "")
     addr = requester.get("address") or requester.get("mailing_address") or ""
     email = requester.get("email", "")
-    courthouse = (facts.get("courthouse")
-                    or f"{court.get('name','Maine District Court')}, "
-                       f"{court.get('location','Portland')}")
+    # The disability, accommodation, and decision narratives are personal
+    # medical/factual statements — ONLY from explicit facts. The old
+    # defaults invented a wheelchair user with a stock accommodation list
+    # and a stock denial narrative. Courthouse/time/case-type likewise
+    # come only from real data.
+    courthouse = facts.get("courthouse", "")
+    if not courthouse and court.get("location"):
+        courthouse = (f"{court.get('name', 'Maine District Court')}, "
+                       f"{court['location']}")
     docket = case.get("docket_no") or case.get("case_no") or ""
     case_type = facts.get("court_case_type",
-                            case.get("case_type", "Family Matters").title())
+                            (case.get("case_type") or "").title())
     court_date = facts.get("court_case_date",
                               case.get("event_date") or "")
-    court_time = facts.get("court_case_time", "10:00 AM")
-    disability = facts.get("disability_type",
-                              "Mobility impairment requiring use of a "
-                              "wheelchair and limited fine-motor control.")
-    accommodation = facts.get("accommodation_request",
-                                 "Wheelchair-accessible courtroom, "
-                                 "accessible parking, large-print "
-                                 "documents, and additional time for "
-                                 "written responses.")
-    decision = facts.get("court_decision",
-                            "The court denied my prior accommodation "
-                            "request without explanation of the basis "
-                            "for the denial.")
-    decision_date = facts.get("court_decision_date",
-                                 case.get("event_date") or "")
+    court_time = facts.get("court_case_time", "")
+    disability = facts.get("disability_type", "")
+    accommodation = facts.get("accommodation_request", "")
+    decision = facts.get("court_decision", "")
+    decision_date = facts.get("court_decision_date", "")
     return {
         "name": name, "phone": phone, "addr": addr, "email": email,
         "courthouse": courthouse, "docket": docket,
@@ -76,6 +72,7 @@ def _gather_inputs(case: dict) -> dict:
         "accommodation": accommodation,
         "decision": decision,
         "decision_date": _iso_to_us(decision_date) if decision_date else "",
+        "disagreement_reasons": facts.get("disagreement_reasons") or [],
     }
 
 
@@ -136,8 +133,9 @@ def _process_oth012(out: dict, ctx: dict, changes: list) -> None:
         # given case_type) and text9 sits at the "Nature of Disability" line
         # (was given date+time). OTH-012 has no Type-of-Case field, so case_type
         # is dropped.
-        ("text8", f"{ctx['court_date']} at {ctx['court_time']}"
-                     if ctx["court_date"] else ctx["court_time"]),
+        ("text8", (f"{ctx['court_date']} at {ctx['court_time']}"
+                     if ctx["court_date"] and ctx["court_time"]
+                     else ctx["court_date"] or ctx["court_time"])),
         ("text9", ctx["disability"]),
         ("nature_of_disability_or_disabilities", ctx["disability"]),
         ("please_provide_the_following_informationplease_be_specific_attach_additional_pages_if_necessary",
@@ -151,21 +149,16 @@ def _process_oth012(out: dict, ctx: dict, changes: list) -> None:
         if val and _set(out, fid, val):
             changes.append((fid, val, f"012-{fid}"))
 
-    # 5-reason narrative for "why do you disagree"
-    reasons = [
-        "The decision did not provide written findings explaining how "
-        "my requested accommodations would create an undue burden.",
-        "Less-restrictive alternative accommodations were available and "
-        "should have been considered.",
-        "The denial conflicts with prior accommodations granted in "
-        "comparable circumstances in this court.",
-        "My disability documentation supports the accommodation request.",
-        "Denial impairs my ability to meaningfully participate in the "
-        "proceeding.",
-    ]
-    for i, r in enumerate(reasons, start=1):
+    # "Why do you disagree" reason rows — ONLY from explicit facts (the
+    # old code shipped a stock 5-reason argument). Accepts a list or a
+    # single string under facts.disagreement_reasons (threaded through
+    # ctx by _gather_inputs).
+    reasons = ctx.get("disagreement_reasons") or []
+    if isinstance(reasons, str):
+        reasons = [reasons]
+    for i, r in enumerate(reasons[:5], start=1):
         fid = f"4_why_do_you_disagree_with_the_decision_{i}"
-        if _set(out, fid, r):
+        if r and _set(out, fid, r):
             changes.append((fid, r, f"012-reason-{i}"))
 
 

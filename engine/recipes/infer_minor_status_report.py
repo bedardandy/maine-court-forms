@@ -1,5 +1,12 @@
 """Fill GS-014 (Status Report of the Guardian for a Minor).
 
+WARNING — SYNTHETIC-BENCHMARK TOOL, NOT A PRODUCTION RECIPE.
+This script deliberately generates deterministic MOCK content (schools,
+grades, stock narratives) seeded from the case_id, for eval runs over
+router/synthetic_cases.jsonl. It is NOT in the engine's RECIPE3 dispatch
+table and must never be wired into real fills: every stock value here
+would be fabricated information on a court report.
+
 Why this exists:
   GS-014 is a 100+ field annual report on a minor under guardianship.
   It demands granular facts that no synthetic case narrative carries:

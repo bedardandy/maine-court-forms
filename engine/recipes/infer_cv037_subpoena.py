@@ -29,41 +29,48 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     parties = case.get("parties") or {}
     court = case.get("court") or {}
 
+    # Everything below identifies who is subpoenaed, where, and when —
+    # fill ONLY from explicit facts. The old defaults invented a witness
+    # ("Eleanor M. Thompson"), a service address, appearance date/time,
+    # the party calling them, the county, and a $40 fee.
+
     # TO: <witness>
-    witness_name = facts.get("witness_name",
-                              "Eleanor M. Thompson (witness)")
-    if _set(out, "to", witness_name):
+    witness_name = facts.get("witness_name", "")
+    if witness_name and _set(out, "to", witness_name):
         changes.append(("to", witness_name, "witness"))
 
     # Role of witness ("who is the witness for Plaintiff")
-    witness_role = facts.get("witness_role", "witness for the Plaintiff")
-    for fid in ("who_is_the", "witness_role", "subpoena_role"):
-        if _set(out, fid, witness_role):
-            changes.append((fid, witness_role, "witness-role"))
+    witness_role = facts.get("witness_role", "")
+    if witness_role:
+        for fid in ("who_is_the", "witness_role", "subpoena_role"):
+            if _set(out, fid, witness_role):
+                changes.append((fid, witness_role, "witness-role"))
 
     # Appearance date/time
     appearance_date = facts.get("appearance_date",
-                                  case.get("event_date") or "2024-12-15")
-    appearance_time = facts.get("appearance_time", "9:00 AM")
-    for fid in ("mmddyyyy", "appearance_date", "date_mmddyyyy"):
-        if _set(out, fid, _iso_to_us(appearance_date)):
-            changes.append((fid, _iso_to_us(appearance_date),
-                              "appearance-date"))
-    for fid in ("at_time", "appearance_time", "time"):
-        if _set(out, fid, appearance_time):
-            changes.append((fid, appearance_time, "appearance-time"))
+                                  case.get("event_date") or "")
+    appearance_time = facts.get("appearance_time", "")
+    if appearance_date:
+        for fid in ("mmddyyyy", "appearance_date", "date_mmddyyyy"):
+            if _set(out, fid, _iso_to_us(appearance_date)):
+                changes.append((fid, _iso_to_us(appearance_date),
+                                  "appearance-date"))
+    if appearance_time:
+        for fid in ("at_time", "appearance_time", "time"):
+            if _set(out, fid, appearance_time):
+                changes.append((fid, appearance_time, "appearance-time"))
 
     # Plaintiff / Defendant party being called
-    party_called = facts.get("party_being_called", "Plaintiff")
-    for fid in ("plaintiff_defendant", "party_being_called"):
-        if _set(out, fid, party_called):
-            changes.append((fid, party_called, "party-called"))
+    party_called = facts.get("party_being_called", "")
+    if party_called:
+        for fid in ("plaintiff_defendant", "party_being_called"):
+            if _set(out, fid, party_called):
+                changes.append((fid, party_called, "party-called"))
 
-    # County
-    county = court.get("county", "Cumberland")
-    for fid in ("county_of",):
-        if _set(out, fid, county):
-            changes.append((fid, county, "county"))
+    # County — from real court data only
+    county = court.get("county", "")
+    if county and _set(out, "county_of", county):
+        changes.append(("county_of", county, "county"))
 
     # Proof of service block (lower half)
     service_date = facts.get("service_date",
@@ -75,22 +82,24 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                                   "service-date"))
 
     served_on = facts.get("served_on", witness_name)
-    for fid in ("i_made_service_of_the_subpoena_upon_the_following_person",
-                 "served_on"):
-        if _set(out, fid, served_on):
-            changes.append((fid, served_on, "served-on"))
+    if served_on:
+        for fid in ("i_made_service_of_the_subpoena_upon_the_following_person",
+                     "served_on"):
+            if _set(out, fid, served_on):
+                changes.append((fid, served_on, "served-on"))
 
-    service_addr = facts.get("service_address",
-                               "142 Pine Ridge Road, Portland, ME 04101")
-    for fid in ("at_the_following_address", "service_address"):
-        if _set(out, fid, service_addr):
-            changes.append((fid, service_addr, "service-address"))
+    service_addr = facts.get("service_address", "")
+    if service_addr:
+        for fid in ("at_the_following_address", "service_address"):
+            if _set(out, fid, service_addr):
+                changes.append((fid, service_addr, "service-address"))
 
-    # Total fees (stock $40 witness fee)
-    total = facts.get("witness_fee_total", "$40.00")
-    for fid in ("total", "total_fees"):
-        if _set(out, fid, total):
-            changes.append((fid, total, "witness-fee"))
+    # Total fees — ONLY when explicitly provided (was a stock $40 fee)
+    total = facts.get("witness_fee_total", "")
+    if total:
+        for fid in ("total", "total_fees"):
+            if _set(out, fid, total):
+                changes.append((fid, total, "witness-fee"))
 
     return out, changes
 

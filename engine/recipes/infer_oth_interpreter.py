@@ -30,20 +30,20 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     facts = case.get("facts") or {}
     parties = case.get("parties") or {}
 
-    # Interpreter / vendor info
-    vendor = facts.get("interpreter_vendor",
-                          "Maine Language Services LLC")
-    vendor_code = facts.get("interpreter_vendor_code", "MLS-04821")
-    payment_addr = facts.get("interpreter_payment_address",
-                                "212 Industrial Park Road, Portland, ME 04102")
-    tier = facts.get("interpreter_tier", "Tier 2 — Certified")
+    # Interpreter / vendor info — ONLY when explicitly provided. The old
+    # defaults invented a vendor, vendor code, payment address, and
+    # certification tier on a reimbursement claim.
+    vendor = facts.get("interpreter_vendor", "")
+    vendor_code = facts.get("interpreter_vendor_code", "")
+    payment_addr = facts.get("interpreter_payment_address", "")
+    tier = facts.get("interpreter_tier", "")
     for fid, val in [
         ("services_provided_by", vendor),
         ("vendor_code", vendor_code),
         ("payment_address", payment_addr),
         ("tier", tier),
     ]:
-        if _set(out, fid, val):
+        if val and _set(out, fid, val):
             changes.append((fid, val, "interpreter-meta"))
 
     # LEP party: usually a non-English-speaking litigant
@@ -66,25 +66,36 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                 changes.append((fid, _iso_to_us(service_date),
                                   "service-date"))
 
-    hours = facts.get("interpreter_hours", "2.5")
-    rate = facts.get("interpreter_rate", "75.00")
-    total = facts.get("interpreter_total",
-                        f"{float(hours)*float(rate):,.2f}")
-    for fid in ("hours", "service_hours"):
-        if _set(out, fid, hours):
-            changes.append((fid, hours, "hours"))
-    for fid in ("hourly_rate", "rate"):
-        if _set(out, fid, f"${rate}"):
-            changes.append((fid, f"${rate}", "rate"))
-    for fid in ("total_amount", "total"):
-        if _set(out, fid, f"${total}"):
-            changes.append((fid, f"${total}", "total"))
+    # Hours / rate / total — billing facts; ONLY when explicitly provided
+    # (were 2.5h × $75 defaults).
+    hours = facts.get("interpreter_hours", "")
+    rate = facts.get("interpreter_rate", "")
+    total = facts.get("interpreter_total", "")
+    if not total and hours and rate:
+        try:
+            total = f"{float(hours)*float(rate):,.2f}"
+        except ValueError:
+            total = ""
+    if hours:
+        for fid in ("hours", "service_hours"):
+            if _set(out, fid, hours):
+                changes.append((fid, hours, "hours"))
+    if rate:
+        for fid in ("hourly_rate", "rate"):
+            if _set(out, fid, f"${rate}"):
+                changes.append((fid, f"${rate}", "rate"))
+    if total:
+        for fid in ("total_amount", "total"):
+            if _set(out, fid, f"${total}"):
+                changes.append((fid, f"${total}", "total"))
 
-    # Language pair
-    language = facts.get("interpreter_language", "Spanish ↔ English")
-    for fid in ("language_pair", "language", "languages"):
-        if _set(out, fid, language):
-            changes.append((fid, language, "language"))
+    # Language pair — ONLY when explicitly provided (was defaulted to
+    # "Spanish ↔ English", asserting the party's language).
+    language = facts.get("interpreter_language", "")
+    if language:
+        for fid in ("language_pair", "language", "languages"):
+            if _set(out, fid, language):
+                changes.append((fid, language, "language"))
 
     return out, changes
 

@@ -1,5 +1,12 @@
 """Fill `attorney_bar_number` + `attorney_email` from attorney_name.
 
+WARNING — SYNTHETIC-BENCHMARK TOOL, NOT A PRODUCTION RECIPE.
+The bar numbers, emails, phones, and the STOCK_ATTORNEYS pool below are
+deterministic MOCK values for eval runs over router/synthetic_cases.jsonl.
+This script is NOT in the engine's RECIPE3 dispatch table and must never
+be wired into real fills: a fabricated bar number or attorney-of-record
+is a material misstatement on a court filing.
+
 Why this exists:
   Qwen rarely emits Maine Bar Number or email when filling attorney
   blocks — neither appears in the source narrative because the case

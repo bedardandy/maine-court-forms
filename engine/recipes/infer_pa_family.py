@@ -74,11 +74,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if defendant.get("phone_cell"): phones.append(f"cell: {defendant['phone_cell']}")
     if not phones and defendant.get("phone"):
         phones.append(defendant["phone"])
-    phone_str_long = "; ".join(phones) or "Unknown"
-    for fid in ("telephone_home_work_cell", "telephone_homeworkcell",
-                 "defendant_phones"):
-        if _set(out, fid, phone_str_long):
-            changes.append((fid, phone_str_long, "def-phones"))
+    # Leave blank when no phone is known — never write "Unknown" (an
+    # unverified assertion) on a service form.
+    phone_str_long = "; ".join(phones)
+    if phone_str_long:
+        for fid in ("telephone_home_work_cell", "telephone_homeworkcell",
+                     "defendant_phones"):
+            if _set(out, fid, phone_str_long):
+                changes.append((fid, phone_str_long, "def-phones"))
 
     # PA-005 plaintiff (protected person) caption fields
     if plaintiff.get("full_name"):
@@ -152,62 +155,72 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # PA-010 motion narrative — generic fallback for any PA form that has
     # a singular "motion_request" widget (PA-010 itself is dispatched to
     # its own dedicated module).
-    motion_request = facts.get("pfa_motion_request",
-                                 "extend the existing Protection from Abuse Order "
-                                 "for an additional one-year period, and to grant "
-                                 "such further relief as the Court deems just and "
-                                 "proper.")
-    for fid in ("wherefore_defendant_asks_the_court_to",
-                 "wherefore_plaintiff_asks_the_court_to",
-                 "motion_request"):
-        if _set(out, fid, motion_request):
-            changes.append((fid, motion_request, "motion-request"))
+    # ONLY when explicitly provided — the requested relief is the
+    # substance of the motion (was a stock one-year-extension request).
+    motion_request = facts.get("pfa_motion_request", "")
+    if motion_request:
+        for fid in ("wherefore_defendant_asks_the_court_to",
+                     "wherefore_plaintiff_asks_the_court_to",
+                     "motion_request"):
+            if _set(out, fid, motion_request):
+                changes.append((fid, motion_request, "motion-request"))
 
-    # Hearing block
+    # Hearing block — time/location ONLY from facts or real court data
+    # (were defaulted to "9:00 AM" / "Portland").
     hearing_date = facts.get("pfa_hearing_date",
                                 case.get("event_date") or "")
-    hearing_time = facts.get("pfa_hearing_time", "9:00 AM")
-    hearing_loc = facts.get("pfa_hearing_location",
-                              f"{court.get('name','Maine District Court')}, "
-                              f"{court.get('location','Portland')}")
-    if hearing_date:
+    hearing_time = facts.get("pfa_hearing_time", "")
+    hearing_loc = facts.get("pfa_hearing_location", "")
+    if not hearing_loc and court.get("location"):
+        hearing_loc = (f"{court.get('name', 'Maine District Court')}, "
+                        f"{court['location']}")
+    if hearing_date and hearing_time and hearing_loc:
         for fid in ("at_am_pm_at_the_court_located_at",
                      "hearing_date_mmddyyyy"):
             if _set(out, fid, f"{hearing_time} at {hearing_loc}"):
                 changes.append((fid, hearing_time, "hearing"))
+    if hearing_date:
         for fid in ("the_parties_are_hereby_notified_that_the_hearing_in_this_matter_i",
                      "hearing_notice"):
             if _set(out, fid, _iso_to_us(hearing_date)):
                 changes.append((fid, _iso_to_us(hearing_date),
                                   "hearing-date"))
 
-    # Return of Service block
-    service_date = facts.get("pfa_service_date",
-                               case.get("filing_date") or "")
+    # Return of Service block — this is the officer's sworn return.
+    # Date/time/method ONLY when explicitly provided (time and method
+    # were hardcoded "10:30 AM" / "in-hand personal service").
+    service_date = facts.get("pfa_service_date", "")
     service_us = _iso_to_us(service_date)
     if service_date:
         for fid in ("on_mmddyyyy", "service_date_mmddyyyy", "date_mmddyyyy"):
             if _set(out, fid, service_us):
                 changes.append((fid, service_us, "service-date"))
-        for fid in ("at_am_pm_i_made_service_of_the_defen", "service_time"):
-            if _set(out, fid, "10:30 AM"):
-                changes.append((fid, "10:30 AM", "service-time"))
-        for fid in ("by_delivering_a_copy_of_the_motion_and_notice_of_hearing_to_the_p",
-                     "service_method"):
-            if _set(out, fid, "in-hand personal service"):
-                changes.append((fid, "in-hand personal service", "service-method"))
+        service_time = facts.get("pfa_service_time", "")
+        if service_time:
+            for fid in ("at_am_pm_i_made_service_of_the_defen", "service_time"):
+                if _set(out, fid, service_time):
+                    changes.append((fid, service_time, "service-time"))
+        service_method = facts.get("pfa_service_method", "")
+        if service_method:
+            for fid in ("by_delivering_a_copy_of_the_motion_and_notice_of_hearing_to_the_p",
+                         "service_method"):
+                if _set(out, fid, service_method):
+                    changes.append((fid, service_method, "service-method"))
 
-    # Law enforcement officer
-    officer_name = facts.get("pfa_officer_name", "Deputy John C. Reynolds")
-    officer_agency = facts.get("pfa_officer_agency",
-                                  "Cumberland County Sheriff's Office")
-    for fid in ("authorized_officer_printed_name",
-                 "law_enforcement_officer"):
-        if _set(out, fid, officer_name):
-            changes.append((fid, officer_name, "officer-name"))
-    for fid in ("law_enforcement_agency", "agency"):
-        if _set(out, fid, officer_agency):
-            changes.append((fid, officer_agency, "officer-agency"))
+    # Law enforcement officer — ONLY when explicitly provided (was a
+    # stock "Deputy John C. Reynolds / Cumberland County Sheriff's
+    # Office"; a fabricated serving officer falsifies the return).
+    officer_name = facts.get("pfa_officer_name", "")
+    officer_agency = facts.get("pfa_officer_agency", "")
+    if officer_name:
+        for fid in ("authorized_officer_printed_name",
+                     "law_enforcement_officer"):
+            if _set(out, fid, officer_name):
+                changes.append((fid, officer_name, "officer-name"))
+    if officer_agency:
+        for fid in ("law_enforcement_agency", "agency"):
+            if _set(out, fid, officer_agency):
+                changes.append((fid, officer_agency, "officer-agency"))
 
     # Captions used by PA-033 (foreign protection order registration)
     if plaintiff.get("full_name"):
@@ -241,57 +254,58 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("defendant_date_of_birth_mmddyyyy",
                         _iso_to_us(def_dob), "def-dob"))
 
-    weapons_narrative = facts.get("pa_weapons_relinquished",
-        "I relinquished all firearms and dangerous weapons in my "
-        "possession to the Cumberland County Sheriff's Office on the "
-        "date and at the location indicated above.")
-    if _set(out, "i_relinquished_the_firearms_andor_dangerous_weapon",
+    # PA-025 weapons compliance — everything here is the defendant's
+    # sworn account of what weapons were surrendered, when, and to whom.
+    # Fill ONLY from explicit pa_* facts: the old defaults invented a
+    # narrative naming a sheriff's office, a two-gun weapons list with
+    # serial numbers, an agency address, and auto-checked the
+    # "I relinquished" boxes.
+    weapons_narrative = facts.get("pa_weapons_relinquished", "")
+    if weapons_narrative and _set(
+            out, "i_relinquished_the_firearms_andor_dangerous_weapon",
             weapons_narrative):
         changes.append(("i_relinquished_the_firearms_andor_dangerous_weapon",
                         weapons_narrative, "weapons-narr"))
 
-    weapon_list = facts.get("pa_weapon_list",
-        "One (1) 12-gauge shotgun, serial number REDACTED; "
-        "one (1) .22 caliber rifle, serial number REDACTED.")
-    if _set(out, "the_description_of_each_weapon_relinquished_is_as_",
+    weapon_list = facts.get("pa_weapon_list", "")
+    if weapon_list and _set(
+            out, "the_description_of_each_weapon_relinquished_is_as_",
             weapon_list):
         changes.append(("the_description_of_each_weapon_relinquished_is_as_",
                         weapon_list, "weapons-desc"))
 
     # The "and address is" widget after agency name
-    agency_addr = facts.get("pa_agency_address",
-        "36 County Way, Portland, ME 04102")
-    if _set(out, "and_address_is", agency_addr):
+    agency_addr = facts.get("pa_agency_address", "")
+    if agency_addr and _set(out, "and_address_is", agency_addr):
         changes.append(("and_address_is", agency_addr, "agency-addr"))
 
-    # PA-025 — item 1 checkbox (I relinquished) is on by default unless
-    # case.facts.pa_no_weapons is truthy
+    # PA-025 — item 1 checkbox. "No weapons" ONLY on an explicit truthy
+    # fact; "I relinquished" ONLY when the case actually documents
+    # relinquished weapons (never checked by default).
     no_weapons = facts.get("pa_no_weapons", False)
+    has_weapon_facts = bool(weapons_narrative or weapon_list
+                             or facts.get("pa_weapons_list_rows"))
     if no_weapons:
         if _set(out, "i_have_no_firearms_or_dangerous_weapons_in_my_possessio", "X"):
             changes.append(("i_have_no_firearms_or_dangerous_weapons_in_my_possessio",
                             "X", "no-weapons"))
-    else:
+    elif has_weapon_facts:
         for fid in ("i_relinquished_the_firearms_andor_dangerous_weapons_lis",
                      "i_have_attached_a_list_describing_each_weapon_relinquis"):
             if _set(out, fid, "X"):
                 changes.append((fid, "X", "weapons-yes"))
 
-    # PA-025 — relinquish date
-    relinquish_date = facts.get("pa_relinquish_date",
-                                   case.get("event_date", ""))
-    if _set(out, "2_date_the_weapons_waswere_relinquished_mmddyyyy",
+    # PA-025 — relinquish date — ONLY when explicitly provided
+    relinquish_date = facts.get("pa_relinquish_date", "")
+    if relinquish_date and _set(
+            out, "2_date_the_weapons_waswere_relinquished_mmddyyyy",
             _iso_to_us(relinquish_date)):
         changes.append(("2_date_the_weapons_waswere_relinquished_mmddyyyy",
                         _iso_to_us(relinquish_date), "relinq-date"))
 
     # PA-025 — weapons list table (3 rows at p0 y=430-457, 486px wide).
-    # Field IDs `1_3`, `2_3`, `3` are the row narratives.
-    weapons_rows = facts.get("pa_weapons_list_rows", [
-        "(1) Mossberg Model 500 12-gauge shotgun — serial #SN1234567",
-        "(1) Ruger 10/22 .22 caliber rifle — serial #SN7654321",
-        "",
-    ])
+    # Field IDs `1_3`, `2_3`, `3` are the row narratives. ONLY from facts.
+    weapons_rows = facts.get("pa_weapons_list_rows") or []
     if isinstance(weapons_rows, str):
         weapons_rows = [weapons_rows]
     for i, w in enumerate(weapons_rows[:3]):
@@ -299,21 +313,24 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if w and _set(out, fid, w):
             changes.append((fid, w, f"pa025-weapon-row-{i+1}"))
 
-    # PA-025 — weapon type (default Firearm)
-    weapon_type = facts.get("pa_weapon_type", "firearm")
+    # PA-025 — weapon type — check ONLY when explicitly provided (was
+    # defaulted to Firearm).
+    weapon_type = facts.get("pa_weapon_type", "")
     type_map = {"firearm": "firearm",
                  "blunt": "blunt_weapon", "blunt_weapon": "blunt_weapon",
                  "edged": "edged_weapon", "edged_weapon": "edged_weapon"}
-    wtype_fid = type_map.get(weapon_type, "firearm")
-    if _set(out, wtype_fid, "X"):
+    wtype_fid = type_map.get(weapon_type) if weapon_type else None
+    if wtype_fid and _set(out, wtype_fid, "X"):
         changes.append((wtype_fid, "X", "weapon-type"))
 
-    # PA-025 — recipient of weapons (default: law enforcement agency)
-    recipient = facts.get("pa_weapons_recipient", "agency")  # agency|court
-    recip_fid = ("the_law_enforcement_agency_designated_on_the_order_with"
-                  if recipient == "agency" else "the_court")
-    if _set(out, recip_fid, "X"):
-        changes.append((recip_fid, "X", "weapons-recipient"))
+    # PA-025 — recipient of weapons — check ONLY when explicitly provided
+    # (was defaulted to the law-enforcement agency).
+    recipient = facts.get("pa_weapons_recipient", "")  # agency|court
+    if recipient:
+        recip_fid = ("the_law_enforcement_agency_designated_on_the_order_with"
+                      if recipient == "agency" else "the_court")
+        if _set(out, recip_fid, "X"):
+            changes.append((recip_fid, "X", "weapons-recipient"))
 
     # PA-025 — plaintiff caption + v_1/v_2 separators
     if plaintiff.get("full_name"):
@@ -333,10 +350,12 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # PA-033 — split mailing/physical addresses (3-line and 2-line)
     pl_addr_full = plaintiff.get("address", "")
     def_addr_full = defendant.get("address", "")
-    pl_city = plaintiff.get("city", court.get("location", "Portland"))
+    # Party city ONLY from the party record — never the court town or a
+    # default (was court-location → "Portland" fallback).
+    pl_city = plaintiff.get("city", "")
     pl_state = plaintiff.get("state", "ME")
     pl_zip = plaintiff.get("zip", "")
-    df_city = defendant.get("city", court.get("location", "Portland"))
+    df_city = defendant.get("city", "")
     df_state = defendant.get("state", "ME")
     df_zip = defendant.get("zip", "")
 
@@ -384,41 +403,46 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if _set(out, fid, val):
                 changes.append((fid, val, "pa-addr"))
 
-    # PA-033 — foreign protection order originating state
-    foreign_state = facts.get("pa033_foreign_state", "New Hampshire")
-    if _set(out, "defendantrespondent_in_a_protection_order_case_from_name_of_state",
+    # PA-033 — foreign protection order originating state/court — ONLY
+    # when explicitly provided (were "New Hampshire" / "Rockingham County
+    # Superior Court" stock values identifying a real foreign order).
+    foreign_state = facts.get("pa033_foreign_state", "")
+    if foreign_state and _set(
+            out, "defendantrespondent_in_a_protection_order_case_from_name_of_state",
             foreign_state):
         changes.append((
             "defendantrespondent_in_a_protection_order_case_from_name_of_state",
             foreign_state, "pa033-foreign-state"))
     # `undefined` widget on p0 y=288 holds the supplemental originating-court line
-    foreign_court = facts.get("pa033_foreign_court",
-                                  "Rockingham County Superior Court")
-    if _set(out, "undefined", foreign_court):
+    foreign_court = facts.get("pa033_foreign_court", "")
+    if foreign_court and _set(out, "undefined", foreign_court):
         changes.append(("undefined", foreign_court, "pa033-foreign-court"))
 
-    # PA-033 — attachment + filing checkboxes (both default-checked).
-    # Schema retains the FULL untruncated widget name for the attachment
-    # affirmation; legacy script used a truncated `_any_` variant that
-    # didn't match. Keep both for older schemas that did truncate.
-    for fid in (
-        "a_copy_of_the_foreign_protection_order_to_be_registered_including_any_modification_of_the_order_as_well_as_an",
-        "a_copy_of_the_foreign_protection_order_to_be_registered_including_any_",
-        "and_that_it_be_placed_on_file_with_this_court",
-    ):
-        if _set(out, fid, "X"):
-            changes.append((fid, "X", "pa033-attach"))
+    # PA-033 — attachment + filing checkboxes — ONLY on an explicit
+    # boolean fact (were auto-checked, affirming a copy of the foreign
+    # order is attached). Schema retains the FULL untruncated widget name
+    # for the attachment affirmation; legacy script used a truncated
+    # `_any_` variant that didn't match. Keep both for older schemas.
+    if facts.get("pa033_order_attached") is True:
+        for fid in (
+            "a_copy_of_the_foreign_protection_order_to_be_registered_including_any_modification_of_the_order_as_well_as_an",
+            "a_copy_of_the_foreign_protection_order_to_be_registered_including_any_",
+            "and_that_it_be_placed_on_file_with_this_court",
+        ):
+            if _set(out, fid, "X"):
+                changes.append((fid, "X", "pa033-attach"))
 
-    # PA-033 — local enforcement department on "and with the ___ Police/Sheriff"
-    pol_dept = facts.get("pa033_local_agency",
-                            f"{court.get('location','Portland')} "
-                            f"Police Department")
-    if _set(out, "and_with_the", pol_dept):
+    # PA-033 — local enforcement department on "and with the ___
+    # Police/Sheriff" — ONLY when explicitly provided (was composed with
+    # a "Portland Police Department" default).
+    pol_dept = facts.get("pa033_local_agency", "")
+    if pol_dept and _set(out, "and_with_the", pol_dept):
         changes.append(("and_with_the", pol_dept, "pa033-local-dept"))
 
-    # PA-033 — registration vs enforcement choice (both checked by default
-    # — petitioner typically seeks BOTH registration and active enforcement)
-    pa033_mode = facts.get("pa033_mode", "both")  # registration|enforcement|both
+    # PA-033 — registration vs enforcement choice — ONLY when explicitly
+    # provided (both boxes were checked by default, choosing relief on
+    # the petitioner's behalf).
+    pa033_mode = facts.get("pa033_mode", "")  # registration|enforcement|both
     if pa033_mode in ("registration", "both"):
         if _set(out, "registration_only_or", "X"):
             changes.append(("registration_only_or", "X", "pa033-reg"))
@@ -426,15 +450,18 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "enforcement", "X"):
             changes.append(("enforcement", "X", "pa033-enf"))
 
-    # PA-033 — perjury checkbox (page 2). Schema retains full untruncated
-    # widget name; the system-wide notary pass uses `_these` variants but
-    # PA-033's exact suffix is `_these_statements`.
-    for fid in (
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_an",
-    ):
-        if _set(out, fid, "X"):
-            changes.append((fid, "X", "pa033-perjury"))
+    # PA-033 — perjury checkbox (page 2) — ONLY on an explicit boolean
+    # fact; never auto-swear an oath on the petitioner's behalf. Schema
+    # retains the full untruncated widget name; the system-wide notary
+    # pass uses `_these` variants but PA-033's exact suffix is
+    # `_these_statements`.
+    if facts.get("perjury_acknowledged") is True:
+        for fid in (
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_an",
+        ):
+            if _set(out, fid, "X"):
+                changes.append((fid, "X", "pa033-perjury"))
 
     # PA-033 — signature block (page 2): date + plaintiff/defendant caption
     # duplicates + attorney block + petitioner contact block.

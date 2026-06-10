@@ -102,7 +102,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("location_town", case.get("docket_no",""), "docket"))
 
     # ── y=273/287 top-level action checkboxes ──
-    pa010_action = facts.get("pa010_action", "dissolved").lower()
+    # ONLY when explicitly provided (was defaulted to "dissolved",
+    # choosing the requested relief on the movant's behalf).
+    pa010_action = (facts.get("pa010_action") or "").lower()
     if pa010_action.startswith("diss"):
         if _set(out, "dissolve_temporary_order_for_protection", "X"):
             changes.append(("dissolve_temporary_order_for_protection",
@@ -132,9 +134,10 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # These are 86px short widgets at right margin — likely short fragments
     # like "the alleged abuse occurred" or "the order should not stand".
     if pa010_action.startswith("diss"):
-        # 86-px wide widget — must fit short string (≤ ~14 chars)
-        diss_short = facts.get("pa010_dissolve_short", "abuse occurred")
-        if _set(out,
+        # 86-px wide widget — must fit short string (≤ ~14 chars).
+        # ONLY when explicitly provided (was a stock "abuse occurred").
+        diss_short = facts.get("pa010_dissolve_short", "")
+        if diss_short and _set(out,
                 "be_dissolved_because_the_allegations_in_plaintiffs_sworn_complaint_are_insufficient_to_support_a_finding_that",
                 diss_short):
             changes.append((
@@ -142,9 +145,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                 diss_short, "dissolve-short"))
 
     if pa010_action.startswith("modif"):
-        modif_short = facts.get("pa010_modify_short",
-                                   "abuse against the plaintiff")
-        if _set(out,
+        modif_short = facts.get("pa010_modify_short", "")
+        if modif_short and _set(out,
                 "the_plaintiff_or_minor_child_is_in_immediate_and_present_danger_of_abuse_for_the_following_reasons",
                 modif_short):
             changes.append((
@@ -153,16 +155,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
 
     # ── y=418-527 modify reasons block (6 lines) — only fill if modifying ──
     if pa010_action.startswith("modif"):
-        modify_reasons = facts.get("pa010_modify_reasons", [
-            "The terms of the Temporary Order are unduly broad and exceed "
-            "what is necessary to protect the plaintiff.",
-            "Specifically, the no-contact provision prevents the defendant "
-            "from communicating with the parties' minor children about "
-            "school, medical care, and routine logistical matters.",
-            "The defendant requests that the Order be modified to allow "
-            "third-party-supervised written communications limited to the "
-            "children's welfare.",
-        ])
+        # ONLY when explicitly provided — the old default invented the
+        # grounds for modification.
+        modify_reasons = facts.get("pa010_modify_reasons") or []
         if isinstance(modify_reasons, str):
             modify_reasons = [modify_reasons]
         for i, line in enumerate(modify_reasons[:6], start=1):
@@ -170,20 +165,10 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if line and _set(out, fid, line):
                 changes.append((fid, line, f"modify-reason-{i}"))
 
-    # ── y=570-635 WHEREFORE relief (4 lines) ──
-    relief = facts.get("pa010_relief_items", [
-        "DISSOLVE the Temporary Order for Protection from Abuse entered "
-        "against the defendant on the date referenced above."
-        if pa010_action.startswith("diss") else
-        "MODIFY the Temporary Order for Protection from Abuse as set forth "
-        "in the foregoing reasons.",
-        "Award the defendant reasonable attorney's fees and costs incurred "
-        "in defending this action.",
-        "Order the plaintiff to return any property of the defendant "
-        "currently in the plaintiff's possession.",
-        "Grant such other and further relief as the Court deems just and "
-        "proper.",
-    ])
+    # ── y=570-635 WHEREFORE relief (4 lines) — ONLY when explicitly
+    # provided (the old default requested fees and return of property on
+    # the movant's behalf). ──
+    relief = facts.get("pa010_relief_items") or []
     if isinstance(relief, str):
         relief = [relief]
     for i, line in enumerate(relief[:4], start=1):
@@ -200,13 +185,15 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("undefined_2", defendant.get("full_name",""),
                         "sig-text"))
 
-    # Perjury swear — handled systemically, but safe to set here too
-    for fid in (
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these",
-        "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
-    ):
-        if _set(out, fid, "X"):
-            changes.append((fid, "X", "perjury"))
+    # Perjury swear — check ONLY on an explicit boolean fact; never
+    # auto-swear an oath on the movant's behalf.
+    if facts.get("perjury_acknowledged") is True:
+        for fid in (
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these",
+            "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements",
+        ):
+            if _set(out, fid, "X"):
+                changes.append((fid, "X", "perjury"))
 
     return out, changes
 

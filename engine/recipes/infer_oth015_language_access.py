@@ -74,39 +74,44 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "names", name):
         changes.append(("names", name, "names"))
 
-    # Role checkbox (default: Party)
-    role = facts.get("interpreter_role", "party").lower()
-    role_box = ROLE_BOX.get(role, "check_box1")
-    if _set(out, role_box, "X"):
+    # Role checkbox — check ONLY when explicitly provided (was defaulted
+    # to "party", asserting the requester's role in the case).
+    role = (facts.get("interpreter_role") or "").lower()
+    role_box = ROLE_BOX.get(role) if role else None
+    if role_box and _set(out, role_box, "X"):
         changes.append((role_box, "X", f"role-{role}"))
 
-    # Courthouse + Date/Time + Docket (page-1 caption row)
-    courthouse = (facts.get("courthouse")
-                   or f"{court.get('name','Maine District Court')}, "
-                      f"{court.get('location','Portland')}")
-    if _set(out, "text16", courthouse):
+    # Courthouse + Date/Time + Docket (page-1 caption row) — compose only
+    # from real court data (location was previously defaulted to
+    # "Portland"; time to "10:00 AM").
+    courthouse = facts.get("courthouse", "")
+    if not courthouse and court.get("location"):
+        courthouse = (f"{court.get('name', 'Maine District Court')}, "
+                       f"{court['location']}")
+    if courthouse and _set(out, "text16", courthouse):
         changes.append(("text16", courthouse, "courthouse"))
     court_date = facts.get("court_case_date",
                               case.get("event_date") or "")
     if court_date:
         if _set(out, "text17", _iso_to_us(court_date)):
             changes.append(("text17", _iso_to_us(court_date), "date"))
-    court_time = facts.get("court_case_time", "10:00 AM")
-    if _set(out, "text18", court_time):
+    court_time = facts.get("court_case_time", "")
+    if court_time and _set(out, "text18", court_time):
         changes.append(("text18", court_time, "time"))
     docket = case.get("docket_no") or case.get("case_no", "")
     if _set(out, "text19", docket):
         changes.append(("text19", docket, "docket"))
 
-    # Language preference — default to Spanish.
-    language = facts.get("interpreter_language", "spanish").lower()
-    box = LANG_BOX.get(language)
+    # Language preference — check ONLY when explicitly provided (was
+    # defaulted to Spanish, asserting the party's language).
+    language = (facts.get("interpreter_language") or "").lower()
+    box = LANG_BOX.get(language) if language else None
     if box and _set(out, box, "X"):
         changes.append((box, "X", f"lang-{language}"))
 
-    # Country / region / dialect
-    region = facts.get("interpreter_region", "Spain (Castilian Spanish)")
-    if _set(out, "country_region_or_dialect", region):
+    # Country / region / dialect — ONLY when explicitly provided.
+    region = facts.get("interpreter_region", "")
+    if region and _set(out, "country_region_or_dialect", region):
         changes.append(("country_region_or_dialect", region, "region"))
 
     # Signature line

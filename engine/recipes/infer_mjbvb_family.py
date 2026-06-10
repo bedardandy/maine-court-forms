@@ -50,55 +50,52 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("v", "v.", "v-sep"))
 
     # ---- MJBVB-009 (officer's motion to amend) ----
-    violations = facts.get("mjbvb_original_violations",
-        "Operating beyond restrictions (29-A M.R.S. § 1303(1)) and "
-        "failure to display valid registration.")
-    if _set(out, "violations", violations):
-        changes.append(("violations", violations, "violations"))
-    if _set(out, "the_violations_iwish_to_amendare", violations):
-        changes.append(("the_violations_iwish_to_amendare", violations,
-                        "viol-to-amend"))
+    # The charged violations, the requested amendment, and the reason are
+    # the substance of the motion — fill ONLY when explicitly provided
+    # (the old defaults invented a § 1303(1) charge and an exculpatory
+    # records-check narrative).
+    violations = facts.get("mjbvb_original_violations", "")
+    if violations:
+        if _set(out, "violations", violations):
+            changes.append(("violations", violations, "violations"))
+        if _set(out, "the_violations_iwish_to_amendare", violations):
+            changes.append(("the_violations_iwish_to_amendare", violations,
+                            "viol-to-amend"))
 
-    amendment = facts.get("mjbvb_amendment",
-        "Operating beyond restrictions (29-A M.R.S. § 1303(1)) only — "
-        "registration was current at the time of stop, as verified by "
-        "subsequent records check.")
-    if _set(out, "amendment", amendment):
-        changes.append(("amendment", amendment, "amendment"))
-    if _set(out, "iwouldlike_to_amendthe_violations_to_read", amendment):
-        changes.append(("iwouldlike_to_amendthe_violations_to_read",
-                        amendment, "amend-text"))
+    amendment = facts.get("mjbvb_amendment", "")
+    if amendment:
+        if _set(out, "amendment", amendment):
+            changes.append(("amendment", amendment, "amendment"))
+        if _set(out, "iwouldlike_to_amendthe_violations_to_read", amendment):
+            changes.append(("iwouldlike_to_amendthe_violations_to_read",
+                            amendment, "amend-text"))
 
-    reason = facts.get("mjbvb_amend_reason",
-        "Records review after issuance showed the registration was "
-        "valid; the violation should be reduced accordingly to reflect "
-        "the actual facts.")
-    if _set(out, "reason", reason):
-        changes.append(("reason", reason, "reason"))
-    if _set(out, "the_reason_for_this_requestis", reason):
-        changes.append(("the_reason_for_this_requestis", reason,
-                        "reason-narr"))
+    reason = facts.get("mjbvb_amend_reason", "")
+    if reason:
+        if _set(out, "reason", reason):
+            changes.append(("reason", reason, "reason"))
+        if _set(out, "the_reason_for_this_requestis", reason):
+            changes.append(("the_reason_for_this_requestis", reason,
+                            "reason-narr"))
 
-    # Officer / agency block on MJBVB-009
+    # Officer / agency block on MJBVB-009 — ONLY from a real officer
+    # party or explicit facts (the old defaults invented an officer,
+    # agency, address, and phone).
     officer_name = (officer.get("full_name")
-                     or facts.get("mjbvb_officer_name",
-                                    "Officer Daniel R. Holbrook"))
+                     or facts.get("mjbvb_officer_name", ""))
     agency = (officer.get("agency")
-              or facts.get("mjbvb_agency",
-                            "Portland Police Department"))
+              or facts.get("mjbvb_agency", ""))
     agency_addr = (officer.get("address")
-                    or facts.get("mjbvb_agency_address",
-                                   "109 Middle St, Portland, ME 04101"))
+                    or facts.get("mjbvb_agency_address", ""))
     officer_phone = (officer.get("phone")
-                      or facts.get("mjbvb_officer_phone",
-                                     "207-555-0188"))
-    if _set(out, "printed_name", officer_name):
+                      or facts.get("mjbvb_officer_phone", ""))
+    if officer_name and _set(out, "printed_name", officer_name):
         changes.append(("printed_name", officer_name, "off-name"))
-    if _set(out, "agency_department", agency):
+    if agency and _set(out, "agency_department", agency):
         changes.append(("agency_department", agency, "agency"))
-    if _set(out, "mailing_address", agency_addr):
+    if agency_addr and _set(out, "mailing_address", agency_addr):
         changes.append(("mailing_address", agency_addr, "agency-addr"))
-    if _set(out, "phone", officer_phone):
+    if officer_phone and _set(out, "phone", officer_phone):
         changes.append(("phone", officer_phone, "off-phone"))
 
     # ---- MJBVB-017 (defendant's fine-extension request) ----
@@ -118,44 +115,47 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "the_year_iwas_born_was", yob):
         changes.append(("the_year_iwas_born_was", yob, "yob"))
 
-    # Fine amount + due date
-    fine = facts.get("mjbvb_fine_total", "240.00")
+    # Fine amount + due date — ONLY when explicitly provided (the fine
+    # total was a stock "240.00").
+    fine = facts.get("mjbvb_fine_total", "")
     fine_due = facts.get("mjbvb_fine_due_date",
                             case.get("event_date", ""))
-    if _set(out, "totalamountoffines_owed", fine):
+    if fine and _set(out, "totalamountoffines_owed", fine):
         changes.append(("totalamountoffines_owed", fine, "fine-total"))
-    if _set(out, "fine_due_date", fine_due):
+    if fine_due and _set(out, "fine_due_date", fine_due):
         changes.append(("fine_due_date", fine_due, "fine-due"))
 
-    # Reasons for extension narrative
-    ext_reason = facts.get("mjbvb_extension_reason",
-        "I am temporarily unable to pay the full fine because of a "
-        "recent reduction in my hours at work. I respectfully request "
-        "additional time or a monthly payment plan so that I can pay "
-        "the fine in full without further default.")
-    # Schema has full `_as_follows_N` suffix (truncation only happens in
-    # display); both `_isare_a` (legacy short) and `_isare_as_follows_N`
-    # (current) variants tried so the script covers both schemas.
-    for fid in (
-        "the_reasons_iam_requestinga_fine_extension_isare_as_follows_1",
-        "the_reasons_iam_requestinga_fine_extension_isare_as_follows_2",
-        "the_reasons_iam_requestinga_fine_extension_isare_a",
-        "the_reasons_iam_requestinga_fine_extension_isare_a_2",
-    ):
-        if _set(out, fid, ext_reason):
-            changes.append((fid, ext_reason, "ext-reason"))
+    # Reasons for extension narrative — ONLY when explicitly provided
+    # (was a stock reduced-work-hours hardship narrative).
+    ext_reason = facts.get("mjbvb_extension_reason", "")
+    if ext_reason:
+        # Schema has full `_as_follows_N` suffix (truncation only happens
+        # in display); both `_isare_a` (legacy short) and
+        # `_isare_as_follows_N` (current) variants tried so the script
+        # covers both schemas.
+        for fid in (
+            "the_reasons_iam_requestinga_fine_extension_isare_as_follows_1",
+            "the_reasons_iam_requestinga_fine_extension_isare_as_follows_2",
+            "the_reasons_iam_requestinga_fine_extension_isare_a",
+            "the_reasons_iam_requestinga_fine_extension_isare_a_2",
+        ):
+            if _set(out, fid, ext_reason):
+                changes.append((fid, ext_reason, "ext-reason"))
 
-    # Employment-status radios — pick "Employed by [employer]" by default
+    # Employment-status radios — ONLY when an employer is actually known
+    # (the old default checked "employed" and invented an employer).
     employer = (defendant.get("employer")
-                 or facts.get("mjbvb_defendant_employer",
-                                "Casco Bay Logistics, Saco, ME"))
-    if _set(out, "imake", "X"):
-        changes.append(("imake", "X", "emp-yes"))
-    if _set(out, "employedby", employer):
-        changes.append(("employedby", employer, "employer"))
+                 or facts.get("mjbvb_defendant_employer", ""))
+    if employer:
+        if _set(out, "imake", "X"):
+            changes.append(("imake", "X", "emp-yes"))
+        if _set(out, "employedby", employer):
+            changes.append(("employedby", employer, "employer"))
 
-    # Request choice (default: monthly payment plan)
-    if _set(out, "irequest_thatthe_courtgrantme", "X"):
+    # Request choice — check ONLY on an explicit boolean fact (was
+    # auto-checked, choosing relief on the defendant's behalf).
+    if (facts.get("mjbvb_request_payment_plan") is True
+            and _set(out, "irequest_thatthe_courtgrantme", "X")):
         changes.append(("irequest_thatthe_courtgrantme", "X", "request"))
 
     # Date of signature (both MJBVB forms have `date` and `date1`)

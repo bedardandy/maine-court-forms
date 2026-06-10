@@ -58,14 +58,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                    or {})
     attorney = parties.get("attorney") or {}
     if not affiant:
+        # GAL/affiant ONLY from explicit pc_gal_* facts — never a stock
+        # identity (was "Margaret L. Holcomb, Esq. / Maine Bar No. 4521"
+        # with an invented address). When unknown the affiant fields stay
+        # blank/unresolved.
         affiant = {
-            "full_name": facts.get("pc_gal_name",
-                                       "Margaret L. Holcomb, Esq."),
-            "address": facts.get("pc_gal_address",
-                                     "44 Exchange Street, Suite 200, "
-                                     "Portland, ME 04101"),
-            "bar_number": facts.get("pc_gal_bar",
-                                       "Maine Bar No. 4521"),
+            "full_name": facts.get("pc_gal_name", ""),
+            "address": facts.get("pc_gal_address", ""),
+            "bar_number": facts.get("pc_gal_bar", ""),
         }
 
     # Captions
@@ -87,8 +87,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "i", affiant.get("full_name", "")):
         changes.append(("i", affiant.get("full_name",""), "affiant"))
 
-    # PC-034 — hearing-type radios (default: JUDICIAL REVIEW HEARING)
-    hearing_type = facts.get("pc_hearing_type", "judicial_review")
+    # PC-034 — hearing-type radios — check ONLY when explicitly provided
+    # (was defaulted to JUDICIAL REVIEW, asserting the hearing type).
+    hearing_type = facts.get("pc_hearing_type", "")
     htype_map = {
         "summary":             "summary_preliminary_hearing",
         "jeopardy":            "jeopardy_hearing",
@@ -96,8 +97,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "termination":         "termination_of_parental_rights_hearing",
         "other":               "other",
     }
-    htype_fid = htype_map.get(hearing_type, "judicial_review_hearing")
-    if _set(out, htype_fid, "X"):
+    htype_fid = htype_map.get(hearing_type) if hearing_type else None
+    if htype_fid and _set(out, htype_fid, "X"):
         changes.append((htype_fid, "X", "htype"))
 
     # PC-034 — court date
@@ -184,10 +185,13 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "dated_mmddyyyy", sig_date):
         changes.append(("dated_mmddyyyy", sig_date, "sig-date"))
 
-    # PC-034 — 4 hearing date/location pairs (default: same date)
-    pc_loc = facts.get("pc_default_location",
-                        f"{court.get('name','Maine District Court')}, "
-                        f"{court.get('location','Portland')}")
+    # PC-034 — 4 hearing date/location pairs (default: same date).
+    # Location composed only from real court data (was a "Portland"
+    # default).
+    pc_loc = facts.get("pc_default_location", "")
+    if not pc_loc and court.get("location"):
+        pc_loc = (f"{court.get('name', 'Maine District Court')}, "
+                   f"{court['location']}")
     for n in range(1, 5):
         suffix = "" if n == 1 else f"_{n}"
         for fid_d, fid_l in [
@@ -224,30 +228,32 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # PC-044 — conditions narrative. Schema retains full untruncated
     # widget name `_conditions_to_this_con`; older script used a
     # `_no_co` truncation that didn't match the actual field_id.
-    conditions = facts.get("pc_parent_conditions", "None.")
-    for fid in (
-        "following_conditions_state_none_if_there_are_no_conditions_to_this_con",
-        "following_conditions_state_none_if_there_are_no_co",
-    ):
-        if _set(out, fid, conditions):
-            changes.append((fid, conditions, "conditions"))
+    # Conditions narrative ONLY when explicitly provided — "None." is
+    # itself a factual answer ("state none if there are no conditions")
+    # and must come from the case.
+    conditions = facts.get("pc_parent_conditions", "")
+    if conditions:
+        for fid in (
+            "following_conditions_state_none_if_there_are_no_conditions_to_this_con",
+            "following_conditions_state_none_if_there_are_no_co",
+        ):
+            if _set(out, fid, conditions):
+                changes.append((fid, conditions, "conditions"))
 
-    # PC-044 — prospective foster parents (name + address) narrative
-    foster_info = facts.get("pc_foster_parents",
-        "Jonathan & Eliza Hartwell, 21 Birchwood Lane, Falmouth, ME 04105")
-    if _set(out,
+    # PC-044 — prospective foster parents — ONLY when explicitly
+    # provided (was a stock invented family with address).
+    foster_info = facts.get("pc_foster_parents", "")
+    if foster_info and _set(out,
             "name_and_address_of_the_prospective_foster_parents_if_known",
             foster_info):
         changes.append((
             "name_and_address_of_the_prospective_foster_parents_if_known",
             foster_info, "foster-parents"))
 
-    # PC-044 — placement-arranger narrative (the `text1` widget at p0 y=666)
-    placement_arranger = facts.get("pc_placement_arranger",
-        f"Maine Department of Health and Human Services — Office of "
-        f"Child and Family Services, {court.get('location','Portland')} "
-        f"District Office")
-    if _set(out, "text1", placement_arranger):
+    # PC-044 — placement-arranger narrative (the `text1` widget at p0
+    # y=666) — ONLY when explicitly provided (was a stock DHHS office).
+    placement_arranger = facts.get("pc_placement_arranger", "")
+    if placement_arranger and _set(out, "text1", placement_arranger):
         changes.append(("text1", placement_arranger, "placement-arranger"))
 
     # PC-044 — parent/guardian/legal-custodian split mailing address.
@@ -255,7 +261,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # build city/state/zip line 2 from the structured party fields so we
     # don't leave lines 2/3 blank on commaless single-line addresses.
     par_street = affiant.get("address", "")
-    par_city = affiant.get("city", court.get("location", ""))
+    # City from the party record only — the court's town is not evidence
+    # of where the parent lives.
+    par_city = affiant.get("city", "")
     par_state = affiant.get("state", "ME")
     par_zip = affiant.get("zip", "")
     par_csz = ", ".join(p for p in (par_city, f"{par_state} {par_zip}".strip())
@@ -282,12 +290,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if val and _set(out, fid, val):
                 changes.append((fid, val, "par-addr"))
 
-    # PC-044 — ICWA tribal info (default: not applicable)
-    tribe = facts.get("pc_tribe", "Not applicable")
-    tribal_id = facts.get("pc_tribal_enrollment", "N/A")
-    if _set(out, "name_of_the_indian_childs_tribe", tribe):
+    # PC-044 — ICWA tribal info — fill ONLY when explicitly provided.
+    # Defaulting "Not applicable" asserted the child is not a tribal
+    # member, which affects ICWA jurisdiction.
+    tribe = facts.get("pc_tribe", "")
+    tribal_id = facts.get("pc_tribal_enrollment", "")
+    if tribe and _set(out, "name_of_the_indian_childs_tribe", tribe):
         changes.append(("name_of_the_indian_childs_tribe", tribe, "tribe"))
-    if _set(out, "tribal_enrollment_number_for_the_parent_if_known",
+    if tribal_id and _set(out, "tribal_enrollment_number_for_the_parent_if_known",
             tribal_id):
         changes.append(("tribal_enrollment_number_for_the_parent_if_known",
                         tribal_id, "tribal-id"))

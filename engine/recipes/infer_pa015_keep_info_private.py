@@ -67,9 +67,12 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     plaintiff = (parties.get("plaintiff") or parties.get("petitioner") or {})
     defendant = (parties.get("defendant") or parties.get("respondent") or {})
 
-    # Movant defaults to plaintiff (PFA "protected person").
-    movant_role = facts.get("pa015_movant_role", "plaintiff").lower()
-    movant = plaintiff if movant_role == "plaintiff" else defendant
+    # Movant: ONLY when explicitly provided (was defaulted to
+    # "plaintiff") — guessing the movant risks protecting the wrong
+    # party's information.
+    movant_role = (facts.get("pa015_movant_role") or "").lower()
+    movant = {"plaintiff": plaintiff, "defendant": defendant}.get(
+        movant_role, {})
 
     # ── Caption ──
     if _set(out, "plaintiff", plaintiff.get("full_name", "")):
@@ -116,7 +119,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         # NOTE: same field_id `plaintiff` as the caption — schema
         # collision; dup-fid fan-out routes to both.
         pass  # leave for the caption to drive
-    else:
+    elif movant_role == "defendant":
         if _set(out,
                 "defendant_in_this_case_and_i_request_that_the_court_kee",
                 "X"):
@@ -178,21 +181,10 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "undefined_6", other_value):
             changes.append(("undefined_6", other_value, "other-val"))
 
-    # ── y=455-493 reasons narrative (4 lines) ──
-    reasons = facts.get("pa015_reasons", [
-        "Disclosure of the requested information would create a "
-        f"substantial risk to the health, safety, or liberty of the "
-        f"{movant_role} and/or the children of the parties.",
-        "The other party has engaged in a documented pattern of "
-        "threatening behavior and prior abusive conduct directed "
-        "at the petitioner.",
-        f"The {movant_role} has obtained an active Protection from "
-        "Abuse Order and disclosure of the protected address "
-        "would defeat the purpose of that Order.",
-        "Maintaining confidentiality is necessary to preserve "
-        "the safety of the household and to comply with the "
-        "existing protective order.",
-    ])
+    # ── y=455-493 reasons narrative (4 lines) — ONLY when explicitly
+    # provided. The old default swore to invented abuse/protective-order
+    # facts on the movant's behalf. ──
+    reasons = facts.get("pa015_reasons") or []
     if isinstance(reasons, str):
         reasons = [reasons]
     for i, line in enumerate(reasons[:4], start=1):

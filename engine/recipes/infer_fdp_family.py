@@ -52,7 +52,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         ("defendant", df_name),
         ("location", court.get("location", "")),
         ("location_town", court.get("location", "")),
-        ("county", court.get("county", "Cumberland")),
+        # County from real court data only (was defaulted "Cumberland")
+        ("county", court.get("county", "")),
         ("docket_no", docket),
         ("docket_no_2", docket),
     ]:
@@ -66,24 +67,21 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # The homeowner (defendant) is the moving party in waive/continue.
     signer = df_name or pl_name
 
-    # FDP-003 — good cause to waive mediation (4-line narrative)
-    waive_reason = facts.get("fdp_waive_reason",
-        "The defendant has reached a loan-modification agreement directly "
-        "with the plaintiff's servicer and the parties agree that further "
-        "court-supervised mediation is unnecessary and would only delay "
-        "resolution of this matter.")
-    if "1_i_have_good_cause_to_waive_mediation_1" in kv_map:
+    # FDP-003 — good cause to waive mediation (4-line narrative) — ONLY
+    # when explicitly provided (the old default invented a settled
+    # loan-modification agreement).
+    waive_reason = facts.get("fdp_waive_reason", "")
+    if waive_reason and "1_i_have_good_cause_to_waive_mediation_1" in kv_map:
         if _set(out, "1_i_have_good_cause_to_waive_mediation_1", waive_reason):
             changes.append(("1_i_have_good_cause_to_waive_mediation_1",
                               waive_reason, "fdp003-reason"))
 
-    # FDP-004 — continue mediation (6-line narrative)
-    continue_reason = facts.get("fdp_continue_reason",
-        "The defendant requires additional time to gather and submit the "
-        "financial documentation requested by the plaintiff's servicer, "
-        "and a brief continuance will allow the parties to complete the "
-        "loss-mitigation review before the next scheduled session.")
-    if "plaintiffdefendant_is_asking_that_the_mediation_be_continued_because_1" in kv_map:
+    # FDP-004 — continue mediation (6-line narrative) — ONLY when
+    # explicitly provided (the old default invented the grounds).
+    continue_reason = facts.get("fdp_continue_reason", "")
+    if (continue_reason and
+            "plaintiffdefendant_is_asking_that_the_mediation_be_continued_because_1"
+            in kv_map):
         if _set(out,
                 "plaintiffdefendant_is_asking_that_the_mediation_be_continued_because_1",
                 continue_reason):
@@ -93,13 +91,14 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "text1", continue_reason):
             changes.append(("text1", continue_reason, "fdp004-text1"))
 
-    # FDP-010 — motion to stay (days + reason radio)
+    # FDP-010 — motion to stay — days ONLY when explicitly provided (was
+    # a 90-day default); reason radio ONLY on an explicit boolean fact.
     if "days_up_to_120_days" in kv_map:
-        stay_days = facts.get("fdp_stay_days", "90")
-        if _set(out, "days_up_to_120_days", stay_days):
+        stay_days = facts.get("fdp_stay_days", "")
+        if stay_days and _set(out, "days_up_to_120_days", stay_days):
             changes.append(("days_up_to_120_days", stay_days, "fdp010-days"))
-        # group1 radio default — "to allow continued loss-mitigation review"
-        if _set(out, "group1", "X"):
+        if (facts.get("fdp_stay_for_loss_mitigation") is True
+                and _set(out, "group1", "X")):
             changes.append(("group1", "X", "fdp010-reason-radio"))
 
     # Shared signature block
@@ -112,8 +111,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # `undefined` widgets — signer name echo / SS county
     if _set(out, "undefined", signer):
         changes.append(("undefined", signer, "signer-echo"))
-    if _set(out, "ss", court.get("county", "Cumberland")):
-        changes.append(("ss", court.get("county","Cumberland"), "ss-county"))
+    if court.get("county") and _set(out, "ss", court["county"]):
+        changes.append(("ss", court["county"], "ss-county"))
 
     # FDP-010 caption is offset-named and build_kv_map scrambles it: the
     # widget `docket_no` is physically the "<County>, ss" line, `docket_no_2`
@@ -125,7 +124,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if fid in out and val and out.get(fid) != val:
                 out[fid] = val
                 changes.append((fid, val, src))
-        _fdp010("docket_no", court.get("county", "Cumberland"), "fdp010-county")
+        _fdp010("docket_no", court.get("county", ""), "fdp010-county")
         _fdp010("docket_no_2", court.get("location", ""), "fdp010-location")
         _fdp010("ss", docket, "fdp010-docket-left")
         _fdp010("undefined", docket, "fdp010-docket-right")

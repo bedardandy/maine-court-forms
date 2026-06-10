@@ -28,38 +28,47 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     def f(v): return f"{float(v):,.2f}"
     def pct(v): return f"{float(v):.3f}%"
 
+    # Every dollar figure / rate / term on this worksheet is a factual
+    # statement about the borrower's mortgage — fill ONLY when explicitly
+    # provided in case.facts. The old code shipped a full set of invented
+    # loan numbers (amounts, rates, arrears, escrow, FMV).
+
     # Loan terms (original)
-    original_amount = facts.get("original_loan_amount", "185,000.00")
-    original_term_months = facts.get("original_amortization_term", "360")
-    original_rate = facts.get("original_interest_rate", "6.250")
+    original_amount = facts.get("original_loan_amount", "")
+    original_term_months = facts.get("original_amortization_term", "")
+    original_rate = facts.get("original_interest_rate", "")
     for fid, val in [
         ("original_loan_amount", original_amount),
         ("original_amortization_term", original_term_months),
-        ("original_interest_rate", f"{original_rate}%" if "%" not in original_rate else original_rate),
+        ("original_interest_rate",
+         (f"{original_rate}%" if original_rate and "%" not in original_rate
+          else original_rate)),
     ]:
-        if _set(out, fid, val):
+        if val and _set(out, fid, val):
             changes.append((fid, val, "original-loan"))
 
     # Current balance + rate
-    current_upb = facts.get("current_unpaid_balance", "162,450.00")
-    current_rate = facts.get("current_interest_rate", "6.250")
-    remaining_term = facts.get("remaining_mortgage_term", "298")
-    months_past_due = facts.get("months_past_due", "4")
+    current_upb = facts.get("current_unpaid_balance", "")
+    current_rate = facts.get("current_interest_rate", "")
+    remaining_term = facts.get("remaining_mortgage_term", "")
+    months_past_due = facts.get("months_past_due", "")
     for fid, val in [
         ("current_unpaid_balance", current_upb),
-        ("current_interest_rate", f"{current_rate}%" if "%" not in current_rate else current_rate),
+        ("current_interest_rate",
+         (f"{current_rate}%" if current_rate and "%" not in current_rate
+          else current_rate)),
         ("remaining_mortgage_term", remaining_term),
         ("months_past_due", months_past_due),
     ]:
-        if _set(out, fid, val):
+        if val and _set(out, fid, val):
             changes.append((fid, val, "current-loan"))
 
     # Payment breakdown
-    payment_total = facts.get("current_mortgage_payment", "1,142.85")
-    payment_interest = facts.get("current_interest_payment", "843.50")
-    payment_principal = facts.get("current_principal_payment", "299.35")
-    past_due_interest = facts.get("past_due_interest", "3,372.00")
-    advances_escrow = facts.get("advances_escrow_past_due", "1,840.00")
+    payment_total = facts.get("current_mortgage_payment", "")
+    payment_interest = facts.get("current_interest_payment", "")
+    payment_principal = facts.get("current_principal_payment", "")
+    past_due_interest = facts.get("past_due_interest", "")
+    advances_escrow = facts.get("advances_escrow_past_due", "")
     for fid, val in [
         ("current_mortgage_payment", payment_total),
         ("current_interest_payment", payment_interest),
@@ -67,23 +76,31 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         ("past_due_interest", past_due_interest),
         ("advances_escrow_past_due", advances_escrow),
     ]:
-        if _set(out, fid, val):
+        if val and _set(out, fid, val):
             changes.append((fid, val, "payment-breakdown"))
 
-    # Escrow components
-    taxes = facts.get("property_taxes_monthly", "324.00")
-    insurance = facts.get("property_insurance_monthly", "118.00")
-    pmi = facts.get("pmi_monthly", "84.50")
+    # Escrow components — fill what is provided; total only when all
+    # three components are known (a partial sum would misstate the escrow
+    # payment) or explicitly given.
+    taxes = facts.get("property_taxes_monthly", "")
+    insurance = facts.get("property_insurance_monthly", "")
+    pmi = facts.get("pmi_monthly", "")
+    escrow_total = facts.get("current_escrow_payments", "")
+    if not escrow_total and taxes and insurance and pmi:
+        try:
+            escrow_total = f"{float(taxes.replace(',', '')) + float(insurance.replace(',', '')) + float(pmi.replace(',', '')):,.2f}"
+        except (ValueError, AttributeError):
+            escrow_total = ""
     for fid, val in [
-        ("current_escrow_payments", f"{float(taxes)+float(insurance)+float(pmi):,.2f}"),
+        ("current_escrow_payments", escrow_total),
         ("taxes", taxes), ("insurance", insurance), ("pmi", pmi),
     ]:
-        if _set(out, fid, val):
+        if val and _set(out, fid, val):
             changes.append((fid, val, "escrow"))
 
     # Property value
-    fmv = facts.get("current_fmv", "210,000.00")
-    if _set(out, "current_fmv", fmv):
+    fmv = facts.get("current_fmv", "")
+    if fmv and _set(out, "current_fmv", fmv):
         changes.append(("current_fmv", fmv, "fmv"))
 
     # Action / proceeding type (checkboxes — defaults)
@@ -94,10 +111,15 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if _set(out, fid, plaintiff_party.get("full_name", "")):
                 changes.append((fid, plaintiff_party["full_name"], "plaintiff-mirror"))
 
-    # Plan attendance Y/N (item: "Does plaintiff plan to attend by telephone?")
-    for fid in ("checkbox1", "checkbox2", "checkbox3", "checkbox4"):
-        if _set(out, fid, "No"):
-            changes.append((fid, "No", "default-no-telephonic"))
+    # Plan attendance Y/N ("Does plaintiff plan to attend by telephone?")
+    # Answer ONLY on an explicit fact — was defaulted to "No" for all four
+    # boxes, asserting the plaintiff's attendance plans.
+    attend_phone = facts.get("fdp_attend_by_telephone")
+    if attend_phone in (True, False, "yes", "no", "Yes", "No"):
+        val = "Yes" if attend_phone in (True, "yes", "Yes") else "No"
+        for fid in ("checkbox1", "checkbox2", "checkbox3", "checkbox4"):
+            if _set(out, fid, val):
+                changes.append((fid, val, "telephonic"))
 
     # ── Future Interest + Advanced Escrow combined currency ──
     # The form computes this as the sum of past-due interest and advances.
@@ -111,36 +133,35 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("future_interest_advanced_escrow", fia, "future-interest"))
 
     # ── Preparer block (printed name + name/title/phone narrative) ──
-    # The mortgage worksheet is typically prepared by plaintiff (lender)
-    # counsel or by the lender's loss-mitigation specialist.
+    # ONLY from explicit fdp_preparer_* facts or real plaintiff data —
+    # the old defaults invented a title, firm ("Acme Loan Servicing"),
+    # and a 555 phone number.
     preparer_name = facts.get("fdp_preparer_name",
-        plaintiff_party.get("full_name") or "Counsel for Plaintiff")
-    preparer_title = facts.get("fdp_preparer_title",
-        "Loss Mitigation Specialist")
+        plaintiff_party.get("full_name", ""))
+    preparer_title = facts.get("fdp_preparer_title", "")
     preparer_phone = facts.get("fdp_preparer_phone",
-        plaintiff_party.get("phone", "207-555-0150"))
-    preparer_firm = facts.get("fdp_preparer_firm",
-        "Acme Loan Servicing, LLC")
+        plaintiff_party.get("phone", ""))
+    preparer_firm = facts.get("fdp_preparer_firm", "")
 
-    if _set(out, "printed_name", preparer_name):
+    if preparer_name and _set(out, "printed_name", preparer_name):
         changes.append(("printed_name", preparer_name, "preparer-name"))
 
-    # 3-line preparer narrative
+    # 3-line preparer narrative — compose only from known parts
+    title_firm = ", ".join(p for p in (preparer_title, preparer_firm) if p)
     prep_lines = [
         preparer_name,
-        f"{preparer_title}, {preparer_firm}",
-        f"Telephone: {preparer_phone}",
+        title_firm,
+        f"Telephone: {preparer_phone}" if preparer_phone else "",
     ]
     for i, line in enumerate(prep_lines, start=1):
         fid = f"name_title_and_telephone_number_of_person_who_prepared_this_form_{i}"
-        if _set(out, fid, line):
+        if line and _set(out, fid, line):
             changes.append((fid, line, f"preparer-line-{i}"))
 
-    # ── Investor identification (item D) ──
-    investor = facts.get("fdp_investor",
-        "Acme Mortgage Investment Trust 2018-3 "
-        "(Acme Loan Servicing, LLC, master servicer)")
-    if _set(out,
+    # ── Investor identification (item D) — ONLY when explicitly provided
+    # (was a stock "Acme Mortgage Investment Trust"). ──
+    investor = facts.get("fdp_investor", "")
+    if investor and _set(out,
             "for_mediation_purposes_please_identify_the_investor_on_this_loan",
             investor):
         changes.append((

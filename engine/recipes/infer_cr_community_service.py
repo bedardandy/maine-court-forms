@@ -47,12 +47,15 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if _set(out, fid, dob_us):
                 changes.append((fid, dob_us, "dob"))
 
-    # CR-198: total community service hours needed
-    hours_needed = facts.get("community_service_hours_required", "40")
-    for fid in ("total_number_of_hours_needed",
-                 "hours_required", "hours_needed"):
-        if _set(out, fid, hours_needed):
-            changes.append((fid, hours_needed, "hours-required"))
+    # CR-198: total community service hours needed — fill ONLY when
+    # explicitly provided (was a hardcoded "40"); the hour count is a
+    # court-ordered term and must never be invented.
+    hours_needed = facts.get("community_service_hours_required", "")
+    if hours_needed:
+        for fid in ("total_number_of_hours_needed",
+                     "hours_required", "hours_needed"):
+            if _set(out, fid, hours_needed):
+                changes.append((fid, hours_needed, "hours-required"))
 
     # CR-239 is actually the DRUG COURT TRAVEL REQUEST form, not phase
     # tracking. The participant must request approval to travel and
@@ -62,37 +65,49 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
 
     # CR-239 / CR-198 — phase tracking still applies (CR-239 has a phase
     # gate to determine if travel is allowed under the program rules).
-    phase = facts.get("drug_court_phase", "Phase 3 — Advanced")
-    for fid in ("phase", "drug_court_phase", "current_phase"):
-        if _set(out, fid, phase):
-            changes.append((fid, phase, "phase"))
+    # Program status numbers — fill ONLY when explicitly provided (were
+    # hardcoded "Phase 3"/"63"/"18"); these are factual treatment-court
+    # records and fabricating them misstates the participant's standing.
+    phase = facts.get("drug_court_phase", "")
+    if phase:
+        for fid in ("phase", "drug_court_phase", "current_phase"):
+            if _set(out, fid, phase):
+                changes.append((fid, phase, "phase"))
 
-    negative_days = facts.get("drug_court_negative_days", "63")
-    for fid in ("documented_negative_testing_days",
-                 "negative_testing_days", "clean_days"):
-        if _set(out, fid, negative_days):
-            changes.append((fid, negative_days, "negative-days"))
+    negative_days = facts.get("drug_court_negative_days", "")
+    if negative_days:
+        for fid in ("documented_negative_testing_days",
+                     "negative_testing_days", "clean_days"):
+            if _set(out, fid, negative_days):
+                changes.append((fid, negative_days, "negative-days"))
 
     # Hours completed (CR-198, CR-239 status reporting)
-    hours_completed = facts.get("community_service_hours_completed", "18")
-    for fid in ("hours_completed", "hours_to_date"):
-        if _set(out, fid, hours_completed):
-            changes.append((fid, hours_completed, "hours-completed"))
+    hours_completed = facts.get("community_service_hours_completed", "")
+    if hours_completed:
+        for fid in ("hours_completed", "hours_to_date"):
+            if _set(out, fid, hours_completed):
+                changes.append((fid, hours_completed, "hours-completed"))
 
-    # CR-011 — Victim notification list (up to 3 victims)
+    # CR-011 — Victim notification list (up to 3 victims). Fill ONLY from
+    # facts.victims or explicit victim_* facts. Never invent a stock victim
+    # (was "Jane M. Doe, DOB 01/15/1985, 127 Maple Avenue..."): a fabricated
+    # victim identity on a notification list is a serious misstatement.
     victims = facts.get("victims") or []
-    if not victims and "names_dobs_and_addresses_of_victims_1" in kv_map:
-        # Stock victim entry when no victim party provided
+    if (not victims and "names_dobs_and_addresses_of_victims_1" in kv_map
+            and facts.get("victim_name")):
         victims = [{
-            "full_name": facts.get("victim_name", "Jane M. Doe"),
-            "dob": facts.get("victim_dob", "01/15/1985"),
-            "address": facts.get("victim_address",
-                                     "127 Maple Avenue, Portland, ME 04101"),
+            "full_name": facts.get("victim_name", ""),
+            "dob": facts.get("victim_dob", ""),
+            "address": facts.get("victim_address", ""),
         }]
     for i, v in enumerate(victims[:3], start=1):
         if isinstance(v, dict):
-            line = (f"{v.get('full_name','')} (DOB "
-                      f"{v.get('dob','')}) — {v.get('address','')}")
+            parts = [v.get("full_name", "")]
+            if v.get("dob"):
+                parts.append(f"(DOB {v['dob']})")
+            if v.get("address"):
+                parts.append(f"— {v['address']}")
+            line = " ".join(p for p in parts if p)
         else:
             line = str(v)
         if line and _set(out, f"names_dobs_and_addresses_of_victims_{i}",
@@ -106,31 +121,32 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                                 or case.get("event_date", ""))
         if _set(out, "todays_date", today_us):
             changes.append(("todays_date", today_us, "cr239-today"))
-        leave_us = _iso_to_us(facts.get("travel_leave_date",
-                                            case.get("event_date", "")))
-        return_us = _iso_to_us(facts.get("travel_return_date",
-                                             leave_us))
-        if _set(out, "date_i_wish_to_leave", leave_us):
+        # Travel window — ONLY when explicitly provided. Do not borrow
+        # case.event_date or echo the leave date as the return date; the
+        # requested window is the substance of the request.
+        leave_us = _iso_to_us(facts.get("travel_leave_date", ""))
+        return_us = _iso_to_us(facts.get("travel_return_date", ""))
+        if leave_us and _set(out, "date_i_wish_to_leave", leave_us):
             changes.append(("date_i_wish_to_leave", leave_us, "cr239-leave"))
-        if _set(out, "date_i_wish_to_return", return_us):
+        if return_us and _set(out, "date_i_wish_to_return", return_us):
             changes.append(("date_i_wish_to_return", return_us, "cr239-return"))
 
-        # Travel narrative blanks
-        reason = facts.get("travel_reason",
-            "Attend mother's 70th birthday gathering with immediate family. "
-            "Travel approved by program counselor.")
-        if _set(out, "reason_for_travel", reason):
+        # Travel narrative blanks — fill ONLY when explicitly provided.
+        # Never fabricate a travel reason / mode / companions (was a stock
+        # birthday-trip narrative with invented family members).
+        reason = facts.get("travel_reason", "")
+        if reason and _set(out, "reason_for_travel", reason):
             changes.append(("reason_for_travel", reason, "cr239-reason"))
-        mode = facts.get("travel_mode", "Personal vehicle (driving)")
-        if _set(out, "mode_of_travel", mode):
+        mode = facts.get("travel_mode", "")
+        if mode and _set(out, "mode_of_travel", mode):
             changes.append(("mode_of_travel", mode, "cr239-mode"))
-        companions = facts.get("travel_companions",
-            "Spouse (Sarah M. Doe) and one (1) minor child (Emma R. Doe, age 9)")
-        if _set(out, "traveling_with", companions):
+        companions = facts.get("travel_companions", "")
+        if companions and _set(out, "traveling_with", companions):
             changes.append(("traveling_with", companions, "cr239-companions"))
 
-        # Participant DOB split: month / day / year (3-col widget set)
-        dob = participant.get("dob", "1985-06-15")
+        # Participant DOB split: month / day / year (3-col widget set).
+        # ONLY when the case provides a DOB (was a hardcoded 1985-06-15).
+        dob = participant.get("dob", "")
         if dob and "-" in dob:
             y, m, d = dob[:10].split("-")
             if _set(out, "month", m):
@@ -141,46 +157,49 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                 changes.append(("year", y, "cr239-dob-yr"))
 
         # Contact info (two cellphone widgets — one for participant, one
-        # alternate emergency contact)
+        # alternate emergency contact). ONLY when provided — never invent
+        # phone numbers (were hardcoded 555 numbers).
         cell = (participant.get("phone_cell")
-                  or participant.get("phone", "(207) 555-0142"))
-        cell_alt = facts.get("travel_alt_contact_phone",
-                                "(207) 555-0199")
-        for fid in ("contact_information_cellphone",):
-            if _set(out, fid, cell):
-                changes.append((fid, cell, "cr239-cell"))
-        if _set(out, "contact_information_cellphone_2", cell_alt):
+                  or participant.get("phone", ""))
+        cell_alt = facts.get("travel_alt_contact_phone", "")
+        if cell and _set(out, "contact_information_cellphone", cell):
+            changes.append(("contact_information_cellphone", cell,
+                              "cr239-cell"))
+        if cell_alt and _set(out, "contact_information_cellphone_2",
+                                cell_alt):
             changes.append(("contact_information_cellphone_2", cell_alt,
                               "cr239-cell-2"))
 
-        # Destination
-        dest = facts.get("travel_to_address", "245 Sea Pines Drive")
-        dest_csz = facts.get("travel_to_citystate",
-                                  "Kennebunkport, ME 04046")
-        if _set(out, "traveling_to_address", dest):
+        # Destination — ONLY when provided (was a hardcoded Kennebunkport
+        # address); a wrong destination misstates where the participant
+        # will be.
+        dest = facts.get("travel_to_address", "")
+        dest_csz = facts.get("travel_to_citystate", "")
+        if dest and _set(out, "traveling_to_address", dest):
             changes.append(("traveling_to_address", dest, "cr239-dest"))
-        if _set(out, "citystate", dest_csz):
+        if dest_csz and _set(out, "citystate", dest_csz):
             changes.append(("citystate", dest_csz, "cr239-csz"))
 
-        # If driving — vehicle info
-        if _set(out, "if_driving_make",
-                facts.get("travel_vehicle_make", "Toyota")):
-            changes.append(("if_driving_make",
-                              facts.get("travel_vehicle_make","Toyota"),
-                              "cr239-make"))
-        if _set(out, "model",
-                facts.get("travel_vehicle_model", "Camry")):
-            changes.append(("model", facts.get("travel_vehicle_model","Camry"),
-                              "cr239-model"))
-        if _set(out, "tag_number",
-                facts.get("travel_vehicle_tag", "MAINE-4521")):
-            changes.append(("tag_number",
-                              facts.get("travel_vehicle_tag","MAINE-4521"),
-                              "cr239-tag"))
+        # If driving — vehicle info. ONLY when provided (was a hardcoded
+        # Toyota Camry + plate); a wrong vehicle misleads supervision.
+        make = facts.get("travel_vehicle_make", "")
+        if make and _set(out, "if_driving_make", make):
+            changes.append(("if_driving_make", make, "cr239-make"))
+        model = facts.get("travel_vehicle_model", "")
+        if model and _set(out, "model", model):
+            changes.append(("model", model, "cr239-model"))
+        tag = facts.get("travel_vehicle_tag", "")
+        if tag and _set(out, "tag_number", tag):
+            changes.append(("tag_number", tag, "cr239-tag"))
 
-        # Recommendation defaults (case manager + supervisor both approve)
-        for fid in ("recommend_approval", "recommend_approval_2", "approved"):
-            if _set(out, fid, "X"):
+        # Recommendation / approval checkboxes belong to program staff and
+        # the court. Check ONLY on an explicit boolean fact — never default
+        # to approved (these were auto-checked for every fill).
+        approve_map = (("recommend_approval", "cr239_recommend_approval"),
+                        ("recommend_approval_2", "cr239_recommend_approval_2"),
+                        ("approved", "cr239_approved"))
+        for fid, key in approve_map:
+            if facts.get(key) is True and _set(out, fid, "X"):
                 changes.append((fid, "X", "cr239-approve"))
 
     return out, changes

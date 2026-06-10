@@ -32,29 +32,30 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     parties = case.get("parties") or {}
     court = case.get("court") or {}
 
-    # Attorney is the filer. Fall back to a stock identity if absent.
+    # Attorney is the filer. Build ONLY from explicit oth085_attorney_*
+    # facts when no attorney party exists. Never invent counsel (was a
+    # stock "Eleanor M. Walsh, Esq." with bar number, address, phone):
+    # a fabricated appearing attorney is a material misstatement. When no
+    # attorney is known, the attorney fields stay blank/unresolved.
     attorney = parties.get("attorney") or {}
-    if not attorney.get("full_name"):
+    if not attorney.get("full_name") and facts.get("oth085_attorney_name"):
         attorney = {
-            "full_name": facts.get("oth085_attorney_name",
-                                       "Eleanor M. Walsh, Esq."),
-            "bar_number": facts.get("oth085_attorney_bar",
-                                        "Maine Bar No. 5187"),
-            "address": facts.get("oth085_attorney_address",
-                                     "44 Exchange Street, Suite 200"),
+            "full_name": facts.get("oth085_attorney_name", ""),
+            "bar_number": facts.get("oth085_attorney_bar", ""),
+            "address": facts.get("oth085_attorney_address", ""),
             "city": facts.get("oth085_attorney_city",
-                                  court.get("location", "Portland")),
+                                  court.get("location", "")),
             "state": "ME",
-            "zip": facts.get("oth085_attorney_zip", "04101"),
-            "phone": facts.get("oth085_attorney_phone", "(207) 555-0149"),
-            "email": facts.get("oth085_attorney_email",
-                                   "ewalsh@walshlaw.example"),
+            "zip": facts.get("oth085_attorney_zip", ""),
+            "phone": facts.get("oth085_attorney_phone", ""),
+            "email": facts.get("oth085_attorney_email", ""),
         }
+    atty_name = attorney.get("full_name", "")
 
     # 1. Attorney name + bar
     bar = attorney.get("bar_number", "")
-    name_bar = f"{attorney['full_name']}, {bar}" if bar else attorney["full_name"]
-    if _set(out, "1_my_full_name_and_maine_bar_no", name_bar):
+    name_bar = f"{atty_name}, {bar}" if (atty_name and bar) else atty_name
+    if name_bar and _set(out, "1_my_full_name_and_maine_bar_no", name_bar):
         changes.append(("1_my_full_name_and_maine_bar_no", name_bar,
                           "oth085-name-bar"))
 
@@ -69,11 +70,12 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             "isare_list_all_parties_you_represent_by_name_if_there_are_multiple_1",
             represented, "oth085-represented"))
 
-    # 3. Court name
-    court_name = (facts.get("oth085_court_name")
-                   or f"{court.get('name','Maine District Court')}, "
-                      f"{court.get('location','Portland')} location")
-    if _set(out, "3_the_case_is_pending_in_court_name", court_name):
+    # 3. Court name — compose ONLY from real court data (the location was
+    # previously defaulted to "Portland", fabricating venue).
+    court_name = facts.get("oth085_court_name", "")
+    if not court_name and court.get("name") and court.get("location"):
+        court_name = (f"{court['name']}, {court['location']} location")
+    if court_name and _set(out, "3_the_case_is_pending_in_court_name", court_name):
         changes.append(("3_the_case_is_pending_in_court_name", court_name,
                           "oth085-court"))
 
@@ -96,8 +98,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             "5_the_names_of_all_other_parties_associated_with_this_case_that_are_known_to_me_that_i_do_not_represent_are_1",
             other_parties, "oth085-other-parties"))
 
-    # Case-type radio
-    case_type = (case.get("case_type", "Family Matters") or "").lower()
+    # Case-type radio — check ONLY when the case type is explicitly known
+    # and recognized (was defaulted to Family Matters → "civil" box).
+    case_type = (case.get("case_type") or "").lower()
     type_map = {
         "civil":        "civil",
         "family":       "family",
@@ -108,8 +111,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "adoption":     "probate_adoption_guardianship_minor_name_change",
         "guardianship": "probate_adoption_guardianship_minor_name_change",
     }
-    type_fid = type_map.get(case_type, "civil")
-    if _set(out, type_fid, "X"):
+    type_fid = type_map.get(case_type) if case_type else None
+    if type_fid and _set(out, type_fid, "X"):
         changes.append((type_fid, "X", "oth085-case-type"))
 
     # Signature date + attorney mailing address
@@ -117,17 +120,21 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                                  case.get("event_date") or "")
     if _set(out, "date_mmddyyyy", sig_date_us):
         changes.append(("date_mmddyyyy", sig_date_us, "oth085-sig-date"))
-    if _set(out, "undefined", attorney["full_name"]):
-        changes.append(("undefined", attorney["full_name"], "oth085-signer"))
+    if atty_name and _set(out, "undefined", atty_name):
+        changes.append(("undefined", atty_name, "oth085-signer"))
     if _set(out, "undefined_2", sig_date_us):
         changes.append(("undefined_2", sig_date_us, "oth085-sig-date-2"))
 
-    # Attorney mailing address (3-line)
+    # Attorney mailing address (3-line) — ONLY when actually provided.
     atty_addr_1 = attorney.get("address", "")
-    atty_addr_2 = f"{attorney.get('city','')}, {attorney.get('state','ME')} {attorney.get('zip','')}".strip(", ")
-    if _set(out, "mailing_address_1", atty_addr_1):
+    atty_addr_2 = ""
+    if attorney.get("city") or attorney.get("zip"):
+        atty_addr_2 = (f"{attorney.get('city','')}, "
+                        f"{attorney.get('state','ME')} "
+                        f"{attorney.get('zip','')}").strip(", ")
+    if atty_addr_1 and _set(out, "mailing_address_1", atty_addr_1):
         changes.append(("mailing_address_1", atty_addr_1, "oth085-addr-1"))
-    if _set(out, "mailing_address_2", atty_addr_2):
+    if atty_addr_2 and _set(out, "mailing_address_2", atty_addr_2):
         changes.append(("mailing_address_2", atty_addr_2, "oth085-addr-2"))
 
     # Attorney email + phone. These widgets sit in the attorney declaration

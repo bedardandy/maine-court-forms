@@ -47,31 +47,23 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "docket_no", case.get("docket_no", "")):
         changes.append(("docket_no", case.get("docket_no",""), "dock"))
 
-    # Property block 1
-    desc1 = facts.get("fm_property1_description",
-                        "Single-family residence held in the parties' joint "
-                        "names as marital residence.")
+    # Property block 1 — every value here describes a recorded interest in
+    # real estate. Fill ONLY from explicit fm_property1_* / fm_marriage_date
+    # facts. The old defaults invented a property description, address,
+    # deed date, registry, book/page numbers, and a marriage date — all
+    # material misstatements on a certificate filed with the court.
+    desc1 = facts.get("fm_property1_description", "")
 
-    def _full_addr(p: dict, fallback: str = "") -> str:
-        street = p.get("address") or p.get("mailing_address", "")
-        city = p.get("city", "")
-        state = p.get("state", "")
-        zipc = p.get("zip", "")
-        tail = ", ".join(x for x in (city, f"{state} {zipc}".strip()) if x)
-        full = ", ".join(x for x in (street, tail) if x)
-        return full or fallback
+    # Property address ONLY from the explicit fact — a party's home
+    # address is not necessarily the property at issue.
+    addr1 = facts.get("fm_property1_address", "")
+    deed1_date = facts.get("fm_property1_deed_date", "")
+    registry1 = facts.get("fm_property1_registry", "")
+    book1 = facts.get("fm_property1_book", "")
+    page1 = facts.get("fm_property1_page", "")
+    marriage_date = facts.get("fm_marriage_date", "")
 
-    addr1 = facts.get("fm_property1_address",
-                        _full_addr(plaintiff,
-                                     "22 Maple Street, Portland, ME 04101"))
-    deed1_date = facts.get("fm_property1_deed_date", "06/15/2010")
-    registry1 = facts.get("fm_property1_registry",
-                            "Cumberland County")
-    book1 = facts.get("fm_property1_book", "12345")
-    page1 = facts.get("fm_property1_page", "67")
-    marriage_date = facts.get("fm_marriage_date", "05/20/2008")
-
-    if _set(out,
+    if desc1 and _set(out,
             "one_or_both_parties_have_an_interest_in_the_following_real_estate",
             desc1):
         changes.append((
@@ -93,22 +85,24 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             "street_address_do_not_use_mailing_address_if_different_2",
             line2, "p1-addr2"))
 
-    if _set(out, "the_deed_is_dated_mmddyyyy", deed1_date):
+    if deed1_date and _set(out, "the_deed_is_dated_mmddyyyy", deed1_date):
         changes.append(("the_deed_is_dated_mmddyyyy", deed1_date, "p1-deed"))
-    if _set(out, "and_recorded_in_the", registry1):
+    if registry1 and _set(out, "and_recorded_in_the", registry1):
         changes.append(("and_recorded_in_the", registry1, "p1-reg"))
-    if _set(out, "registry_of_deeds_in_book", book1):
+    if book1 and _set(out, "registry_of_deeds_in_book", book1):
         changes.append(("registry_of_deeds_in_book", book1, "p1-book"))
-    if _set(out, "page", page1):
+    if page1 and _set(out, "page", page1):
         changes.append(("page", page1, "p1-page"))
 
-    # Date of marriage
-    if _set(out, "date_of_marriage_mmddyyyy", marriage_date):
+    # Date of marriage — ONLY when explicitly provided
+    if marriage_date and _set(out, "date_of_marriage_mmddyyyy",
+                                marriage_date):
         changes.append(("date_of_marriage_mmddyyyy", marriage_date, "marr1"))
 
-    # Acquired-by-gift radio (default No)
-    gift1 = facts.get("fm_property1_by_gift", "no")
-    if _set(out, "was_the_property_acquired_by_gift_or_inheritance",
+    # Acquired-by-gift radio — answer ONLY when explicitly provided (was
+    # defaulted to "No", asserting how the property was acquired).
+    gift1 = facts.get("fm_property1_by_gift", "")
+    if gift1 and _set(out, "was_the_property_acquired_by_gift_or_inheritance",
             gift1.title()):
         changes.append(("was_the_property_acquired_by_gift_or_inheritance",
                         gift1.title(), "p1-gift"))
@@ -160,7 +154,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "defendant_2", defendant.get("full_name","")):
             changes.append(("defendant_2", defendant.get("full_name",""),
                             "p2-df"))
-        if _set(out, "date_of_marriage_mmddyyyy_2", marriage_date):
+        if marriage_date and _set(out, "date_of_marriage_mmddyyyy_2",
+                                    marriage_date):
             changes.append(("date_of_marriage_mmddyyyy_2",
                             marriage_date, "p2-marr"))
 
@@ -188,17 +183,19 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if _set(out, "bar_number", attorney["bar_number"]):
             changes.append(("bar_number", attorney["bar_number"], "att-bar"))
 
-    # "Attorney for" — pick plaintiff if attorney's party matches
-    atty_for = facts.get("fm_attorney_for", "plaintiff")
-    if _set(out, "attorney_for", atty_for.title()):
-        changes.append(("attorney_for", atty_for.title(), "att-for"))
-    # Plaintiff/defendant_3 checkboxes for who the attorney represents
-    if atty_for.lower() == "plaintiff":
-        if _set(out, "plaintiff_3", "X"):
-            changes.append(("plaintiff_3", "X", "pl3"))
-    else:
-        if _set(out, "defendant_3", "X"):
-            changes.append(("defendant_3", "X", "df3"))
+    # "Attorney for" — ONLY when explicitly provided (was defaulted to
+    # "plaintiff", asserting who counsel represents even in pro-se fills).
+    atty_for = facts.get("fm_attorney_for", "")
+    if atty_for:
+        if _set(out, "attorney_for", atty_for.title()):
+            changes.append(("attorney_for", atty_for.title(), "att-for"))
+        # Plaintiff/defendant_3 checkboxes for who the attorney represents
+        if atty_for.lower() == "plaintiff":
+            if _set(out, "plaintiff_3", "X"):
+                changes.append(("plaintiff_3", "X", "pl3"))
+        else:
+            if _set(out, "defendant_3", "X"):
+                changes.append(("defendant_3", "X", "df3"))
 
     # Signature widget
     if attorney.get("full_name") and _set(

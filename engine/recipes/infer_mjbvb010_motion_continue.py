@@ -57,45 +57,51 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     if _set(out, "trial_date", _iso_to_us(trial_date)):
         changes.append(("trial_date", _iso_to_us(trial_date), "trial-date"))
 
-    days = str(facts.get("continuance_days", "30"))
-    if _set(out, "number_of_days", days):
-        changes.append(("number_of_days", days, "days"))
-    # Long squashed field_id used by the schema
-    if _set(out,
-            "how_longofa_continuance_are_you_askingfornumber_ofdays",
-            days):
-        changes.append((
-            "how_longofa_continuance_are_you_askingfornumber_ofdays",
-            days, "days-long"))
+    # Continuance length — ONLY when explicitly provided (was a 30-day
+    # default; the requested length is the substance of the motion).
+    days = str(facts.get("continuance_days", "") or "")
+    if days:
+        if _set(out, "number_of_days", days):
+            changes.append(("number_of_days", days, "days"))
+        # Long squashed field_id used by the schema
+        if _set(out,
+                "how_longofa_continuance_are_you_askingfornumber_ofdays",
+                days):
+            changes.append((
+                "how_longofa_continuance_are_you_askingfornumber_ofdays",
+                days, "days-long"))
 
-    # Medical-reasons radio (default "No"), affidavit reference radio
-    medical = facts.get("medical_reasons", "No")
-    if _set(out,
+    # Medical-reasons radio — answer ONLY when explicitly provided (was
+    # defaulted to "No", answering a factual question for the movant).
+    medical = facts.get("medical_reasons", "")
+    if medical and _set(out,
             "ifyou_answeredyes_on_the_previous_question_use_the_attachedconfidentialaffidavitpage_2to",
             medical):
         changes.append((
             "ifyou_answeredyes_on_the_previous_question_use_the_attachedconfidentialaffidavitpage_2to",
             medical, "medical"))
 
-    # Reason narrative (page 1)
-    reason = facts.get("continuance_reason",
-        "I have a scheduled out-of-state work commitment on the trial "
-        "date that cannot be rescheduled without significant cost.")
-    if _set(out, "reason_for_request", reason):
-        changes.append(("reason_for_request", reason, "reason"))
-    if _set(out, "reason_for_request1", reason):
-        changes.append(("reason_for_request1", reason, "reason-1"))
+    # Reason narrative (page 1) — ONLY when explicitly provided (was a
+    # stock "out-of-state work commitment" reason).
+    reason = facts.get("continuance_reason", "")
+    if reason:
+        if _set(out, "reason_for_request", reason):
+            changes.append(("reason_for_request", reason, "reason"))
+        if _set(out, "reason_for_request1", reason):
+            changes.append(("reason_for_request1", reason, "reason-1"))
 
-    # Court-presentation acknowledgments (radios; default "Yes")
-    if _set(out,
+    # Court-presentation acknowledgment + notification certification —
+    # ONLY on explicit boolean facts (these were auto-answered "Yes";
+    # the notification line is a certification of service).
+    if (facts.get("mjbvb010_ack_presented") is True and _set(out,
             "i_understand_thatthisrequestwillbepresentedtothecourt_for",
-            "Yes"):
+            "Yes")):
         changes.append((
             "i_understand_thatthisrequestwillbepresentedtothecourt_for",
             "Yes", "ack-court"))
-    if _set(out,
+    if (facts.get("mjbvb010_parties_notified") is True and _set(out,
             "i_certify_thatallnamed_parties_have_been_notifiedof_this_filing",
-            "Yes"):
+            "Yes")):
         changes.append((
             "i_certify_thatallnamed_parties_have_been_notifiedof_this_filing",
             "Yes", "ack-notified"))
@@ -118,16 +124,19 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("printedname", name, "printedname"))
     if _set(out, "printed_name", name):
         changes.append(("printed_name", name, "printed-name"))
-    # Movant role/agency (default "Self-represented (Pro se)")
-    role = facts.get("movant_agency", "Self-represented (pro se)")
-    if _set(out, "agencydepartment", role):
+    # Movant role/agency — ONLY when explicitly provided (was defaulted
+    # to "Self-represented (pro se)", asserting representation status).
+    role = facts.get("movant_agency", "")
+    if role and _set(out, "agencydepartment", role):
         changes.append(("agencydepartment", role, "agency-dept"))
-    # First-request Yes/No (default "Yes")
-    first_req = facts.get("first_continuance", "Yes")
-    for fid in ("first_request_yes_no", "first_request",
-                 "is_this_the_first_request"):
-        if _set(out, fid, first_req):
-            changes.append((fid, first_req, "first-req"))
+    # First-request Yes/No — ONLY when explicitly provided (was defaulted
+    # to "Yes", asserting no prior continuance was requested).
+    first_req = facts.get("first_continuance", "")
+    if first_req:
+        for fid in ("first_request_yes_no", "first_request",
+                     "is_this_the_first_request"):
+            if _set(out, fid, first_req):
+                changes.append((fid, first_req, "first-req"))
     # "Medical reasons" Yes/No (separate from the affidavit-reference radio).
     # Schema doesn't have a dedicated checkbox; the answer goes into the
     # page-2 medical narrative `reasons_are_as_follows_1`.
@@ -144,7 +153,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("v", "v.", "v"))
 
     # Page-2 reasons-are-as-follows lines (first row populated)
-    if _set(out, "reasons_are_as_follows_1", reason):
+    if reason and _set(out, "reasons_are_as_follows_1", reason):
         changes.append(("reasons_are_as_follows_1", reason, "reasons-1"))
 
     # Additional names / additional names1/2 — leave blank if no

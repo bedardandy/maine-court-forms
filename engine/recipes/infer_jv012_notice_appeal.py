@@ -62,10 +62,13 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                  or {})
     appellant_attorney = (parties.get("attorney")
                            or parties.get("appellants_attorney") or {})
-    if not appellant_attorney:
+    if not appellant_attorney and facts.get("attorney_name"):
+        # Attorney block ONLY from explicit facts. Never invent counsel
+        # (was a stock "Sarah J. Whitfield, Esq. / Maine Bar No. 12345"):
+        # a fabricated attorney-of-record is a material misstatement.
         appellant_attorney = {
-            "full_name": facts.get("attorney_name", "Sarah J. Whitfield, Esq."),
-            "bar_number": facts.get("attorney_bar", "Maine Bar No. 12345"),
+            "full_name": facts.get("attorney_name", ""),
+            "bar_number": facts.get("attorney_bar", ""),
         }
 
     # Caption: docket/location (schema-swap, same as PA-010). Force over
@@ -81,15 +84,21 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("v", juvenile.get("full_name",""), "juvenile"))
 
     # ── y=192 "Notice is given that ___" narrative ──
+    # Composed ONLY when the appellant role is explicitly provided (the
+    # role was previously defaulted to "juvenile", silently asserting who
+    # is appealing). With no role and no explicit text, leave it blank.
     juv_name = juvenile.get("full_name") or "the juvenile"
-    role = facts.get("jv012_appellant_role", "juvenile")
-    notice_text = facts.get("jv012_notice_text",
-        f"{juv_name}, who is the {role} in the above-captioned proceeding,")
-    if _set(out, "mru_crim_p_36f_15_mrs_3402", notice_text):
+    role = facts.get("jv012_appellant_role", "")
+    notice_text = facts.get("jv012_notice_text", "")
+    if not notice_text and role:
+        notice_text = (f"{juv_name}, who is the {role} in the "
+                        "above-captioned proceeding,")
+    if notice_text and _set(out, "mru_crim_p_36f_15_mrs_3402", notice_text):
         changes.append(("mru_crim_p_36f_15_mrs_3402", notice_text,
                         "notice-narrative"))
 
     # ── y=208-237: who is appealing (3-way radio, single check) ──
+    # Check ONLY when the role is explicitly provided and recognized.
     role_map = {
         "juvenile": "juvenile_in_the_proceeding_or",
         "parent": "parentguardianlegal_custodian_of_the_juvenile_or",
@@ -97,9 +106,8 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "ada": "assistant_district_attorney_or_assistant_attorney_",
         "state": "assistant_district_attorney_or_assistant_attorney_",
     }
-    role_fid = role_map.get(role.lower(),
-                              "juvenile_in_the_proceeding_or")
-    if _set(out, role_fid, "X"):
+    role_fid = role_map.get(role.lower()) if role else None
+    if role_fid and _set(out, role_fid, "X"):
         changes.append((role_fid, "X", "appellant-role"))
 
     # ── y=273-317: appeal-type checkbox (single check) ──
@@ -112,9 +120,11 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "detention": "detention_order",
         "refusal": "refusal_to_modify_detention_order",
     }
-    appeal_type = facts.get("jv012_appeal_type", "bindover").lower()
-    appeal_fid = appeal_type_map.get(appeal_type, "bindover_determination")
-    if _set(out, appeal_fid, "X"):
+    # Check ONLY when explicitly provided (was defaulted to "bindover"):
+    # the appeal type defines the appeal and must never be guessed.
+    appeal_type = facts.get("jv012_appeal_type", "").lower()
+    appeal_fid = appeal_type_map.get(appeal_type) if appeal_type else None
+    if appeal_fid and _set(out, appeal_fid, "X"):
         changes.append((appeal_fid, "X", "appeal-type"))
 
     # ── y=315 entered_on date ──
@@ -125,7 +135,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("entered_on_mmddyyyy", entered_us, "entered-date"))
 
     # ── y=377-478: custody disposition (3-way radio + address narrative) ──
-    custody_status = facts.get("jv012_custody_status", "corrections").lower()
+    # Check ONLY when explicitly provided (was defaulted to "corrections",
+    # asserting the juvenile is in DOC custody).
+    custody_status = facts.get("jv012_custody_status", "").lower()
     custody_fid_map = {
         "corrections": "is_presently_in_custody_of_the_department_of_corre",
         "doc": "is_presently_in_custody_of_the_department_of_corre",
@@ -134,9 +146,9 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         "not": "is_not_presently_in_custody_the_juveniles_address_",
         "home": "is_not_presently_in_custody_the_juveniles_address_",
     }
-    custody_fid = custody_fid_map.get(custody_status,
-                                        "is_presently_in_custody_of_the_department_of_corre")
-    if _set(out, custody_fid, "X"):
+    custody_fid = (custody_fid_map.get(custody_status)
+                    if custody_status else None)
+    if custody_fid and _set(out, custody_fid, "X"):
         changes.append((custody_fid, "X", "custody-status"))
 
     # Custody address — for DOC/HHS, the address is the agency's;
@@ -153,19 +165,21 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             changes.append(("2_2", juv_addr, "juv-addr-1"))
         if _set(out, "undefined_3", juv_city_state):
             changes.append(("undefined_3", juv_city_state, "juv-addr-2"))
-    else:
-        # DOC/HHS custody — use stock agency address
-        agency_addr_1 = facts.get("jv012_agency_addr_1",
-            "Long Creek Youth Development Center")
-        agency_addr_2 = facts.get("jv012_agency_addr_2",
-            "675 Westbrook St, South Portland, ME 04106")
-        if _set(out, "1", agency_addr_1):
+    elif custody_status:
+        # DOC/HHS custody — agency address ONLY from explicit facts (was a
+        # stock Long Creek address, wrong for HHS and unverified for DOC).
+        agency_addr_1 = facts.get("jv012_agency_addr_1", "")
+        agency_addr_2 = facts.get("jv012_agency_addr_2", "")
+        if agency_addr_1 and _set(out, "1", agency_addr_1):
             changes.append(("1", agency_addr_1, "agency-addr-1"))
-        if _set(out, "2", agency_addr_2):
+        if agency_addr_2 and _set(out, "2", agency_addr_2):
             changes.append(("2", agency_addr_2, "agency-addr-2"))
 
-    # ── y=501 transcript order filed (default Yes) ──
-    if _set(out, "transcript_order_filed", "X"):
+    # ── y=501 transcript order filed — check ONLY on an explicit boolean
+    # fact (was auto-checked, asserting a transcript order that may not
+    # have been filed). ──
+    if (facts.get("jv012_transcript_ordered") is True
+            and _set(out, "transcript_order_filed", "X")):
         changes.append(("transcript_order_filed", "X", "transcript"))
 
     # ── y=552 signature date + undefined_4 (printed signature) ──

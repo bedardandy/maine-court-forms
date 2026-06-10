@@ -67,7 +67,8 @@ def _process_ad006(out: dict, case: dict, changes: list) -> None:
          "Maine"),
         ("under_the_laws_of", "Maine"),
         ("state_of", "Maine"),
-        ("county", court.get("county", "Cumberland")),
+        # County from real court data only (was defaulted "Cumberland")
+        ("county", court.get("county", "")),
         ("name_and", adopting_pair),
         ("dated", sig_date_us),
         ("dated_2", sig_date_us),
@@ -262,9 +263,10 @@ def _process_ad030(out: dict, case: dict, changes: list) -> None:
         ("legal_residence", pet_addr),
         ("mailing_address", pet_addr),
         ("telephone", petitioner.get("phone", "")),
+        # Marriage date/place ONLY when explicitly provided (was a
+        # stock "06/14/2008, Portland, Maine").
         ("dateplace_of_marriage",
-         facts.get("ad_marriage_date_place",
-                    "06/14/2008, Portland, Maine")),
+         facts.get("ad_marriage_date_place", "")),
         # Petitioner 2 — full addr with city/state/zip
         ("name_2", copetitioner.get("full_name", "")),
         ("date_of_birth_2", _iso_to_us(copetitioner.get("dob", ""))),
@@ -272,13 +274,13 @@ def _process_ad030(out: dict, case: dict, changes: list) -> None:
         ("mailing_address_2", cop_addr),
         ("telephone_2", copetitioner.get("phone", "")),
         ("dateplace_of_marriage_2",
-         facts.get("ad_marriage_date_place",
-                    "06/14/2008, Portland, Maine")),
+         facts.get("ad_marriage_date_place", "")),
         # Adoptee
         ("name_3", adoptee.get("full_name", "")),
         ("date_of_birth_3", _iso_to_us(adoptee.get("dob", ""))),
-        ("place_of_birth", facts.get("adoptee_place_of_birth",
-                                        "Portland, Maine")),
+        # Birthplace ONLY when explicitly provided (was a stock
+        # "Portland, Maine").
+        ("place_of_birth", facts.get("adoptee_place_of_birth", "")),
     ]
     # Force-overwrite (not fill-if-empty): build_kv_map's narrative pass
     # pollutes the caption identity widgets (e.g. the adoptee Name `name_3`
@@ -415,9 +417,8 @@ def _process_ad030(out: dict, case: dict, changes: list) -> None:
             if out.get(fid):
                 out[fid] = ""
                 changes.append((fid, "", "030-b3-clear"))
-    if _set(out, "county", court.get("county", "Cumberland")):
-        changes.append(("county", court.get("county","Cumberland"),
-                        "030-county"))
+    if court.get("county") and _set(out, "county", court["county"]):
+        changes.append(("county", court["county"], "030-county"))
     if _set(out, "personally_appeared_the_above_named", pl_name):
         changes.append(("personally_appeared_the_above_named", pl_name,
                         "030-notary"))
@@ -432,14 +433,14 @@ def _process_ad003(out: dict, case: dict, changes: list) -> None:
     court = case.get("court") or {}
     adoptee = (parties.get("adoptee") or parties.get("minor")
                 or parties.get("child") or {})
-    # Signer = guardian / DHHS officer (synthesize if absent)
+    # Signer = guardian / DHHS officer — ONLY from a real party or an
+    # explicit fact. Never synthesize a consenting signer (was a stock
+    # "Catherine M. Whitford"); a fabricated consent signer is a material
+    # misstatement on a consent to adoption.
     signer = (parties.get("legal_guardian") or parties.get("guardian")
                 or parties.get("consenting_parent") or {})
     if not signer.get("full_name"):
-        signer = {
-            "full_name": facts.get("ad003_signer_name",
-                                       "Catherine M. Whitford"),
-        }
+        signer = {"full_name": facts.get("ad003_signer_name", "")}
     adoptive = parties.get("petitioner") or parties.get("plaintiff") or {}
 
     if _set(out, "location", court.get("location", "")):
@@ -448,16 +449,17 @@ def _process_ad003(out: dict, case: dict, changes: list) -> None:
         changes.append(("docket_no_2", case.get("docket_no",""), "003-dock"))
     if _set(out, "docket_no", case.get("docket_no", "")):
         changes.append(("docket_no", case.get("docket_no",""), "003-dock2"))
-    if _set(out, "county", court.get("county", "Cumberland")):
-        changes.append(("county", court.get("county","Cumberland"), "003-county"))
+    if court.get("county") and _set(out, "county", court["county"]):
+        changes.append(("county", court["county"], "003-county"))
     if _set(out, "name_of_adoptee", adoptee.get("full_name", "")):
         changes.append(("name_of_adoptee", adoptee.get("full_name",""),
                           "003-adoptee"))
-    if _set(out, "i", signer["full_name"]):
+    if signer["full_name"] and _set(out, "i", signer["full_name"]):
         changes.append(("i", signer["full_name"], "003-signer"))
 
-    # Signer role checkbox (default: legal guardian)
-    role = facts.get("ad003_role", "legal_guardian")
+    # Signer role checkbox — check ONLY when explicitly provided (was
+    # defaulted to "legal guardian", asserting the signer's authority).
+    role = facts.get("ad003_role", "")
     role_map = {
         "dhhs":     "an_officer_of_the_maine_department_of_health_and_human_services",
         "agency":   "a_duly_licensed_child",
@@ -465,8 +467,8 @@ def _process_ad003(out: dict, case: dict, changes: list) -> None:
         "legal_guardian": "the_legal_guardian_of_the_abovenamed_adoptee",
         "custodian": "the_legal_custodian_of_the_abovenamed_adoptee",
     }
-    role_fid = role_map.get(role, "the_legal_guardian_of_the_abovenamed_adoptee")
-    if _set(out, role_fid, "X"):
+    role_fid = role_map.get(role) if role else None
+    if role_fid and _set(out, role_fid, "X"):
         changes.append((role_fid, "X", "003-role"))
 
     # Adopting parent (single name in `named_adoptee_by` and `name`)
@@ -501,9 +503,8 @@ def _process_ad004(out: dict, case: dict, changes: list) -> None:
         changes.append(("location", court.get("location",""), "004-loc"))
     if _set(out, "docket_no_2", case.get("docket_no", "")):
         changes.append(("docket_no_2", case.get("docket_no",""), "004-dock"))
-    if _set(out, "county", court.get("county", "Cumberland")):
-        changes.append(("county", court.get("county","Cumberland"),
-                          "004-county"))
+    if court.get("county") and _set(out, "county", court["county"]):
+        changes.append(("county", court["county"], "004-county"))
     if _set(out, "name_of_adoptee", adoptee.get("full_name", "")):
         changes.append(("name_of_adoptee", adoptee.get("full_name",""),
                           "004-adoptee"))
@@ -594,20 +595,23 @@ def _process_ad017(out: dict, case: dict, changes: list) -> None:
     if _set(out, "name_of_legal_parents_1", legal_parent.get("full_name", "")):
         changes.append(("name_of_legal_parents_1",
                           legal_parent.get("full_name",""), "017-legal-1"))
-    # Default position: admit + request inheritance rights
-    admit = facts.get("ad017_position", "admit")  # admit|deny|neither
+    # Position + inheritance election — these admit/deny parentage and
+    # elect inheritance rights; check ONLY when explicitly provided
+    # (were defaulted to "admit" + "request").
+    admit = facts.get("ad017_position", "")  # admit|deny|neither
     admit_map = {
         "admit":   "i_admit_that_i_am_a_biological_parent_of_the_child",
         "neither": "i_neither_admit_nor_deny_that_i_am_a_biological_parent_of_the_child",
     }
-    if _set(out, admit_map.get(admit, admit_map["neither"]), "X"):
-        changes.append((admit_map.get(admit, admit_map["neither"]), "X",
-                          "017-position"))
-    inherit = facts.get("ad017_inherit", "request")  # request|do_not_request
-    inherit_fid = ("request" if inherit == "request"
-                     else "do_not_request_that_my_child_be_entitled_to_inherit")
-    if _set(out, inherit_fid, "X"):
-        changes.append((inherit_fid, "X", "017-inherit"))
+    admit_fid = admit_map.get(admit) if admit else None
+    if admit_fid and _set(out, admit_fid, "X"):
+        changes.append((admit_fid, "X", "017-position"))
+    inherit = facts.get("ad017_inherit", "")  # request|do_not_request
+    if inherit:
+        inherit_fid = ("request" if inherit == "request"
+                         else "do_not_request_that_my_child_be_entitled_to_inherit")
+        if _set(out, inherit_fid, "X"):
+            changes.append((inherit_fid, "X", "017-inherit"))
     sig_date = _iso_to_us(case.get("filing_date", ""))
     if _set(out, "dated", sig_date):
         changes.append(("dated", sig_date, "017-date"))
@@ -647,8 +651,11 @@ def _process_ad032(out: dict, case: dict, changes: list) -> None:
 
     _force("full_name_first_middle_last", adoptee.get("full_name", ""),
            "032-name")
-    _force("aliases_including_maiden_name",
-           facts.get("ad032_aliases", "None"), "032-aliases")
+    # Aliases ONLY when explicitly provided — "None" is itself a factual
+    # assertion that the adoptee has no other names.
+    if facts.get("ad032_aliases"):
+        _force("aliases_including_maiden_name",
+               facts["ad032_aliases"], "032-aliases")
     _force("date_of_birth_mmddyyyy", _iso_to_us(adoptee.get("dob", "")),
            "032-dob")
     addr_parts = [adoptee.get("address",""),
@@ -721,11 +728,13 @@ def _process_ad029(out: dict, case: dict, changes: list) -> None:
     if _set(out, "3_birthdate", _iso_to_us(adoptee.get("dob", ""))):
         changes.append(("3_birthdate", _iso_to_us(adoptee.get("dob","")),
                           "029-birthdate"))
-    if _set(out, "4_tribal_affiliation_name_of_tribe",
-            facts.get("adoptee_tribe", "Not applicable")):
+    # ICWA-critical: only filled when the case explicitly provides the
+    # tribal affiliation (was defaulted "Not applicable").
+    if facts.get("adoptee_tribe") and _set(
+            out, "4_tribal_affiliation_name_of_tribe",
+            facts["adoptee_tribe"]):
         changes.append(("4_tribal_affiliation_name_of_tribe",
-                          facts.get("adoptee_tribe","Not applicable"),
-                          "029-tribe"))
+                          facts["adoptee_tribe"], "029-tribe"))
 
     # Section B — biological parents
     def _addr_full(p: dict) -> str:
