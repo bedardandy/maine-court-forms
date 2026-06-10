@@ -19,8 +19,12 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    not shipped; fetched from the official portal).
 5. **Fill:** `python3 -m engine.fill_via_mapping --form <ID> --case case.json`
    (recipe-tier forms: `python3 -m engine.fill ...`).
-6. **Verify & report:** inspect output (or `tools/vision_audit.py`); surface the
-   trust tier, **any unresolved/missing facts**, and that it needs review.
+6. **Verify & report:** run the deterministic post-fill check
+   (`python3 -m engine.verify_fill --form <ID> --pdf <filled.pdf> --intended
+   <kv.json>` — diffs widget values against the intended fills; the MCP
+   `fill_form` tool runs it automatically and returns `fill_verify`), then
+   inspect output; surface the trust tier, **any unresolved/missing facts**,
+   and that it needs review.
 
 **Or use the MCP server** (preferred): `python3 tools/mcp_server.py` exposes
 `find_forms` / `get_form` / `fill_form` as tools — register with

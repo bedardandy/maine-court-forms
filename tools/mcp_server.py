@@ -168,6 +168,24 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
                               "are only accepted for recipe-tier forms.")}
         # use the curated mapping.json (verified / opus-adjudicated) directly
         res = fill_via_mapping(form_id, facts, pathlib.Path(out_dir))
+    # Deterministic post-fill verify: reopen the filled PDF and diff the
+    # widget values against the intended fid->value map (engine/verify_fill).
+    if res.get("ok") and res.get("out_pdf"):
+        try:
+            from engine.verify_fill import verify_fill as _verify_fill
+            if status == "recipe":
+                kv_art = pathlib.Path(out_dir) / f"{form_id}.kv.json"
+                intended = (json.loads(kv_art.read_text()).get("kv", {})
+                            if kv_art.exists() else {})
+            else:
+                from engine.fill_via_mapping import resolve_mapping
+                intended = resolve_mapping(form_id, facts).get("fid_value", {})
+            if intended:
+                schema = json.loads((fdir / "schema.json").read_text())
+                vres = _verify_fill(res["out_pdf"], intended, schema)
+                res["fill_verify"] = {"ok": vres["ok"], **vres["summary"]}
+        except Exception as e:  # noqa: BLE001 — verify must not block the fill
+            res["fill_verify"] = {"ok": None, "error": f"{type(e).__name__}: {e}"}
     res["pdf_verify"] = pdf_verify
     res["mapping_status"] = status
     res["trust"] = _trust_tier(status)

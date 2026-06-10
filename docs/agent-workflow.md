@@ -49,9 +49,17 @@ python3 -m engine.fill_via_mapping --form <ID> --case case.json   # uses mapping
 ```
 (The MCP `fill_form` tool picks the right path automatically.)
 
-**6. Verify & report.** Inspect the filled PDF (or run `tools/vision_audit.py`).
-Report: what was filled, the trust tier, any **unresolved/missing facts**, and
-that it must be verified before filing.
+**6. Verify & report.** Run the deterministic post-fill check first:
+```bash
+python3 -m engine.verify_fill --form <ID> --pdf <out>/<ID>.filled.pdf \
+    --intended <out>/<ID>.kv.json
+```
+It reopens the filled PDF and diffs widget values against the intended
+fills (per-field placed/differs/missing/no-widget + a summary; the MCP
+`fill_form` tool runs it automatically and returns `fill_verify`). Then
+inspect the PDF (or run `tools/vision_audit.py` for placement-vs-label).
+Report: what was filled, the trust tier, any **unresolved/missing facts**,
+and that it must be verified before filing.
 
 ## MCP (recommended for agents)
 
