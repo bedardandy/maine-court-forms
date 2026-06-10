@@ -29,6 +29,7 @@ from engine.fill_and_audit import fill_one  # noqa: E402
 from engine.fill_via_mapping import fill_via_mapping  # noqa: E402
 from engine.canonical import is_canonical, to_engine_case  # noqa: E402
 from tools.find_forms import find_forms as _find_forms  # noqa: E402
+from tools.preflight import preflight_case  # noqa: E402
 
 OSS_ROOT = pathlib.Path(__file__).resolve().parent.parent
 mcp = FastMCP("maine-court-forms")
@@ -131,6 +132,25 @@ def get_form(form_id: str) -> dict:
 
 
 @mcp.tool()
+def lint_case(facts: dict, form_id: str = "") -> dict:
+    """Preflight-validate a canonical fact object BEFORE filling.
+
+    Catches the silent-loss mistakes: unknown top-level keys, wrong party-
+    role vocabulary (e.g. parties.lawyer -> suggests parties.attorney),
+    non-canonical matter/party keys, engine-shape cases. Pass form_id to
+    also see which of that form's required/used facts the case satisfies.
+
+    Args:
+        facts: the canonical fact object ({matter, parties, party, facts} —
+               contract: catalog/canonical_case.schema.json).
+        form_id: optional, e.g. "PA-001".
+    Returns {ok, errors[], warnings[]}; each issue has {code, path,
+    message, suggestion?}.
+    """
+    return preflight_case(facts, form_id=form_id or None)
+
+
+@mcp.tool()
 def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict:
     """Fill a form from a canonical fact object and return the filled-PDF path.
 
@@ -149,6 +169,20 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
     if err:
         return {"ok": False, "error": err, "pdf_verify": pdf_verify}
     status = json.loads((fdir / "mapping.json").read_text()).get("status")
+    # Boundary preflight (tools/preflight.py): typo'd keys/roles resolve to
+    # nothing and produce a near-blank PDF, so refuse on hard errors instead.
+    # Engine-shape cases are exempt on the recipe path (documented input);
+    # everything else must be canonical-shape.
+    if not (status == "recipe" and not is_canonical(facts)):
+        pre = preflight_case(facts, form_id=form_id)
+        if not pre["ok"]:
+            return {"ok": False, "pdf_verify": pdf_verify,
+                    "error": "case failed preflight — fix the issues (or "
+                             "run lint_case) and retry",
+                    "preflight": pre}
+        preflight_warnings = pre["warnings"] or None
+    else:
+        preflight_warnings = None
     if status == "recipe":
         # authoritative engine recipe — runs the form-specific fill logic
         case = to_engine_case(facts) if is_canonical(facts) else facts
@@ -191,6 +225,8 @@ def fill_form(form_id: str, facts: dict, out_dir: str = "/tmp/mcf_fill") -> dict
         except Exception as e:  # noqa: BLE001 — verify must not block the fill
             res["fill_verify"] = {"ok": None, "error": f"{type(e).__name__}: {e}"}
     res["pdf_verify"] = pdf_verify
+    if preflight_warnings:
+        res["preflight_warnings"] = preflight_warnings
     res["mapping_status"] = status
     res["trust"] = _trust_tier(status)
     res["caveat"] = ("Verify against the official form."

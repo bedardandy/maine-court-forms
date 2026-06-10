@@ -48,7 +48,7 @@ openclaw, or any MCP client. Point one at the repo and say *"use this project to
 assist with: \<your situation\>"*. There are two on-ramps:
 
 - **MCP server (recommended).** `tools/mcp_server.py` exposes `find_forms` /
-  `get_form` / `fill_form` so the agent calls tools instead of reading docs. It's
+  `get_form` / `lint_case` / `fill_form` so the agent calls tools instead of reading docs. It's
   pre-registered via **`.mcp.json`**, or add it manually:
   ```bash
   claude mcp add maine-court-forms -- python3 tools/mcp_server.py
@@ -91,7 +91,8 @@ tools/
   find_forms.py         route a fact pattern -> candidate forms + workflows
   fetch_pdfs.py         downloads blank PDFs from the official portal (verified)
   check_upstream.py     re-probe official URLs; flag forms the courts have revised
-  mcp_server.py         MCP server: find_forms / get_form / fill_form
+  mcp_server.py         MCP server: find_forms / get_form / lint_case / fill_form
+  preflight.py          validate a canonical fact object before filling
   scaffold_forms.py     regenerates the per-form folders from source data
 skills/court-route-and-fill/  top-level agent skill (the route -> fill protocol)
 .mcp.json               MCP registration; .codex-plugin/ — codex/openclaw manifest

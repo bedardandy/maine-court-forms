@@ -13,7 +13,9 @@ Every adapter consumes the same three artifacts per form and nothing else:
 | `mapping.json` | canonical fact-key → field_id (the integration boundary) |
 | `form.yaml` | routing/metadata (category, court, source, automation tier) |
 
-The **canonical fact object** is the lingua franca. Adapters map their
+The **canonical fact object** is the lingua franca (machine-readable
+contract: `catalog/canonical_case.schema.json`; validate a case with
+`tools/preflight.py`). Adapters map their
 host's data into it; the engine (or any filler) maps it onto widgets via
 `mapping.json`. Shape (informal):
 

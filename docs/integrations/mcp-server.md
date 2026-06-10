@@ -10,6 +10,7 @@ search, inspect, and fill Maine court forms as native tools.
 |---|---|---|
 | `search_forms` | `query: str` | ranked `form_id`s + titles (over `form.yaml`) |
 | `get_form` | `form_id: str` | `form.yaml` + required fact-keys from `mapping.json` |
+| `lint_case` | `facts: dict, form_id?` | preflight issues (`catalog/canonical_case.schema.json` contract + role-vocabulary suggestions) |
 | `fill_form` | `form_id, facts: dict` | path/bytes of filled PDF |
 | `audit_form` | `form_id, pdf` | audit findings (majors by field) |
 

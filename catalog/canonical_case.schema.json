@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bedardandy/maine-court-forms/catalog/canonical_case.schema.json",
+  "title": "Canonical fact object",
+  "description": "The fact-object shape the library's fill paths accept ({matter, parties, party, facts} — docs/integrations/README.md). mapping.json values are dotted paths into this object; engine/canonical.py translates it to the engine case shape for recipe-tier forms. Validate with tools/preflight.py (also exposed as the MCP lint_case tool), which adds suggestion-bearing checks (e.g. parties.lawyer -> parties.attorney) beyond what JSON Schema expresses.",
+  "type": "object",
+  "properties": {
+    "matter": {
+      "type": "object",
+      "description": "The case/filing context. All values are strings; dates are ISO yyyy-mm-dd (the filler renders mm/dd/yyyy).",
+      "properties": {
+        "docket_number": {"type": "string"},
+        "case_number": {"type": "string"},
+        "case_id": {"type": "string"},
+        "court_county": {"type": "string"},
+        "court_location": {"type": "string"},
+        "court_type": {"type": "string"},
+        "case_type": {"type": "string"},
+        "filing_date": {"type": "string"},
+        "event_date": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "parties": {
+      "type": "object",
+      "description": "Role -> party. Known roles: plaintiff (also the petitioner side), defendant (also the respondent side), attorney, other_party (role-neutral opponent), child_1..child_N (numbered minor children).",
+      "propertyNames": {
+        "pattern": "^(plaintiff|defendant|attorney|other_party|child_[0-9]+)$"
+      },
+      "additionalProperties": {"$ref": "#/$defs/party"}
+    },
+    "party": {
+      "$ref": "#/$defs/party",
+      "description": "The single filing party (the person signing). Used by forms that don't fix the filer's caption role."
+    },
+    "facts": {
+      "type": "object",
+      "description": "Form-specific facts; keys are per-form (see each form's mapping.json \"facts\".used). Values are scalars or string lists.",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "array", "null"]
+      }
+    },
+    "case_id": {
+      "type": "string",
+      "description": "Deprecated top-level fallback; prefer matter.case_id."
+    },
+    "filing_date": {
+      "type": "string",
+      "description": "Deprecated top-level fallback; prefer matter.filing_date."
+    },
+    "event_date": {
+      "type": "string",
+      "description": "Deprecated top-level fallback; prefer matter.event_date."
+    },
+    "generic": {
+      "type": "boolean",
+      "description": "Sample-case metadata: true marks a generic placeholder sample not tailored to the form."
+    }
+  },
+  "required": ["matter"],
+  "additionalProperties": false,
+  "$defs": {
+    "party": {
+      "type": "object",
+      "properties": {
+        "full_name": {"type": "string"},
+        "first_name": {"type": "string"},
+        "middle_name": {"type": "string"},
+        "last_name": {"type": "string"},
+        "address": {"type": "string"},
+        "city": {"type": "string"},
+        "state": {"type": "string"},
+        "zip": {"type": "string"},
+        "phone": {"type": "string"},
+        "email": {"type": "string"},
+        "date_of_birth": {"type": "string"},
+        "signature": {"type": "string"},
+        "bar_number": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

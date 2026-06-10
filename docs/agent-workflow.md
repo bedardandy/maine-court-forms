@@ -37,6 +37,17 @@ Translate the fact pattern into the canonical shape (full spec in
 ```
 Leave a field out if the fact pattern doesn't supply it — don't invent values.
 
+Then **preflight the case** before any fill — typo'd keys/roles resolve to
+nothing and produce a near-blank PDF:
+```bash
+python3 tools/preflight.py case.json --form <ID>
+```
+It validates against the contract (`catalog/canonical_case.schema.json`) and
+returns machine-readable issues with suggestions (unknown top-level keys,
+wrong role vocabulary like `parties.lawyer` → `parties.attorney`, missing
+required facts). The MCP `lint_case` tool is the same check; `fill_form`
+runs it automatically and refuses on hard errors.
+
 **4. Fetch the blank PDF** (not shipped — see `LICENSE.md`):
 ```bash
 python3 tools/fetch_pdfs.py --forms <ID>

@@ -19,7 +19,7 @@ follow it directly.
 
 - The `tools/` and `engine/` directories and the catalogs under `catalog/` and
   `forms/<ID>/`. To drive the library over MCP, run `tools/mcp_server.py`
-  (`find_forms` / `get_form` / `fill_form`).
+  (`find_forms` / `get_form` / `lint_case` / `fill_form`).
 - Blank PDFs are **not shipped**. Fetch on demand with `tools/fetch_pdfs.py`
   (each download is verified byte-for-byte against `catalog/pdf_manifest.json`).
 
@@ -50,6 +50,9 @@ follow it directly.
      "facts":   { /* form-specific */ } }
    ```
    Omit anything the fact pattern doesn't supply — never invent values.
+   Then preflight it — `python3 tools/preflight.py case.json --form <ID>`
+   (MCP: `lint_case`) flags typo'd keys/roles with suggestions before they
+   silently fill nothing.
 
 4. **Fetch the blank PDF:**
    ```bash

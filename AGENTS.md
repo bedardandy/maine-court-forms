@@ -16,8 +16,12 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    (`recipe` = form-specific engine code; `verified`/`opus-adjudicated` =
    reviewed mapping; `no-mappable-fields` = nothing to fill).
 3. **Extract:** build the **canonical fact object** (`{matter, parties, party,
-   facts}` — spec in `docs/integrations/README.md`, example in `examples/`) from
-   the fact pattern. Don't invent values; omit unknowns.
+   facts}` — spec in `docs/integrations/README.md` + JSON Schema in
+   `catalog/canonical_case.schema.json`, example in `examples/`) from
+   the fact pattern. Don't invent values; omit unknowns. Then preflight it:
+   `python3 tools/preflight.py case.json --form <ID>` (MCP: `lint_case`)
+   catches typo'd keys/roles (e.g. `parties.lawyer` → `parties.attorney`)
+   that would otherwise fill nothing.
 4. **Fetch the PDF:** `python3 tools/fetch_pdfs.py --forms <ID>` (blank PDFs are
    not shipped; fetched from the official portal).
 5. **Fill:** `python3 -m engine.fill_via_mapping --form <ID> --case case.json`
@@ -30,7 +34,7 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    and that it needs review.
 
 **Or use the MCP server** (preferred): `python3 tools/mcp_server.py` exposes
-`find_forms` / `get_form` / `fill_form` as tools — register with
+`find_forms` / `get_form` / `lint_case` / `fill_form` as tools — register with
 `claude mcp add maine-court-forms -- python3 tools/mcp_server.py`.
 
 Example intake fact patterns (one realistic plain-language narrative per form
