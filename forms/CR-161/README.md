@@ -1,4 +1,4 @@
-# CR-161 — ☐ Unified Criminal Docket
+# CR-161 — Application to the Law Court to Allow an Appeal of Sentence
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

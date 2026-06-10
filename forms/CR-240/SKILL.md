@@ -1,4 +1,4 @@
-# CR-240 — within one hour of request will be considered a positive test and will result in the loss
+# CR-240 — Maine Treatment Court — Participant Testing Policy
 
 **Form Number:** CR-240, Rev. 07/18
 **Pages:** 1

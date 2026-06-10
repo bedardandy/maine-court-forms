@@ -1,4 +1,4 @@
-# CR-287 — Application for Appointment as a Bail
+# CR-287 — Application for Appointment as a Bail Commissioner
 
 **Form Number:** CR-287, Rev. 02/23
 **Pages:** 11

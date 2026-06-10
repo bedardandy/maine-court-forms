@@ -1,4 +1,4 @@
-# CR-237 — others without the express written consent of the individual participant.  I further agree to return,
+# CR-237 — Maine Treatment Court — Court Observation Confidentiality Form
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

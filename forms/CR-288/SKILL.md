@@ -1,4 +1,4 @@
-# CR-288 — Process for Appointment as a
+# CR-288 — Process for Appointment as a Bail Commissioner
 
 **Form Number:** CR-288, Rev. 02/23
 **Pages:** 1

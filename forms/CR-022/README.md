@@ -1,4 +1,4 @@
-# CR-022 — ☐ Unified Criminal Docket
+# CR-022 — Waiver of Indictment
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

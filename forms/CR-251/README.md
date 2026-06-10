@@ -1,4 +1,4 @@
-# CR-251 — seen without a written referral from my primary physician
+# CR-251 — Maine Treatment Court — Physician and Pharmacy Conditions
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

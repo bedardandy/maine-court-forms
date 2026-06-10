@@ -1,4 +1,4 @@
-# CR-305 — Bail Contract Conditions ............................................................................................ 10
+# CR-305 — Maine Veterans Treatment Court Participant Handbook
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

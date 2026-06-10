@@ -1,4 +1,4 @@
-# CR-240 — within one hour of request will be considered a positive test and will result in the loss
+# CR-240 — Maine Treatment Court — Participant Testing Policy
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

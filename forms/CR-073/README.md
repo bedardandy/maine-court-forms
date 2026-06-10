@@ -1,4 +1,4 @@
-# CR-073 — ☐ Unified Criminal Docket
+# CR-073 — Warrant of Arrest
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

@@ -1,4 +1,4 @@
-# CR-266 — Notification to the Court by Commissioner of
+# CR-266 — Notification to the Court by Commissioner of Health and Human Services
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

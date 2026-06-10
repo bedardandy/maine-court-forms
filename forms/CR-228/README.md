@@ -1,4 +1,4 @@
-# CR-228 — Request for Fine Payment Modification or
+# CR-228 — Request for Fine Payment Modification or Extension of Time to Pay Fine
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

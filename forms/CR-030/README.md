@@ -1,4 +1,4 @@
-# CR-030 — ☐ Unified Criminal Docket
+# CR-030 — Consent to Proceed in Absence of Defendant
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

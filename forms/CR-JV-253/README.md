@@ -1,4 +1,4 @@
-# CR-JV-253 — Notification That Observation Is No Longer
+# CR-JV-253 — Notification That Observation Is No Longer Necessary and Order Terminating Commitment
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

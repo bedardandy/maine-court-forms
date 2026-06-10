@@ -1,4 +1,4 @@
-# CR-022 — ☐ Unified Criminal Docket
+# CR-022 — Waiver of Indictment
 
 **Form Number:** CR-022, Rev. 07/15
 **Pages:** 1

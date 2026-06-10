@@ -1,4 +1,4 @@
-# CR-228 — Request for Fine Payment Modification or
+# CR-228 — Request for Fine Payment Modification or Extension of Time to Pay Fine
 
 **Form Number:** CR-228, Rev. 09/17
 **Pages:** 1

@@ -1,4 +1,4 @@
-# CR-287 — Application for Appointment as a Bail
+# CR-287 — Application for Appointment as a Bail Commissioner
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

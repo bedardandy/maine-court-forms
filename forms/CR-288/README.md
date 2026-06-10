@@ -1,4 +1,4 @@
-# CR-288 — Process for Appointment as a
+# CR-288 — Process for Appointment as a Bail Commissioner
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

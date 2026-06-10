@@ -1,4 +1,4 @@
-# CR-230 — Statement of Prosecuting Attorney Regarding
+# CR-230 — Statement of Prosecuting Attorney Regarding Domestic Violence Intervention
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

@@ -1,4 +1,4 @@
-# CR-234 — Co-Occuring Disorders Court
+# CR-234 — Treatment and Recovery Court Referral Form
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

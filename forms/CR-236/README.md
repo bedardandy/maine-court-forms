@@ -1,4 +1,4 @@
-# CR-236 — Authorization to Release Information Within the Maine
+# CR-236 — Authorization to Release Information Within the Maine Treatment Court Teams
 
 - **Category:** Criminal
 - **Court:** Unified Criminal Docket / Superior Court / District Court

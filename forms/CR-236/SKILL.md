@@ -1,4 +1,4 @@
-# CR-236 — Authorization to Release Information Within the Maine
+# CR-236 — Authorization to Release Information Within the Maine Treatment Court Teams
 
 **Form Number:** CR-236, Rev. 07/18
 **Pages:** 3

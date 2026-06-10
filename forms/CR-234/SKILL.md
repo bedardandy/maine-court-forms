@@ -1,4 +1,4 @@
-# CR-234 — Co-Occuring Disorders Court
+# CR-234 — Treatment and Recovery Court Referral Form
 
 **Form Number:** CR-234, Rev. 04/22
 **Pages:** 1
