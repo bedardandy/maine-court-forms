@@ -1,0 +1,16 @@
+{
+  "form_id": "CR-004",
+  "generated_by": "tools/harvest_constraints.py",
+  "note": "Warnings-only paradox constraints over schema field_ids (see the shared engine's constraints layer); a firing constraint never blocks or alters a fill.",
+  "mutually_exclusive": [
+    {
+      "keys": [
+        "superior_court",
+        "district_court",
+        "unified_criminal_docket"
+      ],
+      "note": "A filing is captioned in exactly one court. (no local blank to confirm the printed single-selection instruction)",
+      "inferred": true
+    }
+  ]
+}

@@ -359,20 +359,41 @@ def fill_one(form_id: str, case: dict, out_dir: pathlib.Path,
             for fid, labels in fid_to_widgets.items()
             if len(labels) > 1 and kv.get(fid))
 
+    # Yellow light — declarative paradox constraints (constraints.json next
+    # to schema.json; keys are schema field_ids, evaluated against the
+    # resolved kv). Warnings only: they never block or alter the fill, and
+    # no constraints file means no report key at all.
+    constraint_warnings = None
+    try:
+        from maine_forms_engine.constraints import (
+            evaluate as _eval_constraints, load_constraints as _load_constraints)
+        _cons = _load_constraints(schema_path.parent)
+        if _cons is not None:
+            constraint_warnings = _eval_constraints(_cons, kv)
+    except Exception:  # noqa: BLE001 — diagnostics must never break a fill
+        pass
+
     out_dir.mkdir(parents=True, exist_ok=True)
     out_pdf = out_dir / f"{form_id}.filled.pdf"
     fill_form(str(pdf_path), field_data, str(out_pdf),
               form_id=form_id, addendum_policy="none")
 
     # Also write the kv + stats artifact
-    (out_dir / f"{form_id}.kv.json").write_text(json.dumps({
+    kv_artifact = {
         "form_id": form_id, "case_id": case.get("case_id"),
         "kv": kv, "stats": stats,
         "fields_written_to_pdf": len(field_data),
-    }, indent=2))
-    return {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
-            "stats": stats,
-            "fields_written_to_pdf": len(field_data)}
+    }
+    if constraint_warnings is not None:
+        kv_artifact["constraint_warnings"] = constraint_warnings
+    (out_dir / f"{form_id}.kv.json").write_text(json.dumps(kv_artifact,
+                                                           indent=2))
+    res = {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
+           "stats": stats,
+           "fields_written_to_pdf": len(field_data)}
+    if constraint_warnings is not None:
+        res["constraint_warnings"] = constraint_warnings
+    return res
 
 
 def _parse_audit_json(content: str) -> dict:

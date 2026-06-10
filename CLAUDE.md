@@ -59,6 +59,14 @@ the recipes, `fill_and_audit`, the addendum renderer, and the rich MCP server
 - **Respect the trust tier.** Even `verified`/`opus-adjudicated` mappings are
   machine-reviewed, not attorney-reviewed — tell the user to check field
   placement before filing.
+- **Yellow lights are warnings, never blocks.** Fill results (engine + MCP
+  `fill_form`) may carry `constraint_warnings` — paradoxical selections per
+  the form's optional `constraints.json` (e.g. two court-caption boxes
+  checked at once; harvested conservatively by
+  `tools/harvest_constraints.py`, keys are schema field_ids) — and
+  `radio_groups` on the mapping path (radio groups the engine never writes;
+  each entry suggests an option to select by hand). They list problems for a
+  human to resolve; they never fail or alter a fill.
 - **Never invent canonical fact-keys** — reuse the shape in
   `docs/integrations/README.md`.
 - **Schemas are split lean/audit.** `forms/<ID>/schema.json` is the lean
