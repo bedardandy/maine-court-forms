@@ -1,6 +1,12 @@
 # CR-230 — Statement of Prosecuting Attorney Regarding Domestic Violence Intervention
 
 **Form Number:** CR-230, Rev. 10/21
+
+> **Upstream misprint:** the official PDF's own footer misprints the form number as
+> "CV-230, Rev. 10/21". The correct number is CR-230 — the court portal serves this
+> PDF under CR-230 and the printed title matches this criminal form. The footer text
+> is part of the official blank and is never altered by this library.
+
 **Pages:** 1
 **Fillable Fields:** 24
 **Category:** Criminal

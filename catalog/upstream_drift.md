@@ -15,6 +15,16 @@ python3 tools/check_upstream.py            # full probe (CHANGED / GONE)
 
 Last full probe: 2026-06-06 — 350 checked, 328 ok, 14 CHANGED, 8 GONE.
 
+## Upstream content defects (documented, not patched)
+
+Defects in the official blanks themselves. The PDFs are kept byte-identical to
+the court's copies, so these are recorded here (and in each form's
+`form.yaml: upstream_note` / `SKILL.md` / `README.md`) instead of being edited.
+
+| Form | Defect | Verified |
+|---|---|---|
+| CR-230 | Footer misprints the form's own number as **"CV-230, Rev. 10/21"**. Correct number is CR-230: the portal serves the PDF under `strFormNumber=CR-230` and the printed title ("Statement of Prosecuting Attorney Regarding Domestic Violence Intervention", 17-A M.R.S. §1807) is this criminal form. No CV-230 exists in the civil series here; any other "CV-230" string in this repo should only be a citation of this note. | 2026-06-11, text-layer extraction of `forms/CR-230/CR-230.pdf` |
+
 ## Resolution (2026-06-06)
 
 All 14 CHANGED forms reconciled; the 8 GONE (MRS-*) removed. Re-probe of the 14

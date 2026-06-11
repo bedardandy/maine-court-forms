@@ -18,6 +18,11 @@ Form used in criminal proceedings in Maine court.
 
 Official blank form: [CR-230](https://mjbportal.courts.maine.gov/CourtForms/FormsLists/DownloadForm?strFormNumber=CR-230) (Maine Judicial Branch forms portal).
 
+Known upstream defect: the official PDF's footer misprints its own form number as
+"CV-230, Rev. 10/21". The correct number is CR-230 (the portal serves the form under
+CR-230 and the printed title matches). The blank PDF here is kept byte-identical to
+the official copy, so the misprint is documented rather than patched.
+
 ## Files in this folder
 
 | File | What it is |
