@@ -22,7 +22,7 @@ Declared in `computations.json`. This form is recipe-tier (pointer-only mapping)
 |---|---|
 | `facts.mj009_total` = `facts.mj009_owed_amount` + `facts.mj009_interest` + `facts.mj009_costs` | The judgment debtor currently owes the judgment creditor $ (plus interest of $ ) plus costs of $ , for a total of $ . |
 
-Note: the recipe writes $0.00 into the interest blank when only the owed amount is supplied (understates rather than invents). That is a widget default, not a fact — with `facts.mj009_interest` omitted the computation is skipped silently, so the total is computed only when all three component facts are supplied.
+Note: amounts are written bare — the printed line already carries the `$` before every blank, so the recipe strips a supplied leading `$` and never adds one. The interest blank is written ONLY when `facts.mj009_interest` is supplied (no $0.00 widget default — that asserted a figure nobody supplied); with it omitted the computation is skipped silently, so both the interest blank and the total stay empty until all three component facts are supplied.
 
 ## Field Mappings
 

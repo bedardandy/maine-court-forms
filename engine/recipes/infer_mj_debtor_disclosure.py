@@ -23,6 +23,14 @@ def _set(answers: dict, fid: str, value: str) -> bool:
     return True
 
 
+def _amount(value) -> str:
+    """Normalize a money fact for a blank whose printed line already
+    carries the "$" (both MJ-009 and MJ-015 print "$" right before every
+    amount blank — see the per-block comments). Cases routinely supply
+    "$1,250.00", so strip a leading "$" or the render shows "$ $1,250.00"."""
+    return str(value or "").lstrip("$").strip()
+
+
 def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     out = dict(kv_map)
     changes = []
@@ -176,12 +184,18 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
                                    inst_date_us):
             changes.append(("courts_installment_order_dated_mmddyyyy",
                               inst_date_us, "mj009-inst-date"))
-        pay_amt = facts.get("mj009_pay_amount",
-                                 facts.get("installment_amount", ""))
+        # Amounts are written BARE: the printed line already carries the
+        # "$" before every blank — "pay $ ___ per ___" and "...owes the
+        # judgment creditor $ ___ (plus interest of $___) plus costs of
+        # $ ___, for a total of $ ___" per the blank PDF's page text — so
+        # an f"${...}" prefix rendered as "$ $1,250.00". _amount() also
+        # strips a leading "$" off the supplied fact for the same reason.
+        pay_amt = _amount(facts.get("mj009_pay_amount",
+                                     facts.get("installment_amount", "")))
         pay_per = facts.get("mj009_pay_period",
                                  facts.get("installment_period", ""))
-        if pay_amt and _set(out, "pay", f"${pay_amt}"):
-            changes.append(("pay", f"${pay_amt}", "mj009-pay"))
+        if pay_amt and _set(out, "pay", pay_amt):
+            changes.append(("pay", pay_amt, "mj009-pay"))
         if pay_per and _set(out, "per", pay_per):
             changes.append(("per", pay_per, "mj009-per"))
         # Failure checkbox — check ONLY on an explicit boolean fact (was
@@ -189,33 +203,35 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         if (facts.get("mj009_failed_payment") is True
                 and _set(out, "check_box1", "X")):
             changes.append(("check_box1", "X", "mj009-failed-pay"))
-        owed = facts.get("mj009_owed_amount", "")
+        owed = _amount(facts.get("mj009_owed_amount", ""))
         if owed and _set(out,
                 "the_judgment_creditor_currently_owes_the_judgment_creditor",
-                f"${owed}"):
+                owed):
             changes.append(("the_judgment_creditor_currently_owes_the_judgment_creditor",
-                              f"${owed}", "mj009-owed"))
+                              owed, "mj009-owed"))
         # `undefined_2` is the "(plus interest of $___)" amount on the owed
-        # line — a dollar field, NOT a signature. When the owed amount is
-        # known, interest defaults to 0.00 rather than fabricating a
-        # figure (understates rather than invents).
-        interest = facts.get("mj009_interest", "0.00" if owed else "")
-        if interest and _set(out, "undefined_2", f"${interest}"):
-            changes.append(("undefined_2", f"${interest}", "mj009-interest"))
-        costs = facts.get("mj009_costs", "")
-        if costs and _set(out, "plus_costs_of", f"${costs}"):
-            changes.append(("plus_costs_of", f"${costs}", "mj009-costs"))
+        # line — a dollar field, NOT a signature. Fill ONLY when
+        # facts.mj009_interest is supplied: the old "0.00"-when-owed-is-
+        # known widget default asserted "interest of $0.00" — a figure
+        # nobody supplied — while the engine (correctly) skipped the total
+        # computation for the missing input, an inconsistent render. An
+        # omitted interest now leaves both the interest blank and the
+        # total empty for the filer.
+        interest = _amount(facts.get("mj009_interest", ""))
+        if interest and _set(out, "undefined_2", interest):
+            changes.append(("undefined_2", interest, "mj009-interest"))
+        costs = _amount(facts.get("mj009_costs", ""))
+        if costs and _set(out, "plus_costs_of", costs):
+            changes.append(("plus_costs_of", costs, "mj009-costs"))
         # "for a total of $" — the printed sum (owed + interest + costs)
         # is declared in forms/MJ-009/computations.json and evaluated by
         # the shared engine BEFORE this recipe runs (fill_one merges an
         # omitted facts.mj009_total into the case; a supplied value always
         # wins, a contradiction only yields a COMPUTATION_MISMATCH
-        # warning). The recipe just places the fact. NB: the engine skips
-        # the computation when any input fact is omitted, so the $0.00
-        # interest WIDGET default above does not feed a total.
-        total = str(facts.get("mj009_total", "") or "").lstrip("$")
-        if total and _set(out, "for_a_total_of", f"${total}"):
-            changes.append(("for_a_total_of", f"${total}", "mj009-total"))
+        # warning). The recipe just places the fact.
+        total = _amount(facts.get("mj009_total", ""))
+        if total and _set(out, "for_a_total_of", total):
+            changes.append(("for_a_total_of", total, "mj009-total"))
 
     # MJ-015 — installment-order owed-amount affidavit. Employment
     # narrative ONLY when explicitly provided (the old default asserted
@@ -255,16 +271,21 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
     # while the owed blank was targeted through truncated field_ids that no
     # longer match the schema. Amounts ONLY when explicitly provided.
     if is_mj015:
-        principal = facts.get("mj_principal", "")
-        interest = facts.get("mj_interest", "")
-        costs = facts.get("mj_costs", "")
+        # Amounts BARE here too: MJ-015's printed line reads "The judgment
+        # debtor currently owes the judgment creditor $ ___ plus interest
+        # of $ ___ plus costs of $ ___, for a total of $ ___." per the
+        # blank PDF's page text — every blank already follows a printed
+        # "$", and _amount() strips a leading "$" off the supplied fact.
+        principal = _amount(facts.get("mj_principal", ""))
+        interest = _amount(facts.get("mj_interest", ""))
+        costs = _amount(facts.get("mj_costs", ""))
         # "for a total of $" — the printed sum (principal + interest +
         # costs) is declared in forms/MJ-015/computations.json and
         # evaluated by the shared engine BEFORE this recipe runs (fill_one
         # merges an omitted facts.mj_total into the case; a supplied value
         # always wins, a contradiction only yields a COMPUTATION_MISMATCH
         # warning). The recipe just places the fact.
-        total = str(facts.get("mj_total", "") or "").lstrip("$")
+        total = _amount(facts.get("mj_total", ""))
 
         if principal and _set(
                 out, "the_judgment_debtor_currently_owes_the_judgment_creditor",
@@ -278,9 +299,16 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             changes.append(("plus_costs_of", costs, "mj15-costs"))
         if total and _set(out, "for_a_total_of", total):
             changes.append(("for_a_total_of", total, "mj15-total"))
-        # MJ-015 signature field aliased to undefined_2
-        if _set(out, "undefined_2", affiant):
-            changes.append(("undefined_2", affiant, "mj15-signer"))
+        # MJ-015 signature field aliased to undefined_2. UNLIKE MJ-005 —
+        # where the DEBTOR is the disclosing affiant ("I, <debtor>, having
+        # been served...") so `affiant` rightly falls back to debt_name —
+        # MJ-015 is the CREDITOR's affidavit filed AGAINST the debtor.
+        # The shared debt_name fallback put the judgment debtor's name on
+        # the signature line of the adverse affidavit, so sign ONLY on an
+        # explicit facts.affiant_name.
+        mj15_signer = str(facts.get("affiant_name") or "").strip()
+        if mj15_signer and _set(out, "undefined_2", mj15_signer):
+            changes.append(("undefined_2", mj15_signer, "mj15-signer"))
 
     # MJ-014 — `undefined_2` is the "Name of defendant:" field and `undefined`
     # is "Telephone:". Set them explicitly here (the MJ-015 block no longer

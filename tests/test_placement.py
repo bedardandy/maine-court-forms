@@ -25,9 +25,26 @@ RECIPE_PINS = [
     ("NC-001", "email_2", "jane.doe@example.com", "RIGHT petitioner email"),
     # MJ-SC-012 notary affiant = debtor, not creditor (5eef458)
     ("MJ-SC-012", "personallyappearedtheabovenamed", "John R. Roe", "affiant = debtor"),
-    # MJ-009 "(plus interest of $)" is a $ field, not a name (88ab496)
-    ("MJ-009", "undefined_2", "$0.00", "interest amount, not affiant name"),
-    ("MJ-009", "for_a_total_of", "$1,370.00", "total incl interest"),
+    # MJ-009 "(plus interest of $)" is a $ field, not a name (88ab496);
+    # amounts are BARE — the printed line carries the "$" before each
+    # blank, so f"${...}" rendered "$ $0.00". The sample SUPPLIES
+    # mj009_interest="0.00"; with it omitted the blank stays empty
+    # (no widget default — see test_mj_money_fields).
+    ("MJ-009", "undefined_2", "0.00", "interest amount, not affiant name"),
+    ("MJ-009", "the_judgment_creditor_currently_owes_the_judgment_creditor",
+     "1,250.00", "owed amount, bare (printed '$' precedes the blank)"),
+    ("MJ-009", "for_a_total_of", "1,370.00", "total incl interest, bare"),
+    # MJ-009 order-date class guard: the form's "Court's installment order
+    # dated (mm/dd/yyyy)" must NOT be auto-stamped with the filing date —
+    # the sample supplies no mj009_installment_order_date, so it stays empty
+    ("MJ-009", "courts_installment_order_dated_mmddyyyy", "",
+     "court-order date never auto-stamped"),
+    # MJ-015 signature line: the creditor's affidavit AGAINST the debtor
+    # must not default to the debtor's name — empty without affiant_name
+    ("MJ-015", "undefined_2", "",
+     "signature stays empty without facts.affiant_name"),
+    ("MJ-015", "installment_order_dated_mmddyyyy", "",
+     "court-order date never auto-stamped"),
     # PC-034 GAL signature block, not plaintiff (f6afcbf)
     ("PC-034", "name", "Margaret L. Holcomb, Esq.", "GAL printed name"),
     ("PC-034", "undefined", "Margaret L. Holcomb, Esq.", "GAL signature line"),

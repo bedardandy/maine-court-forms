@@ -359,10 +359,11 @@ class RecipeTierEndToEnd(unittest.TestCase):
     supplied-contradiction through the real recipe fill."""
 
     # (form_id, total fact key, total widget name, computed value from the
-    #  shipped sample's components, recipe's widget formatting prefix)
+    #  shipped sample's components). Both recipes write the amount BARE —
+    #  the printed line already carries the "$" before the blank.
     CASES = [
-        ("MJ-009", "mj009_total", "for a total of", "1,370.00", "$"),
-        ("MJ-015", "mj_total", "for a total of", "2,660.00", ""),
+        ("MJ-009", "mj009_total", "for a total of", "1,370.00"),
+        ("MJ-015", "mj_total", "for a total of", "2,660.00"),
     ]
 
     def _fill(self, form_id, case):
@@ -391,7 +392,7 @@ class RecipeTierEndToEnd(unittest.TestCase):
         self.addCleanup(self._td.cleanup)
 
     def test_omitted_total_is_computed_and_filled(self):
-        for form_id, key, widget, computed, prefix in self.CASES:
+        for form_id, key, widget, computed in self.CASES:
             if not (FORMS / form_id / f"{form_id}.pdf").exists():
                 continue  # blank not fetched (CI)
             with self.subTest(form=form_id):
@@ -405,10 +406,10 @@ class RecipeTierEndToEnd(unittest.TestCase):
                 self.assertEqual(r["computation_warnings"], [])
                 # the computed fact lands in the PDF via the recipe
                 self.assertEqual(self._widget(r["out_pdf"], widget),
-                                 prefix + computed)
+                                 computed)
 
     def test_supplied_contradiction_written_as_is_with_warning(self):
-        for form_id, key, widget, computed, prefix in self.CASES:
+        for form_id, key, widget, computed in self.CASES:
             if not (FORMS / form_id / f"{form_id}.pdf").exists():
                 continue  # blank not fetched (CI)
             with self.subTest(form=form_id):
@@ -425,12 +426,14 @@ class RecipeTierEndToEnd(unittest.TestCase):
                 self.assertEqual(w["severity"], "warning")
                 # supplied value wins in the PDF — never enforced/overridden
                 self.assertEqual(self._widget(r["out_pdf"], widget),
-                                 prefix + "9,999.00")
+                                 "9,999.00")
 
     def test_mj009_omitted_interest_skips_silently(self):
-        """The recipe's $0.00 interest WIDGET default is not a fact: with
-        facts.mj009_interest omitted the engine skips the total computation
-        silently (missing input), per the mapped-path semantics."""
+        """With facts.mj009_interest omitted the engine skips the total
+        computation silently (missing input), per the mapped-path
+        semantics — and the recipe leaves the interest BLANK too (no
+        $0.00 widget default: that asserted a figure nobody supplied
+        while the total stayed empty, an inconsistent render)."""
         if not (FORMS / "MJ-009" / "MJ-009.pdf").exists():
             self.skipTest("blank not fetched")
         case = json.loads((FORMS / "MJ-009" / "examples" /
@@ -441,10 +444,10 @@ class RecipeTierEndToEnd(unittest.TestCase):
         self.assertTrue(r["ok"])
         self.assertEqual(r["computed_fields"], [])
         self.assertEqual(r["computation_warnings"], [])
-        # widget default still understates rather than invents...
-        self.assertEqual(self._widget(r["out_pdf"], "undefined_2"), "$0.00")
-        # ...and the total stays blank for the filer (unwritten widgets
-        # read back as "" on this form)
+        # the interest blank stays empty for the filer...
+        self.assertFalse(self._widget(r["out_pdf"], "undefined_2"))
+        # ...and so does the total (unwritten widgets read back as ""
+        # on this form) — blank-with-blank is consistent
         self.assertFalse(self._widget(r["out_pdf"], "for a total of"))
 
 
