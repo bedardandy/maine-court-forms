@@ -1,28 +1,32 @@
 """Computed fields (computations.json, yellow light): artifacts + wiring.
 
 Offline parts validate the shipped ``forms/<ID>/computations.json`` files
-(load through the shared engine, every key mapped, samples balance); the
-verbatim and end-to-end parts are PDF-dependent and skip when the blank is
-unfetched (CI).
+(load through the shared engine; every key mapped — or, on a recipe-tier
+pointer-only mapping, consumed by the form's recipe module; samples
+balance); the verbatim and end-to-end parts are PDF-dependent and skip when
+the blank is unfetched (CI).
 
 Shipped surveys: MJ-007 (wage-withholding answer — deduction total,
 disposable earnings, the printed .25 multiplier, minimum-wage excess, and
 the least-of-three maximum), FM-040 (child support worksheet — combined
 adjusted gross income, children x table amount, the three per-child column
-totals, the line-14 adjustment subtraction down to "pays as support"), and
+totals, the line-14 adjustment subtraction down to "pays as support"),
 GS-017 (child support worksheet — children x table amount, health-insurance
 / child-care / extraordinary-medical column totals, the two parents'
-printed line-14 adjustment subtractions down to "pays as support"). The
-amount-from-table input on both worksheets is a SUPPLIED fact the filer
-reads off the printed Child Support Table — the statutory table is never
-embedded. The other printed math in the tree is conditional ("if biweekly,
-multiply x 2"), not expressible without inventing a constant (both forms'
-line-14 "(Multiply line 8a/8b by line 13)" — line 8 is a percent entry and
-the implied divide-by-100 is not a printed literal; GS-017 additionally
-prints "line 8b" under BOTH parents' obligations), has unmapped inputs
-(GS-017's line-7 widgets are both labeled "b.", so 7c's "(Add lines 7a and
-7b.)" has no 7a input), or sits on a recipe-tier pointer-only mapping
-(MJ-009 / MJ-015 "for a total of $"), so it is deliberately not declared.
+printed line-14 adjustment subtractions down to "pays as support"), and the
+recipe-tier MJ-009 / MJ-015 "for a total of $" sums (owed/principal +
+interest + costs; wired through the engine's facts-only ``compute_facts``
+entry point in ``fill_one``, since the mapped routing never sees a
+pointer-only mapping). The amount-from-table input on both worksheets is a
+SUPPLIED fact the filer reads off the printed Child Support Table — the
+statutory table is never embedded. The other printed math in the tree is
+conditional ("if biweekly, multiply x 2"), not expressible without
+inventing a constant (both forms' line-14 "(Multiply line 8a/8b by line
+13)" — line 8 is a percent entry and the implied divide-by-100 is not a
+printed literal; GS-017 additionally prints "line 8b" under BOTH parents'
+obligations), or has unmapped inputs (GS-017's line-7 widgets are both
+labeled "b.", so 7c's "(Add lines 7a and 7b.)" has no 7a input), so it is
+deliberately not declared.
 """
 import json
 import pathlib
@@ -56,19 +60,39 @@ def _norm(s: str) -> str:
 class ComputationsArtifacts(unittest.TestCase):
     def test_surveyed_forms_present(self):
         self.assertEqual(_forms_with_computations(),
-                         ["FM-040", "GS-017", "MJ-007"])
+                         ["FM-040", "GS-017", "MJ-007", "MJ-009", "MJ-015"])
 
     def test_loads_and_keys_are_mapped(self):
+        """No orphan keys: every computations.json target/input must be a
+        key the fill path actually consumes — a mapped value on a
+        mapping-tier form, or (recipe-tier pointer-only mapping, empty
+        ``map``) a fact the registered recipe module reads."""
+        from engine.fill_and_audit import RECIPE3
         for fid in _forms_with_computations():
             with self.subTest(form=fid):
                 comp = load_computations(FORMS / fid)  # validates ops/cycles
                 mapping = json.loads((FORMS / fid / "mapping.json").read_text())
                 mapped = set(mapping["map"].values())
+                recipe_src = None
+                if not mapping["map"] and mapping.get("status") == "recipe":
+                    recipe_src = (ROOT / "engine" / "recipes" /
+                                  f"{RECIPE3[fid]}.py").read_text()
                 for key, spec in comp["computed"].items():
-                    self.assertIn(key, mapped)
-                    for raw in spec["inputs"]:
-                        if isinstance(raw, str):
-                            self.assertIn(raw.lstrip("-"), mapped)
+                    for k in [key] + [raw.lstrip("-")
+                                      for raw in spec["inputs"]
+                                      if isinstance(raw, str)]:
+                        if recipe_src is None:
+                            self.assertIn(k, mapped)
+                        else:
+                            # canonical "facts.x" must be read by the recipe
+                            # (facts.get("x") / facts["x"])
+                            self.assertTrue(k.startswith("facts."), k)
+                            bare = k.split(".", 1)[1]
+                            self.assertRegex(
+                                recipe_src,
+                                r"\bfacts(?:\.get\(\s*|\[\s*)[\"']"
+                                + re.escape(bare) + r"[\"']",
+                                f"{fid}: {k} not consumed by the recipe")
                     self.assertTrue(spec.get("formula_text", "").strip())
 
     def test_sample_cases_balance(self):
@@ -326,6 +350,102 @@ class Fm040EndToEnd(unittest.TestCase):
             self.assertEqual(w["computed"], "200.00")
             # supplied value wins in the PDF — never enforced/overridden
             self.assertEqual(self._widget(r["out_pdf"], "support"), "999.00")
+
+
+class RecipeTierEndToEnd(unittest.TestCase):
+    """MJ-009 / MJ-015 'for a total of $': pointer-only mappings, so the
+    computation rides the engine's facts-only entry point (compute_facts
+    inside fill_one) and the recipe places the merged fact — computed vs
+    supplied-contradiction through the real recipe fill."""
+
+    # (form_id, total fact key, total widget name, computed value from the
+    #  shipped sample's components, recipe's widget formatting prefix)
+    CASES = [
+        ("MJ-009", "mj009_total", "for a total of", "1,370.00", "$"),
+        ("MJ-015", "mj_total", "for a total of", "2,660.00", ""),
+    ]
+
+    def _fill(self, form_id, case):
+        from engine.canonical import to_engine_case
+        from engine.fill_and_audit import fill_one
+        fdir = FORMS / form_id
+        out = pathlib.Path(self._td.name)
+        return fill_one(form_id, to_engine_case(case), out,
+                        schema_path=fdir / "schema.json",
+                        pdf_path=fdir / f"{form_id}.pdf")
+
+    def _widget(self, pdf_path, name):
+        import fitz
+        doc = fitz.open(pdf_path)
+        try:
+            for page in doc:
+                for w in page.widgets() or []:
+                    if w.field_name == name:
+                        return w.field_value
+        finally:
+            doc.close()
+        return None
+
+    def setUp(self):
+        self._td = tempfile.TemporaryDirectory()
+        self.addCleanup(self._td.cleanup)
+
+    def test_omitted_total_is_computed_and_filled(self):
+        for form_id, key, widget, computed, prefix in self.CASES:
+            if not (FORMS / form_id / f"{form_id}.pdf").exists():
+                continue  # blank not fetched (CI)
+            with self.subTest(form=form_id):
+                case = json.loads((FORMS / form_id / "examples" /
+                                   "sample_case.json").read_text())
+                del case["facts"][key]
+                r = self._fill(form_id, case)
+                self.assertTrue(r["ok"])
+                by_key = {e["key"]: e for e in r["computed_fields"]}
+                self.assertEqual(by_key[f"facts.{key}"]["value"], computed)
+                self.assertEqual(r["computation_warnings"], [])
+                # the computed fact lands in the PDF via the recipe
+                self.assertEqual(self._widget(r["out_pdf"], widget),
+                                 prefix + computed)
+
+    def test_supplied_contradiction_written_as_is_with_warning(self):
+        for form_id, key, widget, computed, prefix in self.CASES:
+            if not (FORMS / form_id / f"{form_id}.pdf").exists():
+                continue  # blank not fetched (CI)
+            with self.subTest(form=form_id):
+                case = json.loads((FORMS / form_id / "examples" /
+                                   "sample_case.json").read_text())
+                case["facts"][key] = "9,999.00"
+                r = self._fill(form_id, case)
+                self.assertTrue(r["ok"])
+                warns = {w["key"]: w for w in r["computation_warnings"]}
+                w = warns[f"facts.{key}"]
+                self.assertEqual(w["code"], "COMPUTATION_MISMATCH")
+                self.assertEqual(w["supplied"], "9,999.00")
+                self.assertEqual(w["computed"], computed)
+                self.assertEqual(w["severity"], "warning")
+                # supplied value wins in the PDF — never enforced/overridden
+                self.assertEqual(self._widget(r["out_pdf"], widget),
+                                 prefix + "9,999.00")
+
+    def test_mj009_omitted_interest_skips_silently(self):
+        """The recipe's $0.00 interest WIDGET default is not a fact: with
+        facts.mj009_interest omitted the engine skips the total computation
+        silently (missing input), per the mapped-path semantics."""
+        if not (FORMS / "MJ-009" / "MJ-009.pdf").exists():
+            self.skipTest("blank not fetched")
+        case = json.loads((FORMS / "MJ-009" / "examples" /
+                           "sample_case.json").read_text())
+        del case["facts"]["mj009_interest"]
+        del case["facts"]["mj009_total"]
+        r = self._fill("MJ-009", case)
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["computed_fields"], [])
+        self.assertEqual(r["computation_warnings"], [])
+        # widget default still understates rather than invents...
+        self.assertEqual(self._widget(r["out_pdf"], "undefined_2"), "$0.00")
+        # ...and the total stays blank for the filer (unwritten widgets
+        # read back as "" on this form)
+        self.assertFalse(self._widget(r["out_pdf"], "for a total of"))
 
 
 if __name__ == "__main__":

@@ -31,9 +31,18 @@ RECIPE_PINS = [
     # PC-034 GAL signature block, not plaintiff (f6afcbf)
     ("PC-034", "name", "Margaret L. Holcomb, Esq.", "GAL printed name"),
     ("PC-034", "undefined", "Margaret L. Holcomb, Esq.", "GAL signature line"),
+    # MJ-015 amount line — the principal belongs in the owed blank right
+    # after "currently owes the judgment creditor $" (it was misplaced into
+    # the interest blank `undefined`, which by rect is the "$" opening the
+    # "plus interest of $ ___" line); the total is the printed sum, supplied
+    # in the sample and computed via computations.json when omitted
+    ("MJ-015", "the_judgment_debtor_currently_owes_the_judgment_creditor",
+     "2,450.00", "principal in the owed blank"),
+    ("MJ-015", "undefined", "35.00", "interest amount blank"),
+    ("MJ-015", "for_a_total_of", "2,660.00",
+     "printed total (principal + interest + costs)"),
     # --- sibling regression guards (shared modules must not regress) ---
     ("MJ-014", "undefined_2", "John R. Roe", "MJ-014 'Name of defendant' preserved"),
-    ("MJ-015", "undefined", "2,450.00", "MJ-015 principal unchanged"),
     ("JV-022", "undefined", "Maria T. Hendricks", "JV-022 supervisor signature preserved"),
 ]
 

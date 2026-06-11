@@ -14,6 +14,14 @@ This motion form is used in money judgment cases in Maine court. Filed to reques
 
 - **14 M.R.S. § 3126-A**
 
+## Computed lines (printed arithmetic)
+
+Declared in `computations.json`. This form is recipe-tier (pointer-only mapping), so the shared engine evaluates the declaration on the recipe fill path: `fill_one` merges an omitted computed key (with its inputs supplied) into the case before the recipe runs and the recipe places it (`computed_fields` in the result); supply it and your value is written **as-is** — a contradiction only adds a `COMPUTATION_MISMATCH` warning under `computation_warnings`.
+
+| computed key | printed instruction |
+|---|---|
+| `facts.mj_total` = `facts.mj_principal` + `facts.mj_interest` + `facts.mj_costs` | The judgment debtor currently owes the judgment creditor $ plus interest of $ plus costs of $ , for a total of $ . |
+
 ## Field Mappings
 
 | Field Name | Type | Page | Notes |

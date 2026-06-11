@@ -205,16 +205,17 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         costs = facts.get("mj009_costs", "")
         if costs and _set(out, "plus_costs_of", f"${costs}"):
             changes.append(("plus_costs_of", f"${costs}", "mj009-costs"))
-        if owed:
-            try:
-                total = (float(str(owed).replace(",", ""))
-                         + float(str(interest or 0).replace(",", ""))
-                         + float(str(costs or 0).replace(",", "")))
-                if _set(out, "for_a_total_of", f"${total:,.2f}"):
-                    changes.append(("for_a_total_of", f"${total:,.2f}",
-                                      "mj009-total"))
-            except Exception:
-                pass
+        # "for a total of $" — the printed sum (owed + interest + costs)
+        # is declared in forms/MJ-009/computations.json and evaluated by
+        # the shared engine BEFORE this recipe runs (fill_one merges an
+        # omitted facts.mj009_total into the case; a supplied value always
+        # wins, a contradiction only yields a COMPUTATION_MISMATCH
+        # warning). The recipe just places the fact. NB: the engine skips
+        # the computation when any input fact is omitted, so the $0.00
+        # interest WIDGET default above does not feed a total.
+        total = str(facts.get("mj009_total", "") or "").lstrip("$")
+        if total and _set(out, "for_a_total_of", f"${total}"):
+            changes.append(("for_a_total_of", f"${total}", "mj009-total"))
 
     # MJ-015 — installment-order owed-amount affidavit. Employment
     # narrative ONLY when explicitly provided (the old default asserted
@@ -234,15 +235,6 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         changes.append(("installment_order_dated_mmddyyyy",
                         install_date, "mj15-install-date"))
 
-    # Balance narrative — ONLY when explicitly provided (was a stock
-    # principal-plus-interest description).
-    judgment_balance = facts.get("mj_judgment_balance", "")
-    if judgment_balance:
-        for fid in ("the_judgment_debtor_currently_owes_the_judgment_credito",
-                     "the_judgment_debtor_currently_owes_the_judgment_cr"):
-            if _set(out, fid, judgment_balance):
-                changes.append((fid, judgment_balance, "mj15-balance-narr"))
-
     # MJ-015 — sworn-statement (longer field_id variant); ONLY on an
     # explicit boolean fact — never auto-swear.
     swear = ("I swear under penalty of perjury that the above statements "
@@ -254,20 +246,34 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
 
     # MJ-015 amount line + signature. `undefined`/`undefined_2` collide with
     # other forms (see discriminator note above), so gate to MJ-015.
-    # Principal/costs ONLY when explicitly provided (were $2,450/$175
-    # stock amounts).
+    # The printed line reads: "The judgment debtor currently owes the
+    # judgment creditor $ ___ plus interest of $ ___ plus costs of $ ___,
+    # for a total of $ ___." — by widget rect the long-named widget is the
+    # owed/principal blank (y=291, right after "creditor $") and `undefined`
+    # is the interest blank (y=305, the "$" opening the second line). The
+    # principal used to be misplaced into the interest blank via `undefined`
+    # while the owed blank was targeted through truncated field_ids that no
+    # longer match the schema. Amounts ONLY when explicitly provided.
     if is_mj015:
         principal = facts.get("mj_principal", "")
+        interest = facts.get("mj_interest", "")
         costs = facts.get("mj_costs", "")
-        total = ""
-        if principal:
-            try:
-                total = f"{float(principal.replace(',','')) + float((costs or '0').replace(',','')):,.2f}"
-            except Exception:
-                total = principal
+        # "for a total of $" — the printed sum (principal + interest +
+        # costs) is declared in forms/MJ-015/computations.json and
+        # evaluated by the shared engine BEFORE this recipe runs (fill_one
+        # merges an omitted facts.mj_total into the case; a supplied value
+        # always wins, a contradiction only yields a COMPUTATION_MISMATCH
+        # warning). The recipe just places the fact.
+        total = str(facts.get("mj_total", "") or "").lstrip("$")
 
-        if principal and _set(out, "undefined", principal):
-            changes.append(("undefined", principal, "mj15-principal"))
+        if principal and _set(
+                out, "the_judgment_debtor_currently_owes_the_judgment_creditor",
+                principal):
+            changes.append(
+                ("the_judgment_debtor_currently_owes_the_judgment_creditor",
+                 principal, "mj15-principal"))
+        if interest and _set(out, "undefined", interest):
+            changes.append(("undefined", interest, "mj15-interest"))
         if costs and _set(out, "plus_costs_of", costs):
             changes.append(("plus_costs_of", costs, "mj15-costs"))
         if total and _set(out, "for_a_total_of", total):

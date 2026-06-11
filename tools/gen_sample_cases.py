@@ -267,9 +267,13 @@ TYPED_FACT_VALUES: dict = {
                                  "for testing this form's fill."),
     "mj_employment_narrative": ("Sample employment information (fictional) "
                                 "for testing this form's fill."),
-    "mj_judgment_balance": "900.00",
     "mj_principal": "850.00",
+    "mj_interest": "15.00",
     "mj_costs": "50.00",
+    # printed "for a total of $" sums (computations.json) — keep balanced
+    # with the component amounts above so generated samples never carry a
+    # COMPUTATION_MISMATCH out of the box.
+    "mj_total": "915.00",
     "installment_order_date": "02/01/2024",  # written verbatim
     "mj009_installment_order_date": "2024-02-01",
     "mj009_failed_payment": True,
@@ -278,6 +282,7 @@ TYPED_FACT_VALUES: dict = {
     "mj009_owed_amount": "1,000.00",
     "mj009_interest": "10.00",
     "mj009_costs": "25.00",
+    "mj009_total": "1,035.00",
     "underlying_criminal_docket": "CR-2024-00000",
     # ── MJ-SC judgment family (infer_mj_sc_judgment) ──
     "employer_name": "Acme Example Company",

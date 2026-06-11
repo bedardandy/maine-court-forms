@@ -234,6 +234,44 @@ def fill_one(form_id: str, case: dict, out_dir: pathlib.Path,
         return {"form_id": form_id, "ok": False,
                 "error": f"PDF not found: {pdf_path}"}
 
+    # Computed facts (computations.json next to schema.json; see
+    # maine_forms_engine.computations). Recipe-tier forms have pointer-only
+    # mappings, so the mapped computations routing (fill_via_mapping) never
+    # sees them — the facts-only evaluator runs here instead: a target the
+    # case OMITS whose inputs are all present is computed from the form's
+    # printed arithmetic and merged into the case BEFORE the recipe runs;
+    # a supplied target is never overridden, a contradiction only yields a
+    # COMPUTATION_MISMATCH warning. The result/kv-artifact keys
+    # (computed_fields / computation_warnings / computation_notes) match
+    # the mapped path so harness consumers see one shape. A malformed
+    # computations.json (bad op / cycle) raises, same as the mapped path.
+    _comp_extra: dict = {}
+    try:
+        from maine_forms_engine.computations import (
+            evaluate as _eval_computations,
+            load_computations as _load_computations)
+    except ImportError:  # engine without the computations layer
+        _computations = None
+    else:
+        _computations = _load_computations(schema_path.parent)
+    if _computations is not None:
+        _comp = _eval_computations(_computations, case)
+        if _comp["computed"]:
+            # Never mutate the caller's case (it may be reused across forms).
+            case = dict(case)
+            for e in _comp["computed"]:
+                key, val = e["key"], e["value"]
+                case[key] = val  # flat key — engine lookups resolve flat first
+                head, _, rest = key.partition(".")
+                if rest and isinstance(case.get(head), dict):
+                    sub = dict(case[head])
+                    sub[rest] = val
+                    case[head] = sub  # nested — recipes read case["facts"][...]
+        _comp_extra["computed_fields"] = _comp["computed"]
+        _comp_extra["computation_warnings"] = _comp["warnings"]
+        if _comp["notes"]:
+            _comp_extra["computation_notes"] = _comp["notes"]
+
     kv, stats = map_form(schema, case)
     # Apply form-specific recipe-3 inference if registered
     kv, recipe3_changes = _apply_recipe3(form_id, kv, case)
@@ -386,11 +424,13 @@ def fill_one(form_id: str, case: dict, out_dir: pathlib.Path,
     }
     if constraint_warnings is not None:
         kv_artifact["constraint_warnings"] = constraint_warnings
+    kv_artifact.update(_comp_extra)
     (out_dir / f"{form_id}.kv.json").write_text(json.dumps(kv_artifact,
                                                            indent=2))
     res = {"form_id": form_id, "ok": True, "out_pdf": str(out_pdf),
            "stats": stats,
-           "fields_written_to_pdf": len(field_data)}
+           "fields_written_to_pdf": len(field_data),
+           **_comp_extra}
     if constraint_warnings is not None:
         res["constraint_warnings"] = constraint_warnings
     return res

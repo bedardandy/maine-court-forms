@@ -1,0 +1,15 @@
+{
+  "form_id": "MJ-009",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF; the printed fill-in blanks are collapsed to single spaces). Recipe-tier wiring: this form's mapping.json is pointer-only (empty map), so the mapped computations routing never sees it — instead engine/fill_and_audit.fill_one calls the engine's facts-only entry point (compute_facts) and merges an omitted target into the case BEFORE the recipe (engine/recipes/infer_mj_debtor_disclosure.py) runs; the recipe places facts.mj009_total into the 'for a total of' widget. Warnings-only: a supplied total is always written as-is, a contradiction adds a COMPUTATION_MISMATCH entry. NB the recipe's interest widget defaults to $0.00 when only the owed amount is supplied (understates rather than invents) — that is a widget default, not a fact: with facts.mj009_interest omitted the computation is skipped silently per the engine contract, so the total is computed only when all three component facts are supplied.",
+  "computed": {
+    "facts.mj009_total": {
+      "op": "sum",
+      "inputs": [
+        "facts.mj009_owed_amount",
+        "facts.mj009_interest",
+        "facts.mj009_costs"
+      ],
+      "formula_text": "The judgment debtor currently owes the judgment creditor $ (plus interest of $ ) plus costs of $ , for a total of $ ."
+    }
+  }
+}
