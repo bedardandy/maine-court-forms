@@ -8,14 +8,21 @@ unfetched (CI).
 Shipped surveys: MJ-007 (wage-withholding answer — deduction total,
 disposable earnings, the printed .25 multiplier, minimum-wage excess, and
 the least-of-three maximum), FM-040 (child support worksheet — combined
-adjusted gross income, children x table amount), and GS-017 (child support
-worksheet — child-care and extraordinary-medical column totals, the two
-parents' printed line-14 adjustment subtractions down to "pays as
-support"). The other printed math in the tree is conditional ("if
-biweekly, multiply x 2"), has unmapped inputs (GS-017's 7a/7b and
-amount-from-table, FM-040's per-child columns and line-8 shares), or sits
-on a recipe-tier pointer-only mapping (MJ-009 / MJ-015 "for a total of
-$"), so it is deliberately not declared.
+adjusted gross income, children x table amount, the three per-child column
+totals, the line-14 adjustment subtraction down to "pays as support"), and
+GS-017 (child support worksheet — children x table amount, health-insurance
+/ child-care / extraordinary-medical column totals, the two parents'
+printed line-14 adjustment subtractions down to "pays as support"). The
+amount-from-table input on both worksheets is a SUPPLIED fact the filer
+reads off the printed Child Support Table — the statutory table is never
+embedded. The other printed math in the tree is conditional ("if biweekly,
+multiply x 2"), not expressible without inventing a constant (both forms'
+line-14 "(Multiply line 8a/8b by line 13)" — line 8 is a percent entry and
+the implied divide-by-100 is not a printed literal; GS-017 additionally
+prints "line 8b" under BOTH parents' obligations), has unmapped inputs
+(GS-017's line-7 widgets are both labeled "b.", so 7c's "(Add lines 7a and
+7b.)" has no 7a input), or sits on a recipe-tier pointer-only mapping
+(MJ-009 / MJ-015 "for a total of $"), so it is deliberately not declared.
 """
 import json
 import pathlib
@@ -167,8 +174,9 @@ class ComputationsEndToEnd(unittest.TestCase):
 
 
 class Gs017EndToEnd(unittest.TestCase):
-    """GS-017: 'Total: 11.' column sum and the line-14 'pays as support'
-    difference, computed vs supplied-contradiction."""
+    """GS-017: line 9c's children-x-table product, the 'Total: 10./11.'
+    column sums, and the line-14 'pays as support' difference, computed vs
+    supplied-contradiction."""
 
     FORM = "GS-017"
 
@@ -208,6 +216,38 @@ class Gs017EndToEnd(unittest.TestCase):
             self.assertEqual(self._widget(r["out_pdf"], "undefined_26"),
                              "100.00")
 
+    def test_omitted_9c_and_insurance_total_are_computed_and_filled(self):
+        # line 9c: children x amount-from-table (the table value is a
+        # supplied fact, read off the printed Child Support Table); line
+        # 10's printed 'Total: 10.' column sum
+        for k in ("basic_weekly_support_total",
+                  "total_weekly_health_insurance_cost"):
+            del self.case["facts"][k]
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            by_key = {e["key"]: e["value"] for e in r["computed_fields"]}
+            self.assertEqual(by_key["facts.basic_weekly_support_total"],
+                             "170.00")  # 2 children x 85.00 from table
+            self.assertEqual(
+                by_key["facts.total_weekly_health_insurance_cost"], "150.00")
+            self.assertEqual(r["computation_warnings"], [])
+            self.assertEqual(self._widget(r["out_pdf"], "9c"), "170.00")
+            self.assertEqual(self._widget(r["out_pdf"], "10"), "150.00")
+
+    def test_supplied_9c_contradiction_warns_supplied_wins(self):
+        self.case["facts"]["basic_weekly_support_total"] = "999.00"
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            warns = {w["key"]: w for w in r["computation_warnings"]}
+            w = warns["facts.basic_weekly_support_total"]
+            self.assertEqual(w["code"], "COMPUTATION_MISMATCH")
+            self.assertEqual(w["supplied"], "999.00")
+            self.assertEqual(w["computed"], "170.00")
+            # supplied value wins in the PDF — never enforced/overridden
+            self.assertEqual(self._widget(r["out_pdf"], "9c"), "999.00")
+
     def test_supplied_contradiction_written_as_is_with_warning(self):
         self.case["facts"]["child_care_total"] = "999.00"
         with tempfile.TemporaryDirectory() as td:
@@ -221,6 +261,71 @@ class Gs017EndToEnd(unittest.TestCase):
             self.assertEqual(w["formula_text"], "Total: 11.")
             # supplied value wins in the PDF — never enforced/overridden
             self.assertEqual(self._widget(r["out_pdf"], "11"), "999.00")
+
+
+class Fm040EndToEnd(unittest.TestCase):
+    """FM-040: the three 'Total: 10./11./12.' column sums and the line-14
+    'Non-Primary Care Provider pays as support' difference, computed vs
+    supplied-contradiction."""
+
+    FORM = "FM-040"
+
+    def setUp(self):
+        if not (FORMS / self.FORM / f"{self.FORM}.pdf").exists():
+            self.skipTest("blank not fetched")
+        self.case = json.loads(
+            (FORMS / self.FORM / "examples" / "sample_case.json").read_text())
+
+    def _widget(self, pdf_path, name):
+        import fitz
+        doc = fitz.open(pdf_path)
+        try:
+            for page in doc:
+                for w in page.widgets() or []:
+                    if w.field_name == name:
+                        return w.field_value
+        finally:
+            doc.close()
+        return None
+
+    def test_omitted_totals_are_computed_and_filled(self):
+        for k in ("total_weekly_health_insurance_cost", "child_care_total",
+                  "total_extraordinary_medical_expenses",
+                  "non_primary_pays_as_support"):
+            del self.case["facts"][k]
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            by_key = {e["key"]: e["value"] for e in r["computed_fields"]}
+            self.assertEqual(
+                by_key["facts.total_weekly_health_insurance_cost"], "150.00")
+            self.assertEqual(by_key["facts.child_care_total"], "600.00")
+            self.assertEqual(
+                by_key["facts.total_extraordinary_medical_expenses"],
+                "600.00")
+            self.assertEqual(by_key["facts.non_primary_pays_as_support"],
+                             "200.00")  # 300 - 30 - 60 - 10
+            self.assertEqual(r["computation_warnings"], [])
+            # 'Total 12' is the printed 'Total: 12.' box; 'support' is the
+            # 'Non-Primary Care Provider pays as support = $' box
+            self.assertEqual(self._widget(r["out_pdf"], "10"), "150.00")
+            self.assertEqual(self._widget(r["out_pdf"], "11"), "600.00")
+            self.assertEqual(self._widget(r["out_pdf"], "Total 12"),
+                             "600.00")
+            self.assertEqual(self._widget(r["out_pdf"], "support"), "200.00")
+
+    def test_supplied_contradiction_written_as_is_with_warning(self):
+        self.case["facts"]["non_primary_pays_as_support"] = "999.00"
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            warns = {w["key"]: w for w in r["computation_warnings"]}
+            w = warns["facts.non_primary_pays_as_support"]
+            self.assertEqual(w["code"], "COMPUTATION_MISMATCH")
+            self.assertEqual(w["supplied"], "999.00")
+            self.assertEqual(w["computed"], "200.00")
+            # supplied value wins in the PDF — never enforced/overridden
+            self.assertEqual(self._widget(r["out_pdf"], "support"), "999.00")
 
 
 if __name__ == "__main__":

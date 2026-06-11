@@ -22,7 +22,13 @@ Declared in `computations.json` (evaluated by the shared engine on the mapping f
 | computed key | printed instruction |
 |---|---|
 | `facts.basic_weekly_support_total` | Total number of children (a) multiplied by amount from table (b) = 9c. |
+| `facts.child_care_total` | Total: 11. |
 | `facts.combined_adjusted_gross_income` | c. (Add lines 7a and 7b.) |
+| `facts.non_primary_pays_as_support` | Non-Primary Care Provider Adjustments (Amounts paid directly by Non-Primary Care Provider) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Non-Primary Care Provider pays as support = $ |
+| `facts.total_extraordinary_medical_expenses` | Total: 12. |
+| `facts.total_weekly_health_insurance_cost` | Total: 10. |
+
+`facts.amount_from_table` is a **supplied** fact, never computed: the filer reads it off the printed Child Support Table per the page-3 instructions ("CALCULATING 'AMOUNT FROM TABLE' FOR LINE 9 OF THE WORKSHEET"); the statutory table is never embedded. Line 13 ("Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2") is conditional and the line-14 multiplications operate on the percent entries of line 8 (`facts.share_of_adjusted_income_primary` / `facts.share_of_adjusted_income_non_primary`), so those lines are deliberately not declared (see `computations.json`).
 
 ## Field Mappings
 

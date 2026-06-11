@@ -16,6 +16,21 @@ Form used in guardianship proceedings in Maine court.
 - **19-A M.R.S. § 2001**
 - **19-A M.R.S. §§ 2001**
 
+## Computed lines (printed arithmetic)
+
+Declared in `computations.json` (evaluated by the shared engine on the mapping fill path). Omit a computed key (with its inputs supplied) and the engine fills it from the formula printed on the form (`computed_fields` in the result); supply it and your value is written **as-is** — a contradiction only adds a `COMPUTATION_MISMATCH` warning.
+
+| computed key | printed instruction |
+|---|---|
+| `facts.basic_weekly_support_total` | Total number of children (a) multiplied by amount from table (b) = 9c. |
+| `facts.child_care_total` | Total: 11. |
+| `facts.medical_expense_total` | Total: 12. |
+| `facts.parent1_pays_as_support` | Non-Primary Care Provider Adjustments (Amounts paid directly by Parent 1) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Parent 1 pays as support = $ |
+| `facts.parent2_pays_as_support` | Non-Primary Care Provider Adjustments (Amounts paid directly by Parent 2) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Parent 2 pays as support = $ |
+| `facts.total_weekly_health_insurance_cost` | Total: 10. |
+
+`facts.amount_from_table` is a **supplied** fact, never computed: the filer reads it off the printed Child Support Table per the page-3 instructions ("CALCULATING 'AMOUNT FROM TABLE' FOR LINE 9 OF THE WORKSHEET"); the statutory table is never embedded. Line 13 ("Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2") is conditional, and the line-14 obligation multiplications operate on the percent entries of line 8 (`facts.parent1_share_of_adjusted_income` / `facts.parent2_share_of_adjusted_income`) — the blank prints "(Multiply line 8b by line 13)" under BOTH parents — so those lines are deliberately not declared (see `computations.json`).
+
 ## Field Mappings
 
 | Field Name | Type | Page | Notes |

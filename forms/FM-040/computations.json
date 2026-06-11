@@ -1,6 +1,6 @@
 {
   "form_id": "FM-040",
-  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is.",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is. Deliberately NOT declared: line 13 (conditional: 'Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2'), and the line-14 multiplications — 14a 'Spends directly $ (Multiply line 8a by line 13)' and 14b 'Non-Primary Care Provider's support obligation $ (Multiply line 8b by line 13)': the line-8 share boxes are percentage entries ('a. %' / 'b. %', mapped as facts.share_of_adjusted_income_primary / facts.share_of_adjusted_income_non_primary), and the divide-by-100 a percent implies is not a printed literal, so the product is not expressible without inventing a constant.",
   "computed": {
     "facts.combined_adjusted_gross_income": {
       "op": "sum",
@@ -17,7 +17,57 @@
         "facts.amount_from_table"
       ],
       "formula_text": "Total number of children (a) multiplied by amount from table (b) = 9c.",
-      "note": "the printed line carries fill-in blanks between (a), (b) and 9c"
+      "note": "the printed line carries fill-in blanks between (a), (b) and 9c; facts.amount_from_table is a SUPPLIED fact — the filer reads it off the printed Child Support Table per page 3 ('CALCULATING “AMOUNT FROM TABLE” FOR LINE 9 OF THE WORKSHEET'); the statutory table itself is never embedded or computed"
+    },
+    "facts.total_weekly_health_insurance_cost": {
+      "op": "sum",
+      "inputs": [
+        "facts.health_insurance_amount_1",
+        "facts.health_insurance_amount_2",
+        "facts.health_insurance_amount_3",
+        "facts.health_insurance_amount_4",
+        "facts.health_insurance_amount_5",
+        "facts.health_insurance_amount_6"
+      ],
+      "formula_text": "Total: 10.",
+      "note": "the printed Total at the foot of the '10. Weekly health insurance cost for children' Name & amount-per-child-per-week column"
+    },
+    "facts.child_care_total": {
+      "op": "sum",
+      "inputs": [
+        "facts.child_care_amount_1",
+        "facts.child_care_amount_2",
+        "facts.child_care_amount_3",
+        "facts.child_care_amount_4",
+        "facts.child_care_amount_5",
+        "facts.child_care_amount_6"
+      ],
+      "formula_text": "Total: 11.",
+      "note": "the printed Total at the foot of the '11. Weekly child care expenses' Name & amount-per-child-per-week column"
+    },
+    "facts.total_extraordinary_medical_expenses": {
+      "op": "sum",
+      "inputs": [
+        "facts.medical_expense_amount_1",
+        "facts.medical_expense_amount_2",
+        "facts.medical_expense_amount_3",
+        "facts.medical_expense_amount_4",
+        "facts.medical_expense_amount_5",
+        "facts.medical_expense_amount_6"
+      ],
+      "formula_text": "Total: 12.",
+      "note": "the printed Total at the foot of the '12. Extraordinary medical expenses' Name & amount-per-child-per-week column"
+    },
+    "facts.non_primary_pays_as_support": {
+      "op": "difference",
+      "inputs": [
+        "facts.non_primary_care_provider_obligation",
+        "facts.non_primary_health_insurance",
+        "facts.non_primary_child_care",
+        "facts.non_primary_medical_expenses"
+      ],
+      "formula_text": "Non-Primary Care Provider Adjustments (Amounts paid directly by Non-Primary Care Provider) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Non-Primary Care Provider pays as support = $",
+      "note": "line 14b: the printed '-' adjustments subtract from the Non-Primary Care Provider's support obligation down to the printed '=' result"
     }
   }
 }

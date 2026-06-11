@@ -1,7 +1,29 @@
 {
   "form_id": "GS-017",
-  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is. Deliberately NOT declared: line 9c (its 'amount from table (b)' input is unmapped on this form), line 10's Total (the per-child insurance amounts are unmapped), line 13 (conditional: 'Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2'), and lines 14a/14b obligations (line 8b is unmapped and the line-8 shares are statutory percentage entries).",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is. Deliberately NOT declared: line 13 (conditional: 'Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2'), line 7c's '(Add lines 7a and 7b.)' (the form's line-7 widgets are both labeled 'b.'; no mapped 7a input exists), and lines 14a/14b obligations — the blank prints '(Multiply line 8b by line 13)' under BOTH Parent 1's and Parent 2's obligation, and the line-8 share boxes are percentage entries ('a. %' / 'b. %', now mapped as facts.parent1_share_of_adjusted_income / facts.parent2_share_of_adjusted_income): the divide-by-100 a percent implies is not a printed literal, so the product is not expressible without inventing a constant.",
   "computed": {
+    "facts.basic_weekly_support_total": {
+      "op": "product",
+      "inputs": [
+        "facts.total_number_of_children",
+        "facts.amount_from_table"
+      ],
+      "formula_text": "Total number of children (a) multiplied by amount from table (b) = 9c.",
+      "note": "the printed line carries fill-in blanks between (a), (b) and 9c; facts.amount_from_table is a SUPPLIED fact — the filer reads it off the printed Child Support Table per page 3 ('CALCULATING “AMOUNT FROM TABLE” FOR LINE 9 OF THE WORKSHEET'); the statutory table itself is never embedded or computed"
+    },
+    "facts.total_weekly_health_insurance_cost": {
+      "op": "sum",
+      "inputs": [
+        "facts.health_insurance_amount_1",
+        "facts.health_insurance_amount_2",
+        "facts.health_insurance_amount_3",
+        "facts.health_insurance_amount_4",
+        "facts.health_insurance_amount_5",
+        "facts.health_insurance_amount_6"
+      ],
+      "formula_text": "Total: 10.",
+      "note": "the printed Total at the foot of the '10. Weekly health insurance cost for children' Name & amount-per-child-per-week column"
+    },
     "facts.child_care_total": {
       "op": "sum",
       "inputs": [
