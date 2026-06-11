@@ -28,6 +28,14 @@ single selection:
      unsatisfactory): one rating per evaluation.
   D. The payment-frequency set (weekly / biweekly / monthly): one frequency
      per payment plan.
+  E. The fine-payment request pair (i_request_that_the_court_grant_me /
+     i_request_a_new_payment_plan_of): more days to pay in full or a new
+     payment plan. When the local blank prints the literal single-selection
+     instruction ('Choose one:'), the group is certain (the note quotes it);
+     without a local blank it is emitted as inferred.
+  F. The new-payment-plan frequency selector printed as '$ ... every week /
+     two weeks / month beginning (mm/dd/yyyy)' (week_3 / two_weeks_2 /
+     month_beginning, only alongside class E): one frequency per plan.
 
 Open-ended clusters (bail conditions, income-source lists, "check all that
 apply") are never emitted.
@@ -53,6 +61,10 @@ _COURT_SELECTOR = ("superior_court", "district_court",
 _COURT_LITERAL = re.compile(r"[“\"]X[”\"]\s+the\s+court\s+for\s+filing", re.I)
 _RATING_SET = ("highly_satisfactory", "satisfactory", "unsatisfactory")
 _FREQUENCY_SET = ("weekly", "biweekly", "monthly")
+_FINE_REQUEST_PAIR = ("i_request_that_the_court_grant_me",
+                      "i_request_a_new_payment_plan_of")
+_CHOOSE_ONE_LITERAL = re.compile(r"Choose\s+one\s*:", re.I)
+_PLAN_FREQUENCY_SET = ("week_3", "two_weeks_2", "month_beginning")
 
 
 def _checkbox_fids(fdir: pathlib.Path) -> set[str]:
@@ -113,6 +125,27 @@ def harvest_form(fdir: pathlib.Path) -> dict | None:
     if all(f in cbs for f in _FREQUENCY_SET):
         groups.append({"keys": list(_FREQUENCY_SET), "inferred": True,
                        "note": "One payment frequency per plan."})
+
+    # E — fine-payment request pair (more time vs new payment plan)
+    if all(f in cbs for f in _FINE_REQUEST_PAIR):
+        m = _CHOOSE_ONE_LITERAL.search(_page_text(fdir))
+        g = {"keys": list(_FINE_REQUEST_PAIR),
+             "note": "One request per filing: more days to pay in full or "
+                     "a new payment plan."}
+        if m:
+            g["note"] = (f"The form says '{m.group(0)}' — more days to pay "
+                         "in full or a new payment plan, not both.")
+        else:
+            g["inferred"] = True
+        groups.append(g)
+
+        # F — the plan's printed frequency selector ('$ ... every week /
+        # two weeks / month beginning'); only meaningful next to class E
+        if all(f in cbs for f in _PLAN_FREQUENCY_SET):
+            groups.append({"keys": list(_PLAN_FREQUENCY_SET),
+                           "inferred": True,
+                           "note": "A new payment plan names one frequency: "
+                                   "every week, two weeks, or month."})
 
     if not groups:
         return None

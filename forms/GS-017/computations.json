@@ -1,0 +1,54 @@
+{
+  "form_id": "GS-017",
+  "_comment": "Printed-arithmetic computed fields consumed by maine_forms_engine.computations. Every formula_text is the instruction printed verbatim on the blank (tests/test_computations.py re-checks this against the fetched PDF). Warnings-only: a supplied value is always written as-is. Deliberately NOT declared: line 9c (its 'amount from table (b)' input is unmapped on this form), line 10's Total (the per-child insurance amounts are unmapped), line 13 (conditional: 'Add lines 9c, 10, 11 and 12; if biweekly, multiply x 2'), and lines 14a/14b obligations (line 8b is unmapped and the line-8 shares are statutory percentage entries).",
+  "computed": {
+    "facts.child_care_total": {
+      "op": "sum",
+      "inputs": [
+        "facts.child_care_amount_1",
+        "facts.child_care_amount_2",
+        "facts.child_care_amount_3",
+        "facts.child_care_amount_4",
+        "facts.child_care_amount_5",
+        "facts.child_care_amount_6"
+      ],
+      "formula_text": "Total: 11.",
+      "note": "the printed Total at the foot of the '11. Weekly child care expenses' Name & amount-per-child-per-week column"
+    },
+    "facts.medical_expense_total": {
+      "op": "sum",
+      "inputs": [
+        "facts.medical_expense_amount_1",
+        "facts.medical_expense_amount_2",
+        "facts.medical_expense_amount_3",
+        "facts.medical_expense_amount_4",
+        "facts.medical_expense_amount_5",
+        "facts.medical_expense_amount_6"
+      ],
+      "formula_text": "Total: 12.",
+      "note": "the printed Total at the foot of the '12. Extraordinary medical expenses' Name & amount-per-child-per-week column"
+    },
+    "facts.parent1_pays_as_support": {
+      "op": "difference",
+      "inputs": [
+        "facts.parent1_support_obligation",
+        "facts.parent1_health_insurance",
+        "facts.parent1_child_care",
+        "facts.parent1_medical_expenses"
+      ],
+      "formula_text": "Non-Primary Care Provider Adjustments (Amounts paid directly by Parent 1) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Parent 1 pays as support = $",
+      "note": "line 14a: the printed '-' adjustments subtract from Parent 1's support obligation down to the printed '=' result"
+    },
+    "facts.parent2_pays_as_support": {
+      "op": "difference",
+      "inputs": [
+        "facts.parent2_support_obligation",
+        "facts.parent2_health_insurance",
+        "facts.parent2_child_care",
+        "facts.parent2_medical_expenses"
+      ],
+      "formula_text": "Non-Primary Care Provider Adjustments (Amounts paid directly by Parent 2) Weekly health insurance (line 10) - $ Weekly child care (line 11) - $ Extraordinary Medical Expenses (line 12) - $ Parent 2 pays as support = $",
+      "note": "line 14b: the printed '-' adjustments subtract from Parent 2's support obligation down to the printed '=' result"
+    }
+  }
+}

@@ -7,10 +7,15 @@ unfetched (CI).
 
 Shipped surveys: MJ-007 (wage-withholding answer — deduction total,
 disposable earnings, the printed .25 multiplier, minimum-wage excess, and
-the least-of-three maximum) and FM-040 (child support worksheet — combined
-adjusted gross income, children x table amount). The other printed math in
-the tree is conditional ("if biweekly, multiply x 2") or its inputs are
-unmapped (GS-017's 7a/7b), so it is deliberately not declared.
+the least-of-three maximum), FM-040 (child support worksheet — combined
+adjusted gross income, children x table amount), and GS-017 (child support
+worksheet — child-care and extraordinary-medical column totals, the two
+parents' printed line-14 adjustment subtractions down to "pays as
+support"). The other printed math in the tree is conditional ("if
+biweekly, multiply x 2"), has unmapped inputs (GS-017's 7a/7b and
+amount-from-table, FM-040's per-child columns and line-8 shares), or sits
+on a recipe-tier pointer-only mapping (MJ-009 / MJ-015 "for a total of
+$"), so it is deliberately not declared.
 """
 import json
 import pathlib
@@ -43,7 +48,8 @@ def _norm(s: str) -> str:
 
 class ComputationsArtifacts(unittest.TestCase):
     def test_surveyed_forms_present(self):
-        self.assertEqual(_forms_with_computations(), ["FM-040", "MJ-007"])
+        self.assertEqual(_forms_with_computations(),
+                         ["FM-040", "GS-017", "MJ-007"])
 
     def test_loads_and_keys_are_mapped(self):
         for fid in _forms_with_computations():
@@ -158,6 +164,63 @@ class ComputationsEndToEnd(unittest.TestCase):
                 for n in r.get("computation_notes", [])))
             self.assertIsNone(self._widget(r["out_pdf"]) if
                               self.TOTAL_WIDGET == "8" else None)
+
+
+class Gs017EndToEnd(unittest.TestCase):
+    """GS-017: 'Total: 11.' column sum and the line-14 'pays as support'
+    difference, computed vs supplied-contradiction."""
+
+    FORM = "GS-017"
+
+    def setUp(self):
+        if not (FORMS / self.FORM / f"{self.FORM}.pdf").exists():
+            self.skipTest("blank not fetched")
+        self.case = json.loads(
+            (FORMS / self.FORM / "examples" / "sample_case.json").read_text())
+
+    def _widget(self, pdf_path, name):
+        import fitz
+        doc = fitz.open(pdf_path)
+        try:
+            for page in doc:
+                for w in page.widgets() or []:
+                    if w.field_name == name:
+                        return w.field_value
+        finally:
+            doc.close()
+        return None
+
+    def test_omitted_totals_are_computed_and_filled(self):
+        for k in ("child_care_total", "medical_expense_total",
+                  "parent1_pays_as_support", "parent2_pays_as_support"):
+            del self.case["facts"][k]
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            by_key = {e["key"]: e["value"] for e in r["computed_fields"]}
+            self.assertEqual(by_key["facts.child_care_total"], "600.00")
+            self.assertEqual(by_key["facts.parent1_pays_as_support"],
+                             "100.00")
+            self.assertEqual(r["computation_warnings"], [])
+            # widget 11 is the printed 'Total: 11.' box; undefined_26 is
+            # the 'Parent 1 pays as support = $' box
+            self.assertEqual(self._widget(r["out_pdf"], "11"), "600.00")
+            self.assertEqual(self._widget(r["out_pdf"], "undefined_26"),
+                             "100.00")
+
+    def test_supplied_contradiction_written_as_is_with_warning(self):
+        self.case["facts"]["child_care_total"] = "999.00"
+        with tempfile.TemporaryDirectory() as td:
+            r = fill_via_mapping(self.FORM, self.case, pathlib.Path(td))
+            self.assertTrue(r["ok"])
+            warns = {w["key"]: w for w in r["computation_warnings"]}
+            w = warns["facts.child_care_total"]
+            self.assertEqual(w["code"], "COMPUTATION_MISMATCH")
+            self.assertEqual(w["supplied"], "999.00")
+            self.assertEqual(w["computed"], "600.00")
+            self.assertEqual(w["formula_text"], "Total: 11.")
+            # supplied value wins in the PDF — never enforced/overridden
+            self.assertEqual(self._widget(r["out_pdf"], "11"), "999.00")
 
 
 if __name__ == "__main__":

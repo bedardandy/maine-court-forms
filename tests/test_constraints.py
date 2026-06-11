@@ -67,6 +67,26 @@ class ConstraintsArtifacts(unittest.TestCase):
         self.assertEqual(evaluate(cons, {"superior_court": "X",
                                          "district_court": "no"}), [])
 
+    def test_cr228_choose_one_request_pair(self):
+        # page 2 prints 'Choose one:' over the two request boxes
+        cons = load_constraints(FORMS / "CR-228")
+        both = {"i_request_that_the_court_grant_me": "X",
+                "i_request_a_new_payment_plan_of": "X"}
+        w = evaluate(cons, both)
+        self.assertEqual(len(w), 1)
+        self.assertIn("Choose one", w[0]["note"])
+        self.assertNotIn("inferred", w[0])
+        # one request + one plan frequency is clean
+        self.assertEqual(evaluate(cons,
+                                  {"i_request_a_new_payment_plan_of": "X",
+                                   "week_3": "X"}), [])
+        # two plan frequencies fire the inferred selector group
+        w = evaluate(cons, {"week_3": "X", "month_beginning": "X"})
+        self.assertEqual(len(w), 1)
+        self.assertEqual(sorted(w[0]["keys"]),
+                         ["month_beginning", "week_3"])
+        self.assertTrue(w[0].get("inferred"))
+
 
 class FillOneWiring(unittest.TestCase):
     """PDF-dependent: skips when the CR-228 blank is unfetched (CI)."""
