@@ -1,16 +1,18 @@
 """Drift detection: on-disk and upstream blanks must match the manifest hash.
 
-All offline — a synthetic manifest and a stubbed downloader, so the suite stays
-network-free and runs in CI.
+Offline except the last class's PDF-dependent check — a synthetic manifest
+and a stubbed downloader keep the rest network-free for CI.
 """
 import hashlib
+import json
 import pathlib
 import sys
 import tempfile
 import unittest
 from unittest import mock
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 from engine import verify  # noqa: E402
 
 
@@ -103,6 +105,48 @@ class RealManifest(unittest.TestCase):
             self.assertTrue(e.get("sha256") and len(e["sha256"]) == 64, fid)
             self.assertTrue(e.get("bytes"), fid)
             self.assertTrue(e.get("url", "").startswith("http"), fid)
+
+
+class MappingBuiltAgainstStamps(unittest.TestCase):
+    """Every mapping that carries a real ``map`` is pinned to the manifest
+    revision it was re-verified against (tools/verify_mapping_fields.py).
+    Pointer-only mappings — the recipe tier, ``no-mappable-fields`` forms,
+    and the three verified-but-pointer PB account forms — have an empty
+    ``map`` and are exempt: there is nothing to go stale and
+    ``engine/fill_via_mapping.py`` refuses them at fill time anyway."""
+
+    def test_every_mapped_form_is_stamped_with_manifest_sha(self):
+        manifest = json.loads(
+            (ROOT / "catalog" / "pdf_manifest.json").read_text())["forms"]
+        checked = 0
+        for mp in sorted((ROOT / "forms").glob("*/mapping.json")):
+            fid = mp.parent.name
+            mapping = json.loads(mp.read_text())
+            if not mapping.get("map"):
+                continue  # pointer mapping: unstamped AND unfillable
+            checked += 1
+            with self.subTest(form=fid):
+                self.assertEqual(
+                    mapping.get("built_against_sha256"),
+                    manifest[fid]["sha256"],
+                    f"{fid}: mapped form must carry the manifest's sha256 "
+                    "(re-verify + stamp with tools/verify_mapping_fields.py, "
+                    "or mark remap-pending)")
+        self.assertEqual(checked, 211)  # every mapped form today
+
+    def test_verify_tool_passes_on_the_pinned_blanks(self):
+        """PDF-dependent: skips when blanks are unfetched (CI)."""
+        from tools.verify_mapping_fields import (FORMS, MANIFEST,
+                                                 _mapped_form_ids, verify_form)
+        if not any(FORMS.glob("*/*.pdf")):
+            self.skipTest("no local blank PDFs (CI / unfetched)")
+        manifest = json.loads(MANIFEST.read_text())
+        for fid in _mapped_form_ids():
+            if not (FORMS / fid / f"{fid}.pdf").exists():
+                continue
+            with self.subTest(form=fid):
+                r = verify_form(fid, manifest, FORMS)
+                self.assertTrue(r["ok"], r)
 
 
 if __name__ == "__main__":

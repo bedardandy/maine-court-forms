@@ -94,6 +94,7 @@ tools/
   find_forms.py         route a fact pattern -> candidate forms + workflows
   fetch_pdfs.py         downloads blank PDFs from the official portal (verified)
   check_upstream.py     re-probe official URLs; flag forms the courts have revised
+  verify_mapping_fields.py  re-verify mappings against the pinned blank; stamp
   mcp_server.py         MCP server: find_forms / get_form / lint_case / fill_form
   preflight.py          validate a canonical fact object before filling
   scaffold_forms.py     regenerates the per-form folders from source data
@@ -135,6 +136,18 @@ weekly). When it flags a form, re-map it, then `--update-manifest` to adopt the
 new hash. At **fill time**, `fill_via_mapping` checks the on-disk blank against
 the manifest first — `MCF_VERIFY_BLANK=warn` (default), `strict`, or `off` — so a
 blank swapped on disk cannot be filled unnoticed.
+
+Each mapping with a real `map` also carries `built_against_sha256` — the
+manifest hash of the blank revision it was last re-verified against (blank
+byte-identity plus every mapped field_id resolving to a live AcroForm widget):
+
+```bash
+python3 tools/verify_mapping_fields.py             # report: every mapped form
+python3 tools/verify_mapping_fields.py --stamp     # stamp only forms that verify
+```
+
+A form that fails verification stays unstamped (and the test suite fails)
+until it is re-mapped against the pinned revision.
 
 ## Two tiers of automation
 
