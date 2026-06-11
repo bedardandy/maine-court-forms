@@ -24,8 +24,23 @@ class TestSampleCases(unittest.TestCase):
     def test_samples_are_per_form(self):
         """Most forms carry a tailored (non-generic) sample now."""
         tailored = [f.name for f in FORMS if not _sample(f).get("generic")]
-        self.assertGreater(len(tailored), 240,
+        self.assertGreater(len(tailored), 270,
                            f"only {len(tailored)} tailored samples")
+
+    def test_generic_recipe_samples_carry_a_reason(self):
+        """A recipe-tier form left generic must say why (honesty over
+        coverage — tools/gen_sample_cases.py records the rejection)."""
+        for fdir in FORMS:
+            mp = json.loads((fdir / "mapping.json").read_text())
+            if mp.get("status") != "recipe":
+                continue
+            case = _sample(fdir)
+            if not case.get("generic"):
+                continue
+            with self.subTest(form=fdir.name):
+                self.assertTrue(case.get("generic_reason"),
+                                "generic recipe sample needs a recorded "
+                                "reason it could not be tailored")
 
     def test_no_mappable_forms_are_marked_generic(self):
         for fdir in FORMS:

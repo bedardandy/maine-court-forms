@@ -13,12 +13,16 @@ This tool derives each form's sample from its declared key set
   value for every ``facts.*`` key (checkbox-only keys get "yes").
 * recipe-tier forms keep the full generic base (the generic engine field
   map consumes the standard basics) and add synthesized values for the
-  fact keys their recipe reads. The enriched sample is accepted only if
-  the recipe (a) still runs and (b) fills a superset of what it filled
-  from the base sample without changing any previously-filled value —
-  recipes parse typed fact formats ("$1,234.00", "Name (Role)") that a
-  generic placeholder string would crash or skew. Otherwise the form
-  keeps the generic sample (marked "generic": true).
+  fact keys their recipe reads. Recipes parse typed fact formats —
+  structured rows (date+hours logs, deduction tables), enum tokens
+  ("admit", "satisfactory"), bare numbers for int()/float(), booleans
+  checked with ``is True`` — so those keys get exact typed values from
+  TYPED_FACT_VALUES instead of the string heuristics. The enriched
+  sample is accepted only if the recipe (a) still runs and (b) keeps
+  every widget it filled from the base sample filled while the facts
+  demonstrably drive the fill — more widgets filled, or a widget now
+  carrying a fact-supplied value instead of a stock/derived fallback.
+  Otherwise the form keeps the generic sample (marked "generic": true).
 * forms with nothing to exercise (``no-mappable-fields`` / empty key set)
   keep the generic sample with ``"generic": true`` so get_form can say so.
 
@@ -88,6 +92,265 @@ def _party_for_role(base: dict, role: str) -> dict:
     return {"full_name": "Riley T. Doe"}
 
 
+# Recipe-parsed typed facts. The engine recipes (engine/recipes/infer_*.py)
+# consume these keys as structured rows, enum tokens, bare numbers
+# (int()/float()), booleans (checked with ``is True``), or strings written
+# verbatim into mm/dd/yyyy widgets — the generic string heuristics in
+# synth_fact_value() crash or skew those parsers. Values follow the same
+# obviously-fictional conventions as the generic base sample (Doe/Roe/Sample
+# names, example.com, 207-555-01xx phones, "00000"/"ME-000000" numbers) and
+# stay coherent with the base parties (Jane Q. Doe = plaintiff, John R. Roe
+# = defendant, Pat L. Lawyer, Esq. = attorney, Sam/Alex Doe = children).
+TYPED_FACT_VALUES: dict = {
+    # ── AD family (infer_ad_family) ──
+    "ad003_role": "guardian",                       # enum -> role checkbox
+    "ad003_signer_name": "Riley T. Doe",
+    "ad004_petitioners": "Pat R. Sample and Lee A. Sample",
+    "ad004_new_name": "Sam Sample",
+    "ad017_position": "admit",                      # admit|deny|neither
+    "ad017_inherit": "request",                     # request|do_not_request
+    "ad032_aliases": "Sam S. Doe (fictional former name)",
+    "ad_consent_taker": "Hon. Riley T. Sample, Probate Judge (fictional)",
+    "ad_prospective_adoptive_parent": "Pat R. Sample and Lee A. Sample",
+    "ad_marriage_date_place": "01/15/2010, Portland, Maine",
+    "ad_art_explanation": ("Sample (fictional): no assisted-reproduction "
+                           "parentage issues are claimed in this test "
+                           "fact pattern."),
+    # AD-022 checks membership against the four checkbox field_ids; the
+    # base default checks two — list all four so coverage improves.
+    "ad_disclosure_types": [
+        "to_obtain_a_certificate_of_adoption",
+        "to_obtain_a_certified_copy_of_the_adoption_record",
+        "to_obtain_medical_andor_genetic_information_or",
+        "to_obtain_other_information_as_specified_below",
+    ],
+    # 5 numbered narrative widgets — keep all five rows filled.
+    "ad_disclosure_reasons": [
+        f"Sample disclosure reason {i} (fictional) for testing this "
+        f"form's fill." for i in range(1, 6)
+    ],
+    "adoptee_birth_name": "Sam Roe",
+    "adoptee_name_after_adoption": "Sam Doe",
+    "adoptee_place_of_birth": "Portland, Maine",
+    "adoptee_tribe": "Sample Tribal Nation (fictional)",
+    # ── FDP-002A (infer_fdp002a_mortgage) — money parsed with float() ──
+    "original_loan_amount": "200,000.00",
+    "original_amortization_term": "360",
+    "original_interest_rate": "4.50",
+    "current_unpaid_balance": "180,000.00",
+    "current_interest_rate": "4.50",
+    "months_past_due": "3",
+    "remaining_mortgage_term": "300",
+    "current_mortgage_payment": "1,200.00",
+    "current_interest_payment": "700.00",
+    "current_principal_payment": "300.00",
+    "past_due_interest": "2,100.00",
+    "advances_escrow_past_due": "600.00",
+    "future_interest_advanced_escrow": "2,700.00",  # = 2,100 + 600
+    "property_taxes_monthly": "250.00",
+    "property_insurance_monthly": "100.00",
+    "pmi_monthly": "50.00",
+    "current_escrow_payments": "400.00",
+    "current_fmv": "210,000.00",
+    "fdp_investor": "Acme Example Investment Trust",
+    "fdp_preparer_name": "Jane Q. Doe",
+    "fdp_preparer_title": "Account Manager",
+    "fdp_preparer_firm": "Acme Example Loan Servicing",
+    "fdp_preparer_phone": "207-555-0101",
+    # ── FM-040-A (infer_fm040a_child_support) — int()/float() ──
+    "children_count": "2",                          # matches child_1/child_2
+    "higher_income_parent": "Jane Q. Doe",
+    "higher_income_gross_weekly": "900.00",
+    "lower_income_gross_weekly": "500.00",
+    "additional_expenses": "75.00",
+    # ── FM general (infer_fm_general) ──
+    "fm_self_role": "petitioner",                   # petitioner|defendant
+    "fm_paragraph3_choice": "A",
+    "other_party_town": "Portland",
+    "magistrate_objection": ("Sample objection text (fictional) for "
+                             "testing this form's fill."),
+    "magistrate_modify": ("Sample modification text (fictional) for "
+                          "testing this form's fill."),
+    "magistrate_request": ("Sample request text (fictional) for testing "
+                           "this form's fill."),
+    "fm071_acknowledgments": True,
+    "fm071_order_date": "2024-03-01",
+    "fm171_divorce_final_date": "2024-03-01",
+    "fm171_plaintiff_name_after_divorce": "Jane Q. Sample",
+    "fm171_defendant_name_after_divorce": "John R. Roe",
+    "fm_action_type": "divorce",
+    "fm_property_credits": ("Sample property description (fictional) for "
+                            "testing this form's fill."),
+    "fm_will_not_be_affected": ("Sample property description (fictional) "
+                                "for testing this form's fill."),
+    "fm_custody_court": "Sample District Court, Portland (fictional)",
+    "fm214_emergency_order": True,
+    "fm214_notice_given": True,
+    "fm214_order_more_specifically": [
+        "Sample order line 1 (fictional) for testing this form's fill.",
+        "Sample order line 2 (fictional).",
+    ],
+    "fm214_relief": [
+        "Sample relief request 1 (fictional) for testing this form's fill.",
+        "Sample relief request 2 (fictional).",
+    ],
+    # ── GS family (infer_gs_family) ──
+    "gs_section": "consent",            # consent|objection|nomination
+    "gs_petition_type": "final_appointment",
+    "gs_petition_kind": "final",        # interim|final
+    "gs008_duration": "until_majority", # emergency|interim|until_majority
+    "gs_reasons": [
+        f"Sample guardianship reason {i} (fictional) for testing this "
+        f"form's fill." for i in range(1, 4)
+    ],
+    "reason_for_guardianship": ("Sample guardianship reason 1 (fictional) "
+                                "for testing this form's fill."),
+    "gs_nominee_reason": ("Sample nominee reason (fictional) for testing "
+                          "this form's fill."),
+    "gs_minor_tribe": "Sample Tribal Nation (fictional)",
+    "gs_minor_tribal_enrollment": "00000",
+    # ── JV family (infer_jv_family) ──
+    "juvenile_gender": "female",        # male|female|other
+    "juvenile_gender_text": "female",
+    "jv_signer_role": "parent",         # parent|guardian|legal_custodian
+    "jv_state_attorney_name": "Casey L. Sample",
+    "jv_state_attorney_bar": "ME-000000",
+    "jv_custody_location": "Example Youth Center (fictional)",
+    "jv_evaluation_program": "Example Evaluation Program (fictional)",
+    "jv_hearing_date": "2024-04-15",
+    "jv_appointment_date": "2024-04-01",
+    "jv017_before_judge": True,
+    "jv040_discharge_other_than_class_abc": True,
+    "jv040_filer": "Riley T. Sample, JCCO (fictional)",
+    "jv043_filing_attorney": "Pat L. Lawyer, Esq.",
+    "jv043_attorney_address": "1 Court Plaza, Suite 100",
+    "jv043_attorney_csz": "Portland, ME 04101",
+    "jv043_attorney_phone": "207-555-0150",
+    "jv043_attorney_email": "attorney@example.com",
+    "jv044_attorney": "Pat L. Lawyer, Esq.",
+    "jv044_attorney_bar": "ME-000000",
+    "jv044_attorney_address": "1 Court Plaza, Suite 100",
+    "jv044_attorney_city": "Portland",
+    "jv044_attorney_zip": "04101",
+    "jv044_attorney_phone": "207-555-0150",
+    "jv044_attorney_email": "attorney@example.com",
+    "jv044_seal_reasons": ("Sample sealing reasons (fictional) for "
+                           "testing this form's fill."),
+    "juvenile_doc_office": "Example Regional Office (fictional)",
+    "notice_text": ("Sample notice text (fictional) for testing this "
+                    "form's fill."),
+    "community_service_org": "Acme Example Community Org",
+    "community_service_supervisor": "Riley T. Sample",
+    "community_service_address": "789 Pine Street",
+    "community_service_address_2": "Portland, ME 04101",
+    "community_service_phone": "207-555-0199",
+    "community_service_supervisor_phone": "207-555-0198",
+    "community_service_hours": "20",
+    "community_service_hours_total": "20",
+    "community_service_completion_date": "2024-06-30",
+    # 5 date+hours rows, written verbatim into mm/dd/yyyy widgets.
+    "community_service_log": [["04/01/2024", "4"], ["04/08/2024", "4"]],
+    "community_service_rating": "satisfactory",
+    "community_service_comments": [
+        "Sample comment (fictional) for testing this form's fill."],
+    # ── MJ debtor disclosure (infer_mj_debtor_disclosure) ──
+    "judgment_creditor": "Jane Q. Doe",
+    "judgment_debtor": "John R. Roe",
+    "affiant_name": "John R. Roe",
+    "service_date": "03/10/2024",       # written verbatim (mm/dd/yyyy)
+    "event_date": "03/15/2024",         # written verbatim (mm/dd/yyyy)
+    "mj_hold_narrative": ("Sample disclosure text (fictional) for testing "
+                          "this form's fill."),
+    "mj005_debts_narrative": ("Sample debts disclosure (fictional) for "
+                              "testing this form's fill."),
+    "mj005_property_narrative": ("Sample property disclosure (fictional) "
+                                 "for testing this form's fill."),
+    "mj_employment_narrative": ("Sample employment information (fictional) "
+                                "for testing this form's fill."),
+    "mj_judgment_balance": "900.00",
+    "mj_principal": "850.00",
+    "mj_costs": "50.00",
+    "installment_order_date": "02/01/2024",  # written verbatim
+    "mj009_installment_order_date": "2024-02-01",
+    "mj009_failed_payment": True,
+    "mj009_pay_amount": "100.00",
+    "mj009_pay_period": "month",
+    "mj009_owed_amount": "1,000.00",
+    "mj009_interest": "10.00",
+    "mj009_costs": "25.00",
+    "underlying_criminal_docket": "CR-2024-00000",
+    # ── MJ-SC judgment family (infer_mj_sc_judgment) ──
+    "employer_name": "Acme Example Company",
+    "employer_capacity": "office assistant",
+    "gross_pay": "600.00",
+    "net_pay": "480.00",
+    "pay_period": "week",
+    # Rows of [description, amount]; amounts summed with float().
+    "payroll_deductions": [["Federal income tax", "60.00"],
+                           ["State income tax", "20.00"]],
+    # Rows of [creditor, total owing, period, per-payment].
+    "other_debts": [["Acme Example Finance", "500.00", "month", "50.00"]],
+    "dependents": "2",
+    "spouse_income": "250.00",
+    "spouse_source": "Acme Example Company",
+    "living_expenses": "350.00",
+    "installment_amount": "100.00",
+    "installment_period": "month",
+    "installment_start_date": "2024-04-01",
+    "installment_payee": "the Clerk of the District Court, Portland location",
+    "installment_agreement_acknowledged": True,
+    "judgment_amount": "1,200.00",
+    "judgment_costs": "60.00",
+    "judgment_date": "2024-01-15",
+    "balance_due": "1,200.00",
+    "balance_acknowledgment": ("The parties acknowledge that the balance "
+                               "due, as of this date, is $1,200.00."),
+    "perjury_acknowledged": True,
+    "entity_type": "corporation",       # corporation|llc|llp|lp|nonprofit
+    "debtor_title": "President",
+    # ── OTH-085 (infer_oth085_limited_appearance) ──
+    "oth085_attorney_name": "Pat L. Lawyer, Esq.",
+    "oth085_attorney_bar": "ME-000000",
+    "oth085_attorney_address": "1 Court Plaza, Suite 100",
+    "oth085_attorney_city": "Portland",
+    "oth085_attorney_zip": "04101",
+    "oth085_attorney_phone": "207-555-0150",
+    "oth085_attorney_email": "attorney@example.com",
+    "oth085_court_name": "District Court, Portland location",
+    "oth085_represented_parties": "Jane Q. Doe (plaintiff)",
+    "oth085_other_parties": "John R. Roe (defendant)",
+    # ── OTH-133 (infer_oth133_mediator) ──
+    "oth_requester_name": "Pat L. Lawyer, Esq.",
+    "oth_requester_firm": "Example Law Office",
+    "oth_requester_address": "1 Court Plaza, Suite 100",
+    "oth_requester_city": "Portland",
+    "oth_requester_zip": "04101",
+    "oth_requester_phone": "207-555-0150",
+    "oth_requester_email": "attorney@example.com",
+    "oth_request_date": "2024-03-15",
+    "oth_names_of_counsel": "Pat L. Lawyer, Esq. (counsel for plaintiff)",
+    "oth_prior_mentor": "None in this fictional sample fact pattern.",
+    "oth_issue_summary": SUMMARY,
+    # ── PC family (infer_pc_family) ──
+    "pc_hearing_type": "judicial_review",
+    "pc_court_date": "04/15/2024",      # written verbatim (mm/dd/yyyy)
+    # Rows of [name, DOB mm/dd/yyyy], written verbatim.
+    "pc_children": [["Sam Doe", "04/10/2015"], ["Alex Doe", "09/05/2018"]],
+    "pc_gal_name": "Lee J. Sample, Esq.",
+    "pc_gal_bar": "ME-000000",
+    "pc_gal_address": "1 Court Plaza, Suite 100, Portland, ME 04101",
+    "pc_case_mgr_report": ("Sample case-manager report (fictional) for "
+                           "testing this form's fill."),
+    "pc_parent_conditions": "None in this fictional sample fact pattern.",
+    "pc_foster_parents": ("Pat R. Sample and Lee A. Sample, "
+                          "456 Oak Avenue, Portland, ME 04101"),
+    "pc_placement_arranger": "Example Department Office (fictional)",
+    "pc_default_location": "Maine District Court, Portland",
+    "pc_tribe": "Sample Tribal Nation (fictional)",
+    "pc_tribal_enrollment": "00000",
+}
+
+
 def synth_fact_value(key: str, checkbox_only: bool = False) -> str:
     """Deterministic clearly-fictional placeholder for a facts.* key."""
     k = key.lower()
@@ -155,32 +418,51 @@ def _checkbox_only_keys(fdir: pathlib.Path, mapping: dict) -> set[str]:
 
 def _recipe_run(form_id: str, case: dict) -> dict:
     """Run a form's registered recipe over a case (PDF-free), as the recipe
-    smoke test does: map_form + recipe.process."""
+    smoke test does: canonical->engine translation + map_form +
+    recipe.process (the recipes read the ENGINE case shape: court/docket_no
+    top-level — running them on the raw canonical object understates what
+    a real fill produces)."""
     import importlib
 
     from engine.build_kv_map import map_form
+    from engine.canonical import is_canonical, to_engine_case
     from engine.fill_and_audit import RECIPE3
     schema = json.loads(
         (OSS_ROOT / "forms" / form_id / "schema.json").read_text())
-    kv, _ = map_form(schema, case)
+    ec = to_engine_case(case) if is_canonical(case) else case
+    kv, _ = map_form(schema, ec)
     mod = importlib.import_module(f"engine.recipes.{RECIPE3[form_id]}")
-    out, _changes = mod.process(kv, case)
+    out, _changes = mod.process(kv, ec)
     return out
 
 
-def _recipe_accepts(form_id: str, base: dict, enriched: dict) -> bool:
-    """True iff the recipe runs on the enriched sample and only ADDS fills
-    relative to the base sample (never crashes, never changes a value the
-    base already produced)."""
+def _recipe_accepts(form_id: str, base: dict,
+                    enriched: dict) -> tuple[bool, str]:
+    """(accepted, reason-if-not). The enriched sample must run the recipe
+    and extend the base sample's coverage: every widget the recipe filled
+    from the base stays filled (a value may legitimately change when an
+    explicit fact takes precedence over a party-derived or stock fallback)
+    and the facts must demonstrably drive the fill — more widgets filled,
+    or a widget now carrying a fact-supplied value. Crashes — a synthesized
+    value violating the recipe's typed fact format — reject the
+    enrichment; the rejection reason is recorded on the generic sample as
+    "generic_reason" so honesty over coverage stays auditable."""
     try:
         base_out = _recipe_run(form_id, base)
         new_out = _recipe_run(form_id, enriched)
-    except Exception:  # noqa: BLE001 — synthesized value broke the recipe
-        return False
-    for k, v in base_out.items():
-        if v and new_out.get(k) != v:
-            return False
-    return True
+    except Exception as e:  # noqa: BLE001 — synthesized value broke recipe
+        return False, (f"recipe rejected the synthesized facts "
+                       f"({type(e).__name__}) — typed fact format mismatch")
+    base_filled = {k for k, v in base_out.items() if v}
+    new_filled = {k for k, v in new_out.items() if v}
+    if not base_filled <= new_filled:
+        return False, ("enriching with this form's fact keys loses fills "
+                       "the generic sample produced")
+    if new_out == base_out:
+        return False, ("the recipe reads no facts that reach this form's "
+                       "widgets (it fills from case/party data only), so "
+                       "a fact-enriched sample changes nothing")
+    return True, ""
 
 
 def build_sample(fdir: pathlib.Path, base: dict) -> tuple[dict, str]:
@@ -204,12 +486,17 @@ def build_sample(fdir: pathlib.Path, base: dict) -> tuple[dict, str]:
         for key in used:
             if key.startswith("facts."):
                 fk = key.split(".", 1)[1]
-                case.setdefault("facts", {}).setdefault(
-                    fk, synth_fact_value(fk, fk in checkbox_only))
+                if fk in TYPED_FACT_VALUES:
+                    val = copy.deepcopy(TYPED_FACT_VALUES[fk])
+                else:
+                    val = synth_fact_value(fk, fk in checkbox_only)
+                case.setdefault("facts", {}).setdefault(fk, val)
         case["facts"]["summary"] = SUMMARY
-        if not _recipe_accepts(fdir.name, base, case):
+        accepted, why = _recipe_accepts(fdir.name, base, case)
+        if not accepted:
             case = copy.deepcopy(base)
             case["generic"] = True
+            case["generic_reason"] = why
             return case, "generic"
         return case, "generated-recipe"
 
@@ -259,7 +546,8 @@ def main() -> int:
             continue
         if sp.exists() and not args.force:
             current = json.loads(sp.read_text())
-            cur_nogen = {k: v for k, v in current.items() if k != "generic"}
+            cur_nogen = {k: v for k, v in current.items()
+                         if k not in ("generic", "generic_reason")}
             if cur_nogen != base:
                 counts["kept-hand-built"] = counts.get("kept-hand-built", 0) + 1
                 continue

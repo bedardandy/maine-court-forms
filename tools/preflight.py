@@ -38,7 +38,8 @@ SCHEMA_PATH = OSS_ROOT / "catalog" / "canonical_case.schema.json"
 TOP_KEYS = ("matter", "parties", "party", "facts")
 # Deprecated-but-accepted top-level fallbacks (engine/canonical.py reads
 # them) and sample-case metadata.
-TOP_KEYS_EXTRA = ("case_id", "filing_date", "event_date", "generic")
+TOP_KEYS_EXTRA = ("case_id", "filing_date", "event_date", "generic",
+                  "generic_reason")
 
 MATTER_KEYS = ("docket_number", "case_number", "case_id", "court_county",
                "court_location", "court_type", "case_type", "filing_date",
