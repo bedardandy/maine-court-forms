@@ -81,8 +81,20 @@ _CONTACT_ATTR = {"name": "full_name", "address": "address",
 # A field_id can contain "date" yet denote a substantive date (the party's
 # date of birth, a marriage/service/death date) rather than the form's
 # filing/signature date. Those must NOT be stamped with case.filing_date.
+# Court-event dates are the same class: a blank asking when an ORDER /
+# JUDGMENT / DECREE / HEARING was dated or entered states a fact about a
+# real court act — stamping case.filing_date into MJ-009's "Court's
+# installment order dated (mm/dd/yyyy)" asserts the court issued the order
+# the day the motion was filed. (order|judgment|decree|hearing also covers
+# "ordered by the court" / "orders issued" narrative widgets, where a bare
+# date is just as wrong.) PA-022's continuation blanks name the same
+# printed sentence — "the Order for Protection from Abuse/Harassment dated
+# (mm/dd/yyyy)" — without the "order" token, hence the explicit
+# abuseharassment_dated entry.
 _SUBSTANTIVE_DATE_RE = re.compile(
     r"birth|marriage|service|death|divorce|separation|deceased"
+    r"|order|judgment|judgement|decree|hearing"
+    r"|abuseharassment_dated"
     r"|(?:^|_)dob(?:_|$)")
 
 
