@@ -119,6 +119,20 @@ class Mj015SignatureAndMoneyLine(unittest.TestCase):
         }))
         self.assertEqual(out["undefined_2"], "Pat L. Lawyer, Esq.")
 
+    def test_order_date_iso_converted_like_mj009(self):
+        # the blank prints "(mm/dd/yyyy)"; an ISO fact must render US,
+        # exactly as MJ-009's installment-order date does
+        self.assertEqual(
+            _recipe_kv("MJ-015", _case(
+                {"installment_order_date": "2025-02-14"}))[
+                "installment_order_dated_mmddyyyy"], "02/14/2025")
+
+    def test_order_date_us_passes_through(self):
+        self.assertEqual(
+            _recipe_kv("MJ-015", _case(
+                {"installment_order_date": "02/14/2025"}))[
+                "installment_order_dated_mmddyyyy"], "02/14/2025")
+
     def test_amounts_supplied_dollar_stripped(self):
         out = _recipe_kv("MJ-015", _case({
             "mj_principal": "$2,450.00",

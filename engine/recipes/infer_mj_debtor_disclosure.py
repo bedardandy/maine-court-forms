@@ -23,6 +23,20 @@ def _set(answers: dict, fid: str, value: str) -> bool:
     return True
 
 
+def _us_date(value) -> str:
+    """ISO YYYY-MM-DD → mm/dd/yyyy for the *_dated_mmddyyyy order-date
+    blanks (both MJ-009 and MJ-015 print the mm/dd/yyyy hint). A value
+    that is already US-formatted — or anything else unparseable — passes
+    through unchanged."""
+    s = str(value or "")
+    if "-" in s:
+        parts = s[:10].split("-")
+        if len(parts) == 3 and all(parts):
+            y, m, d = parts
+            return f"{m}/{d}/{y}"
+    return s
+
+
 def _amount(value) -> str:
     """Normalize a money fact for a blank whose printed line already
     carries the "$" (both MJ-009 and MJ-015 print "$" right before every
@@ -174,12 +188,7 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
         # the terms of a real court order and the debt. Fill ONLY when
         # explicitly provided (the old defaults invented an order date,
         # $75/month terms, $1,250 owed and $120 costs).
-        inst_date = facts.get("mj009_installment_order_date", "")
-        if "-" in str(inst_date):
-            y, m, d = str(inst_date)[:10].split("-")
-            inst_date_us = f"{m}/{d}/{y}"
-        else:
-            inst_date_us = inst_date
+        inst_date_us = _us_date(facts.get("mj009_installment_order_date", ""))
         if inst_date_us and _set(out, "courts_installment_order_dated_mmddyyyy",
                                    inst_date_us):
             changes.append(("courts_installment_order_dated_mmddyyyy",
@@ -245,7 +254,10 @@ def process(kv_map: dict, case: dict) -> tuple[dict, list]:
             if _set(out, fid, employment_narr):
                 changes.append((fid, employment_narr, "mj15-employment"))
 
-    install_date = facts.get("installment_order_date", "")
+    # Same ISO→US conversion as MJ-009 above — the blank prints
+    # "(mm/dd/yyyy)" and the field id carries the hint, but the fact used
+    # to be written verbatim (an ISO case date rendered as 2025-02-14).
+    install_date = _us_date(facts.get("installment_order_date", ""))
     if install_date and _set(out, "installment_order_dated_mmddyyyy",
                                install_date):
         changes.append(("installment_order_dated_mmddyyyy",
