@@ -103,6 +103,8 @@ class FillBindingPins(unittest.TestCase):
     canonical widget keeps its value, the off-semantic widget is blank."""
 
     def _render(self, form_id):
+        if not (FORMS / form_id / f"{form_id}.pdf").exists():
+            self.skipTest(f"{form_id}.pdf not fetched")
         case = json.loads(
             (FORMS / form_id / "examples" / "sample_case.json").read_text())
         out = pathlib.Path(tempfile.mkdtemp())
