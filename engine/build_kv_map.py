@@ -91,10 +91,71 @@ _CONTACT_ATTR = {"name": "full_name", "address": "address",
 # printed sentence — "the Order for Protection from Abuse/Harassment dated
 # (mm/dd/yyyy)" — without the "order" token, hence the explicit
 # abuseharassment_dated entry.
+#
+# Round 9 extends the guard to the remaining substantive-date families a
+# full-corpus sweep found still auto-stamping (every token was verified
+# against the form's printed text near the widget):
+#   - decision / appeal / post-conviction-review dates: CR-140's "date of
+#     that decision", "Date of Writ", "Date your appeal was decided",
+#     "Date of any final administrative action", deportation-proceeding
+#     dates, "more that 60-days after this date"; OTH-012's "What date was
+#     the decision made?". appeals_dec covers CR-140's abbreviated
+#     date_of_appeals_dec, recent_date its "most recent date listed by
+#     you".
+#   - trial / court-event dates: MJBVB-010 "print trial date", CV-223
+#     "trial start date or trailing trial period", PC-034 "COURT DATE",
+#     the continuance form's "change the date of my court event on";
+#     dismissed covers "That case: Was dismissed on (date)".
+#   - employment / attendance / residence history: "last date employed",
+#     "Dates of employment/attendance", address-history "Date From" /
+#     "Date To or Present", "date on which you started employment",
+#     "expect to start working on".
+#   - arrest / offense dates: "Date and time of arrest", "Date of
+#     offense".
+#   - due / payment / debt dates: "Date due", "Fine due date", "Final
+#     payment date to SDU", "amount and date of the last payment",
+#     charge-off and arrears blanks, "the balance due, as of this date,
+#     is $" (an amount blank).
+#   - other-lawsuit / property disclosure tables: "Date lawsuit or claim
+#     filed", "Date acquired", "The Deed is dated ... recorded".
+#   - travel dates: mileage-reimbursement Date|Origin|Destination rows
+#     (daterow / date_mmddyyyyrow ids), "anticipated date" rows, expected
+#     departure blanks, "Date I wish to leave/return".
+#   - prior-act / prior-document dates: "my statement dated", "On ___
+#     (date), I (name) motioned the court" (anchored date_i), ADR "on
+#     (date)" (anchored on_date), "date of panel finding", "Date(s) of
+#     ADR Conference(s)", "Date and time of the deposition/inspection",
+#     "Date of Pairing", "date the case was initiated", "guardianship
+#     ... was granted on", "Date of Admission" / "effective ___"
+#     (eff_date), "Termination date".
+#   - completion / coverage / status: "Required date of completion",
+#     "DATE STAGE COMPLETED", "Date(s) of Coverage", "this year to
+#     date: $" (an amount blank).
+#   - widgets that merely CONTAIN "date": this_date / following_date /
+#     home_state / notice sentence fragments, "Updated ..." checkbox
+#     labels ("date" is a substring of "updated"), relevant_dates /
+#     date_and_details narrative boxes, the weapons-relinquishment date.
+# Bare `date`/`dated`/`date_mmddyyyy(_N)` signature-block widgets carry
+# none of these tokens and keep the generic event/filing-date stamp.
 _SUBSTANTIVE_DATE_RE = re.compile(
     r"birth|marriage|service|death|divorce|separation|deceased"
     r"|order|judgment|judgement|decree|hearing"
     r"|abuseharassment_dated"
+    r"|decision|decided|appeals_dec|writ|result|recent_date"
+    r"|new_law|new_facts|admin|proceeding|deport"
+    r"|trial|court_date|court_event|dismissed"
+    r"|employ|attendance|date_from|date_to"
+    r"|arrest|offense"
+    r"|due|payment|chargeoff|arrears|start"
+    r"|lawsuit|acquired|deed"
+    r"|notice|relinquish|contact|coverage|termination|complet"
+    r"|updated|year_to_date|this_date|following_date|home_state"
+    r"|wish|anticipated|departure|admission|eff_date"
+    r"|panel|conference|deposition|guardianship|initiated"
+    r"|relevant_dates|date_and_details|statement_dated|pairing"
+    r"|date(?:_mmddyyyy)?row"
+    r"|(?:^|_)on_date(?:_|$)"
+    r"|(?:^|_)date_i(?:_|$)"
     r"|(?:^|_)dob(?:_|$)")
 
 
