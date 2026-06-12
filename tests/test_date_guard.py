@@ -26,7 +26,8 @@ import unittest
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
-from engine.build_kv_map import map_form, _SUBSTANTIVE_DATE_RE  # noqa: E402
+from engine.build_kv_map import (  # noqa: E402
+    map_form, _SUBSTANTIVE_DATE_RE, _FORM_DATE_STAMP_BLOCKLIST)
 
 FORMS = pathlib.Path(__file__).resolve().parent.parent / "forms"
 
@@ -207,6 +208,82 @@ class SubstantiveDateFamilies(unittest.TestCase):
                         f"auto-stamped with the filing date")
         self.assertGreater(swept, 100, "expected the full form tree")
         self.assertGreater(checked, 200, "sweep found too few class members")
+
+
+class PerFormDateStampBlocklist(unittest.TestCase):
+    """Round-10 per-form blocklist: bare date widgets whose field_id is too
+    generic for _SUBSTANTIVE_DATE_RE but which the *form* identifies as a
+    substantive prior-order/GAL-contact date (class 1), a service-block
+    column clone sitting on a Name/Address/Phone line (class 2), or a
+    judicial-officer signature date (class 3). Each representative was
+    printed-text verified against its PDF widget rect."""
+
+    def _kv(self, form_id):
+        schema = json.loads((FORMS / form_id / "schema.json").read_text())
+        kv, _ = map_form(schema, dict(_DATE_ONLY_CASE))
+        return kv
+
+    # class 1 — substantive prior-order / GAL-contact dates
+    def test_class1_fm136_prior_divorce_judgment_order_date(self):
+        # "... is incorporated in, and is a part of, the Divorce Judgment
+        # Order of this Court dated (mm/dd/yyyy)" — a prior order's date.
+        self.assertEqual(self._kv("FM-136").get("date"), "")
+
+    def test_class1_fm132_interim_order_of_this_date(self):
+        # "interim order / other: ... of this date dated (mm/dd/yyyy)"
+        self.assertEqual(self._kv("FM-132").get("dated_mmddyyyy"), "")
+
+    def test_class1_pc034_met_with_children_contact_date(self):
+        # "I met with the child(ren) on the following dates and locations:
+        # Date (mm/dd/yyyy): at the following location" — GAL contact event.
+        self.assertEqual(self._kv("PC-034").get("date_mmddyyyy"), "")
+        self.assertEqual(self._kv("PC-034").get("date_mmddyyyy_3"), "")
+
+    # class 2 — AD-FM-GS-JV-PA-PC-292 service-block column clone
+    def test_class2_292_name_address_phone_clones_blocked(self):
+        kv = self._kv("AD-FM-GS-JV-PA-PC-292")
+        # _2 prints "Name:", _3 "Address:", _4 the "Phone Number:" line;
+        # the page-3 *_2 twins repeat the column. None may stamp.
+        for fid in ("date_mmddyyyy_2", "date_mmddyyyy_3", "date_mmddyyyy_4",
+                    "date_mmddyyyy_2_2", "date_mmddyyyy_3_2",
+                    "date_mmddyyyy_4_2"):
+            with self.subTest(field=fid):
+                self.assertEqual(kv.get(fid), "")
+
+    def test_class2_292_genuine_date_lines_still_stamp(self):
+        # The `_1` / `_1_2` widgets ARE the real "Date (mm/dd/yyyy):" lines.
+        kv = self._kv("AD-FM-GS-JV-PA-PC-292")
+        self.assertEqual(kv.get("date_mmddyyyy_1"), "04/01/2025")
+        self.assertEqual(kv.get("date_mmddyyyy_1_2"), "04/01/2025")
+
+    # class 3 — judicial-officer signature dates
+    def test_class3_gs004_judge_signature_date(self):
+        # "Dated: ___ Judge, Probate Court / District Court"
+        self.assertEqual(self._kv("GS-004").get("dated"), "")
+
+    def test_class3_mjbvb018_judge_signature_date(self):
+        # "Date ___ Judge, District Court"
+        self.assertEqual(self._kv("MJBVB-018").get("date_1"), "")
+
+    def test_blocklist_keys_are_real_schema_fields(self):
+        # every (form, field_id) in the blocklist must exist in that
+        # schema, else the guard is silently dead.
+        for form_id, fields in _FORM_DATE_STAMP_BLOCKLIST.items():
+            schema = json.loads(
+                (FORMS / form_id / "schema.json").read_text())
+            ids = {f["field_id"] for f in schema.get("fields") or []}
+            for fid in fields:
+                with self.subTest(form=form_id, field=fid):
+                    self.assertIn(fid, ids)
+
+    def test_every_blocklist_entry_renders_blank(self):
+        for form_id, fields in _FORM_DATE_STAMP_BLOCKLIST.items():
+            kv = self._kv(form_id)
+            for fid in fields:
+                with self.subTest(form=form_id, field=fid):
+                    self.assertEqual(
+                        kv.get(fid, ""), "",
+                        f"{form_id}.{fid}: blocklisted date auto-stamped")
 
 
 if __name__ == "__main__":

@@ -159,6 +159,86 @@ _SUBSTANTIVE_DATE_RE = re.compile(
     r"|(?:^|_)dob(?:_|$)")
 
 
+# Per-form date-stamp blocklist (round 10).
+# -----------------------------------------------------------------------
+# Consulted in the same generic-date elif that consults
+# _SUBSTANTIVE_DATE_RE, keyed by the schema's form_id. These widgets carry
+# a date the form's filing/signature date must NEVER auto-fill, but their
+# field_id is too generic (bare `date`/`dated`/`date_mmddyyyy(_N)`) for the
+# token regex to catch — the *form* is what disambiguates them. Every
+# entry below was verified against the form's printed PDF text by reading
+# the words on the widget's own rect-row.
+#
+# Three member classes:
+#
+#   1. Substantive prior-order / GAL-contact dates whose printed sentence
+#      names a real court act or event but whose field_id has no regex
+#      token. FM-132 `dated_mmddyyyy` / GS-018 `dated` / FM-136 `date`
+#      print "... of this date dated (mm/dd/yyyy)" referencing a PRIOR
+#      order/judgment; FM-222 / PC-034 `date_mmddyyyy*` print "I met with
+#      the child(ren) on the following dates and locations: Date
+#      (mm/dd/yyyy): at ..." — the GAL's contact-event date, not the
+#      filing date.
+#
+#   2. The AD-FM-GS-JV-PA-PC-292 service-block column clone. The PDF
+#      author copied the "Date (mm/dd/yyyy):" widget straight down the
+#      Date/Name/Address/Phone column, so the suffixed copies sit on the
+#      Name:/Address:/Phone: lines (verified by exact left-label rect
+#      alignment: the `_2` row prints "Name:", `_3` "Address:", `_4` the
+#      "Phone Number:" line; the page-3 `*_2` twins repeat the same
+#      column). The `date_mmddyyyy_1` / `_1_2` widgets are the real "Date
+#      (mm/dd/yyyy):" lines and KEEP stamping — they are deliberately
+#      absent from the blocklist.
+#
+#   3. Judicial-officer signature dates (round-8 order-date doctrine,
+#      extended). A date on a judge / magistrate / justice / issuing-
+#      official signature line asserts when the JUDICIAL OFFICER acted —
+#      never the day the filer prepared the form. Each printed text reads
+#      "Date (mm/dd/yyyy): [►] Judge/Magistrate/Justice, Maine ... Court"
+#      (or "Title of Judge/Issuing Official: Date of Signature:" on
+#      OMB-097).
+#
+# NOT blocked here: notary-jurat dates (CV-061 date_mmddyyyy_2, GS-006
+# date_3, GS-009 date_3, GS-007 date). Those sit on a
+# "Date: ... Before me, ... Notary Public / Attorney at Law / Clerk" line
+# and are handled by a SEPARATE convention in
+# engine/fill_and_audit.py::_apply_notary_block, which fills only the
+# jurat county / state / "personally appeared" signer from real case data
+# (it leaves the jurat DATE for the notary to complete and never defaults
+# a county). The notary block neither reads nor writes these date fields,
+# so the generic stamp would still reach them — but the round-10 verdict
+# keeps them in scope of the notary convention (a notary stamps the day
+# they administer the oath, which can legitimately equal the fill date)
+# and explicitly OUT of scope for this date-guard round. Left untouched
+# on purpose; revisit alongside the notary-block convention.
+_FORM_DATE_STAMP_BLOCKLIST: dict[str, frozenset[str]] = {
+    # class 1 — substantive prior-order / GAL-contact dates
+    "FM-132": frozenset({"dated_mmddyyyy", "date_mmddyyyy"}),
+    "GS-018": frozenset({"dated", "date"}),
+    "FM-136": frozenset({"date", "datemmddyyyy"}),
+    "FM-222": frozenset({"date_mmddyyyy"}),
+    "PC-034": frozenset({"date_mmddyyyy", "date_mmddyyyy_3"}),
+    # class 2 — AD-FM-GS-JV-PA-PC-292 service-block column clone
+    # (Name/Address/Phone rows). `date_mmddyyyy_1` / `_1_2` deliberately
+    # excluded — they are the genuine date lines.
+    "AD-FM-GS-JV-PA-PC-292": frozenset({
+        "date_mmddyyyy_2", "date_mmddyyyy_3", "date_mmddyyyy_4",
+        "date_mmddyyyy_2_2", "date_mmddyyyy_3_2", "date_mmddyyyy_4_2",
+    }),
+    # class 3 — judicial-officer signature dates
+    "CV-FM-PA-PB-PC-268": frozenset({"date_mmddyyyy"}),
+    "FM-137": frozenset({"dated_mmddyyyy"}),
+    "FM-PB-125": frozenset({"date_mmddyyyy"}),
+    "GS-002": frozenset({"dated"}),
+    "GS-004": frozenset({"dated"}),
+    "JV-006-W": frozenset({"date_mmddyyyy"}),
+    "JV-017": frozenset({"date_mmddyyyy"}),
+    "MJBVB-017": frozenset({"date_2"}),
+    "MJBVB-018": frozenset({"date_1"}),
+    "OMB-097": frozenset({"dateofsigniture"}),
+}
+
+
 def _contact_block_value(field_id: str, case: dict) -> str | None:
     m = _CONTACT_RE.match(field_id)
     if not m:
@@ -459,7 +539,9 @@ def map_form(schema: dict, case: dict) -> tuple[dict[str, str], dict]:
             # form usually shows "mm/dd/yyyy" even when the schema
             # field_id doesn't carry that hint).
             elif ("date" in fid_lower and "signed" not in fid_lower
-                    and not _SUBSTANTIVE_DATE_RE.search(fid_lower)):
+                    and not _SUBSTANTIVE_DATE_RE.search(fid_lower)
+                    and fid not in _FORM_DATE_STAMP_BLOCKLIST.get(
+                        form_id, ())):
                 raw = case.get("event_date") or case.get("filing_date") or ""
                 if raw:
                     fmt = _date_format_hint(fid)
