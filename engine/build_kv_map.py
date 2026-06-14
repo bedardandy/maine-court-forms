@@ -203,9 +203,11 @@ _SUBSTANTIVE_DATE_RE = re.compile(
 # "Date: ... Before me, ... Notary Public / Attorney at Law / Clerk" line
 # and are handled by a SEPARATE convention in
 # engine/fill_and_audit.py::_apply_notary_block, which fills only the
-# jurat county / state / "personally appeared" signer from real case data
-# (it leaves the jurat DATE for the notary to complete and never defaults
-# a county). The notary block neither reads nor writes these date fields,
+# jurat county / state from real case data (round 11 removed the
+# "personally appeared" signer fill — that affiant line is the notary's to
+# complete and is never auto-sworn; see _NOTARY_SIGNER_FIDS_LEAVE_BLANK).
+# It leaves the jurat DATE for the notary to complete and never defaults
+# a county. The notary block neither reads nor writes these date fields,
 # so the generic stamp would still reach them — but the round-10 verdict
 # keeps them in scope of the notary convention (a notary stamps the day
 # they administer the oath, which can legitimately equal the fill date)
@@ -236,6 +238,99 @@ _FORM_DATE_STAMP_BLOCKLIST: dict[str, frozenset[str]] = {
     "MJBVB-017": frozenset({"date_2"}),
     "MJBVB-018": frozenset({"date_1"}),
     "OMB-097": frozenset({"dateofsigniture"}),
+}
+
+
+# Per-form respondent-address-stamp blocklist (round 11).
+# -----------------------------------------------------------------------
+# Consulted in the same narrative_derived branch that calls
+# _respondent_address(case), keyed by the schema's form_id (mirrors
+# _FORM_DATE_STAMP_BLOCKLIST exactly: keyed on form_id, frozenset of
+# field_ids, checked with `fid not in ...get(form_id, ())`). The generic
+# `physicaladdress`/`addressof(defendant|respondent)` trigger correctly
+# fills genuine defendant/respondent blocks, but WRONG-vs-CORRECT here is
+# POSITIONAL within each form (physical_address/_1/_2 = the first /
+# plaintiff block; physical_address_3/_4 or _1_2/_2_2 = the
+# defendant/respondent block) and is not derivable from a token. The
+# widgets below print a label that is NOT the respondent's address line, so
+# stamping the respondent's address into them is a cross-party
+# over-application. Each entry was printed-text verified against its PDF
+# widget rect (round-11 adjudication).
+#
+# Member classes (why each is blocked):
+#   - plaintiff / petitioner address blocks ("Address of
+#     plaintiff/petitioner:", "Plaintiff/Petitioner Information:") — the
+#     respondent's address belongs in the defendant block, not here:
+#     CV-266 physical_address_1/_2, FM-002 / OTH-039..044 physical_address
+#     /_2, FM-283 physical_address_1/_2 + the mis-slugged
+#     address_of_defendantrespondent widget that actually sits in the
+#     plaintiff block, FM-284 physical_address_1/_2.
+#   - "Other Party Information (if applicable):" blocks — a generic
+#     third-party block, NOT the Defendant/Respondent block (which is
+#     physical_address_3/_4): FM-002 / OTH-039..044 physical_address_5.
+#   - judgment-creditor / mover blocks on the foreign/Canadian-judgment
+#     recognition forms ("in whose favor ... was entered" / "seeking
+#     recognition of the judgment") — the judgment DEBTOR block
+#     (physical_address_1_3/_2_3, "against whom ... was entered") keeps the
+#     stamp and is deliberately absent here: CV-281 / CV-282
+#     physical_address_1/_2 (CV-282 only) and physical_address_1_2/_2_2.
+#   - old/new change-of-address pairs (neither is the current respondent
+#     address): CR-CV-FM-199 old_/new_physical_address_1/_2.
+#   - the child's-address block on the SIJS petition (not the respondent):
+#     CV-295 physical_address_street_citytown_state_zip.
+#   - confidentiality-REQUEST checkboxes ("... request that the court keep
+#     the following information confidential: [ ] Physical address:") —
+#     small square checkbox widgets, not address-value fields, so stamping
+#     an address into them is doubly wrong: FM-057 / OTH-029..034
+#     physical_address.
+_FORM_RESPADDR_STAMP_BLOCKLIST: dict[str, frozenset[str]] = {
+    "CR-CV-FM-199": frozenset({
+        "old_physical_address_1", "old_physical_address_2",
+        "new_physical_address_1", "new_physical_address_2",
+    }),
+    "CV-266": frozenset({"physical_address_1", "physical_address_2"}),
+    "CV-281": frozenset({
+        "physical_address_1", "physical_address_2", "physical_address_1_2",
+        "physical_address_2_2",
+    }),
+    "CV-282": frozenset({
+        "physical_address_1", "physical_address_2", "physical_address_1_2",
+        "physical_address_2_2",
+    }),
+    "CV-295": frozenset({"physical_address_street_citytown_state_zip"}),
+    "FM-002": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "FM-057": frozenset({"physical_address"}),
+    "FM-283": frozenset({
+        "address_of_defendantrespondent", "physical_address_1",
+        "physical_address_2",
+    }),
+    "FM-284": frozenset({"physical_address_1", "physical_address_2"}),
+    "OTH-029": frozenset({"physical_address"}),
+    "OTH-030": frozenset({"physical_address"}),
+    "OTH-031": frozenset({"physical_address"}),
+    "OTH-032": frozenset({"physical_address"}),
+    "OTH-033": frozenset({"physical_address"}),
+    "OTH-034": frozenset({"physical_address"}),
+    "OTH-039": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "OTH-040": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "OTH-041": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "OTH-042": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "OTH-043": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
+    "OTH-044": frozenset({
+        "physical_address", "physical_address_2", "physical_address_5",
+    }),
 }
 
 
@@ -516,23 +611,35 @@ def map_form(schema: dict, case: dict) -> tuple[dict[str, str], dict]:
             # Strip underscores once for fuzzier matching against slugified
             # PDF widget names like 'thepresentphysicaladdresslocation...'.
             fid_squashed = fid_lower.replace("_", "")
-            # Respondent / defendant physical address — common Item 2 pattern
-            if any(k in fid_squashed for k in (
-                    "physicaladdress", "respondentaddress",
-                    "defendantaddress", "presentaddress",
-                    "addressofrespondent", "addressofdefendant")):
+            # Respondent / defendant physical address — common Item 2 pattern.
+            # Round 11: the `presentaddress` token was DROPPED from this
+            # trigger — it matched exactly the 78 children's-present-address
+            # table cells (present_addresses_do_not_list_if_confidential_to_
+            # other_party_* across 13 forms), an over-application of the
+            # respondent's datum into a per-child address list. The genuine
+            # respondent blocks (FM-008/FM-181 etc.) fire on
+            # `physicaladdress`, not `presentaddress`, so they are unaffected.
+            # The per-form _FORM_RESPADDR_STAMP_BLOCKLIST then suppresses the
+            # remaining wrong-block widgets the token still reaches (see its
+            # docstring for the cross-party / Other-Party / judgment-creditor
+            # / change-of-address / confidentiality-checkbox classes).
+            if (any(k in fid_squashed for k in (
+                        "physicaladdress", "respondentaddress",
+                        "defendantaddress",
+                        "addressofrespondent", "addressofdefendant"))
+                    and fid not in _FORM_RESPADDR_STAMP_BLOCKLIST.get(
+                        form_id, ())):
                 value = _respondent_address(case)
-            # Notary jurat: "Personally appeared" + name = principal signer
-            elif any(k in fid_squashed for k in (
-                    "personallyappeared", "beforeme", "appearedabovenamed")):
-                # Use the lead party's name as the appearer
-                parties = case.get("parties") or {}
-                for k in ("petitioner", "plaintiff", "applicant",
-                          "affiant", "declarant"):
-                    p = parties.get(k) or {}
-                    if isinstance(p, dict) and p.get("full_name"):
-                        value = p["full_name"]
-                        break
+            # Round 11: the notary name-stamp branch was REMOVED. Its trigger
+            # ("personallyappeared"/"beforeme"/"appearedabovenamed") matched
+            # only oath-certificate affiant blanks ("Personally appeared the
+            # above-named ___, made oath / affirmed ... true under penalty of
+            # perjury") plus FDP-006's "before mediation" substring
+            # false-positives. Auto-stamping the filer's name pre-swears the
+            # notary's oath on the affiant's behalf, so these fields are now
+            # DELIBERATELY left blank (round-10 doctrine; round-11 closes the
+            # engine path here AND in fill_and_audit._apply_notary_block —
+            # never re-add a signer fill). See tests/test_auto_stamp_guards.py.
             # `date`/`dated` widgets → event_date or filing_date,
             # formatted to match the widget's expected format hint.
             # Bare "dated" widgets default to us_slash (the rendered

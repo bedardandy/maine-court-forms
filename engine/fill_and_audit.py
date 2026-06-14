@@ -154,7 +154,20 @@ _NOTARY_COUNTY_FIDS = (
 _NOTARY_STATE_FIDS = (
     "state_of", "state_of_maine",
 )
-_NOTARY_SIGNER_FIDS = (
+# Round 11 DOCTRINE NOTE — DO NOT re-add a signer fill loop here.
+# These "Personally appeared the above-named ___" widgets are the affiant
+# line of a NOTARY oath certificate ("... made oath / who affirmed ... true
+# under penalty of perjury"). The notary completes that blank when they
+# administer the oath; auto-stamping the filer's name pre-swears the oath on
+# the affiant's behalf — never do that (round-10 doctrine, enforced by
+# tests/test_slug_collision_fix.py::FillBindingPins and
+# tests/test_auto_stamp_guards.py). Round 10 stopped the cross-widget
+# fanout; round 11 closed BOTH remaining auto-stamp paths: the map_form
+# narrative branch in engine/build_kv_map.py AND the
+# `_NOTARY_SIGNER_FIDS` fill loop that used to live in
+# _apply_notary_block. They are DELIBERATELY left blank. The tuple is kept
+# only as a record of the field_ids that must stay unfilled.
+_NOTARY_SIGNER_FIDS_LEAVE_BLANK = (
     "personally_appeared_the_above_named",
     "personally_appeared_the_above_named_petitioner",
     "personally_appeared_the_above_named_plaintiff",
@@ -174,11 +187,13 @@ _PERJURY_SWEAR_FIDS = (
 
 
 def _apply_notary_block(kv: dict, case: dict) -> int:
-    """Fill notary-jurat widgets (county / state / personally appeared)
-    on any form that has them but didn't get them filled by recipe-3.
-    Returns count of fills added."""
+    """Fill notary-jurat widgets (county / state) on any form that has them
+    but didn't get them filled by recipe-3. Returns count of fills added.
+
+    Round 11: this no longer fills the "Personally appeared the above-named
+    ___" affiant blanks (see _NOTARY_SIGNER_FIDS_LEAVE_BLANK) — those belong
+    to the notary's oath certificate and are never auto-sworn."""
     court = case.get("court") or {}
-    parties = case.get("parties") or {}
     facts = case.get("facts") or {}
     # Jurat county ONLY from real case data (was defaulted "Cumberland",
     # fabricating where the oath was taken). Unknown -> leave blank for
@@ -186,14 +201,6 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
     county = (case.get("notary_county")
               or court.get("county", ""))
     state = "Maine"
-    # Best-guess signer: first available party with a name.
-    signer = ""
-    for role in ("petitioner", "plaintiff", "defendant", "respondent",
-                  "applicant", "parent"):
-        p = parties.get(role) or {}
-        if p.get("full_name"):
-            signer = p["full_name"]
-            break
     added = 0
     for fid in _NOTARY_COUNTY_FIDS:
         if fid in kv and not kv.get(fid) and county:
@@ -202,10 +209,6 @@ def _apply_notary_block(kv: dict, case: dict) -> int:
     for fid in _NOTARY_STATE_FIDS:
         if fid in kv and not kv.get(fid):
             kv[fid] = state
-            added += 1
-    for fid in _NOTARY_SIGNER_FIDS:
-        if fid in kv and not kv.get(fid) and signer:
-            kv[fid] = signer
             added += 1
     # The perjury oath belongs to the signer; check it ONLY when the
     # case explicitly says so (was auto-checked on every form that had
