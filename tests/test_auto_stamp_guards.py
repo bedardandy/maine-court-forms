@@ -49,7 +49,7 @@ import fitz  # PyMuPDF
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from engine.build_kv_map import (  # noqa: E402
-    map_form, _FORM_RESPADDR_STAMP_BLOCKLIST)
+    map_form, _FORM_RESPADDR_STAMP_BLOCKLIST, _FORM_DATE_STAMP_BLOCKLIST)
 from engine.fill_and_audit import (  # noqa: E402
     fill_one, _apply_notary_block, _NOTARY_SIGNER_FIDS_LEAVE_BLANK,
     _NOTARY_COUNTY_FIDS, _NOTARY_STATE_FIDS, _PERJURY_SWEAR_FIDS)
@@ -300,6 +300,119 @@ class Branch4RespondentAddressOverApplication(unittest.TestCase):
         self.assertGreater(asserted, 20, "kept-block coverage too thin")
 
 
+# Round-12 class-4 members: notary / official acknowledgment-line signature
+# dates that must render blank (the official writes them at signing).
+_CLASS4_OFFICIAL_DATE = {
+    "AD-030": "date_4",
+    "CV-037": "date_mmddyyyy",
+    "CV-061": "date_mmddyyyy_2",
+    "CV-295": "date_mmddyyyy_3",
+    "FM-230": "date_mmddyyyy_4",
+    "FM-283": "date_mmddyyyy_2",
+    "FM-PC-003": "date_mmddyyyy_2",
+    "GS-001": "date_4",
+    "GS-003": "date_4",
+    "GS-006": "date_3",
+    "GS-007": "date",
+    "GS-009": "date_3",
+    "NC-003": "date_2",
+    "PA-013": "date_mmddyyyy_2",
+    "PB-003": "date_mmddyyyy_3",
+}
+
+# Deliberately KEPT (prefilled, NOT blocklisted) per the round-12 attorney
+# decision: the signer's / filing-counsel's own signature date that sits
+# next to the party's signature even when a notary jurat sentence is
+# adjacent. CR-006's date_mmddyyyy is structurally blank in its sample case
+# (its schema field carries no narrative_derived category, so the generic
+# date stamp never reaches it); the guarantee for all six is that they are
+# absent from the blocklist and unchanged by the round-12 edit.
+_KEPT_SIGNER_DATE = {
+    "CV-061": "date_mmddyyyy",   # Affiant
+    "MJ-015": "date_mmddyyyy",   # Judgment Creditor
+    "CR-006": "date_mmddyyyy",   # Owner
+    "CR-032": "date_mmddyyyy",   # Applicant
+    "CV-183": "date_mmddyyyy",   # Plaintiff / Attorney at Law (Bar Number)
+    "OTH-046": "date_mmddyyyy",  # Plaintiff / Attorney at Law (Bar Number)
+}
+
+
+class Class4NotaryOfficialDateStamp(unittest.TestCase):
+    """Round 12: the official acknowledgment-signature-line date (notary /
+    register / clerk / attorney-acting-as-officer) renders blank — the
+    official writes it at signing. The signer's / filing-counsel's own
+    signature date stays prefilled."""
+
+    def test_class4_count_is_15(self):
+        members = [
+            (f, fid) for f, fids in _FORM_DATE_STAMP_BLOCKLIST.items()
+            for fid in fids
+            if _CLASS4_OFFICIAL_DATE.get(f) == fid]
+        self.assertEqual(len(members), 15,
+                         "expected 15 class-4 official-date members")
+
+    def test_class4_keys_are_real_schema_fields(self):
+        for form_id, fid in _CLASS4_OFFICIAL_DATE.items():
+            ids = {f["field_id"]
+                   for f in _schema(form_id).get("fields") or []}
+            with self.subTest(form=form_id, field=fid):
+                self.assertIn(fid, ids)
+
+    def test_class4_in_blocklist(self):
+        for form_id, fid in _CLASS4_OFFICIAL_DATE.items():
+            with self.subTest(form=form_id, field=fid):
+                self.assertIn(
+                    fid, _FORM_DATE_STAMP_BLOCKLIST.get(form_id, frozenset()),
+                    f"{form_id}.{fid}: official date not blocklisted")
+
+    def test_every_official_date_renders_blank(self):
+        # Behavioral: under the sample case (which carries a filing/event
+        # date), each official acknowledgment-line date must come back blank.
+        for form_id, fid in _CLASS4_OFFICIAL_DATE.items():
+            if not (FORMS / form_id / "schema.json").exists():
+                self.skipTest(f"{form_id} schema absent")
+            kv = _sample_kv(form_id)
+            with self.subTest(form=form_id, field=fid):
+                self.assertIn(fid, kv,
+                              f"{form_id}.{fid} vanished — update test")
+                self.assertEqual(
+                    kv[fid], "",
+                    f"{form_id}.{fid}: official acknowledgment-line date "
+                    f"auto-stamped")
+
+    def test_kept_signer_dates_not_blocklisted(self):
+        # The deliberately-kept signer / counsel dates must NOT have been
+        # swept into the round-12 blocklist.
+        for form_id, fid in _KEPT_SIGNER_DATE.items():
+            with self.subTest(form=form_id, field=fid):
+                self.assertNotIn(
+                    fid, _FORM_DATE_STAMP_BLOCKLIST.get(form_id, frozenset()),
+                    f"{form_id}.{fid}: kept signer date wrongly blocklisted")
+
+    def test_kept_signer_dates_still_stamp(self):
+        # Negative pin: the kept signer / counsel dates still receive the
+        # stamp (CR-006 is structurally blank in its sample case — its field
+        # carries no date-stamping category — so it is guarded individually).
+        asserted = 0
+        for form_id, fid in _KEPT_SIGNER_DATE.items():
+            if not (FORMS / form_id / "schema.json").exists():
+                self.skipTest(f"{form_id} schema absent")
+            kv = _sample_kv(form_id)
+            with self.subTest(form=form_id, field=fid):
+                self.assertIn(fid, kv,
+                              f"{form_id}.{fid} vanished — update test")
+                if form_id == "CR-006":
+                    # Structurally blank (category not date-stamped); the
+                    # round-12 edit must leave it exactly as before.
+                    continue
+                self.assertTrue(
+                    kv[fid],
+                    f"{form_id}.{fid}: kept signer date lost its stamp")
+                asserted += 1
+        self.assertGreaterEqual(asserted, 5,
+                                "kept-signer-date coverage too thin")
+
+
 class RenderPins(unittest.TestCase):
     """Full-fill render pins (need the blank PDF, gitignored / absent in CI
     -> auto-skip). Follows the exact PDF-present idiom in
@@ -356,6 +469,35 @@ class RenderPins(unittest.TestCase):
               "respondentandtheminor childrenis 1")
         self.assertTrue(vals.get((0, nm)),
                         "FM-008 respondent block lost its stamp")
+
+    def test_gs007_official_line_date_renders_blank(self):
+        # Round-12 class 4: GS-007's "Date" widget sits on the official
+        # acknowledgment line (blocklisted) and must render blank, while the
+        # signer's own "Dated" line keeps its stamp. The sample case carries
+        # a filing/event date so the absence is the blocklist's doing, not a
+        # missing date.
+        case = pick_sample_case_for("GS-007").to_dict()
+        vals = self._render("GS-007", case=case)
+        self.assertEqual(
+            vals.get((0, "Date"), ""), "",
+            "GS-007 official acknowledgment-line date was auto-stamped")
+        self.assertTrue(
+            vals.get((0, "Dated")),
+            "GS-007 signer's own date lost its stamp")
+
+    def test_cv061_notary_line_blank_affiant_line_kept(self):
+        # Round-12 class 4 both directions: CV-061's notary-line date
+        # (Date mmddyyyy_2, blocklisted) renders blank; the affiant's own
+        # date (Date mmddyyyy, kept) renders filled. Use the prefix sample
+        # case so a filing/event date is present.
+        case = pick_sample_case_for("CV-061").to_dict()
+        vals = self._render("CV-061", case=case)
+        self.assertEqual(
+            vals.get((1, "Date mmddyyyy_2"), ""), "",
+            "CV-061 notary acknowledgment-line date was auto-stamped")
+        self.assertTrue(
+            vals.get((1, "Date mmddyyyy")),
+            "CV-061 affiant's own date lost its stamp")
 
 
 if __name__ == "__main__":

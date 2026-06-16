@@ -198,21 +198,30 @@ _SUBSTANTIVE_DATE_RE = re.compile(
 #      (or "Title of Judge/Issuing Official: Date of Signature:" on
 #      OMB-097).
 #
-# NOT blocked here: notary-jurat dates (CV-061 date_mmddyyyy_2, GS-006
-# date_3, GS-009 date_3, GS-007 date). Those sit on a
-# "Date: ... Before me, ... Notary Public / Attorney at Law / Clerk" line
-# and are handled by a SEPARATE convention in
-# engine/fill_and_audit.py::_apply_notary_block, which fills only the
-# jurat county / state from real case data (round 11 removed the
-# "personally appeared" signer fill — that affiant line is the notary's to
-# complete and is never auto-sworn; see _NOTARY_SIGNER_FIDS_LEAVE_BLANK).
-# It leaves the jurat DATE for the notary to complete and never defaults
-# a county. The notary block neither reads nor writes these date fields,
-# so the generic stamp would still reach them — but the round-10 verdict
-# keeps them in scope of the notary convention (a notary stamps the day
-# they administer the oath, which can legitimately equal the fill date)
-# and explicitly OUT of scope for this date-guard round. Left untouched
-# on purpose; revisit alongside the notary-block convention.
+#   4. Notary / official acknowledgment-line signature dates (round 12,
+#      extending the class-3 official-signature-date doctrine to the
+#      notary / register / clerk line). The date on a "____ Attorney at
+#      Law / Notary Public / Register / Clerk" capacity line (or the
+#      "Notary Public [ ] Attorney at Law [ ] Clerk" checkbox line on
+#      CV-061 / CV-295 / FM-230 / FM-283 / FM-PC-003 / PA-013 / PB-003) is
+#      the OFFICIAL-who-takes-the-oath's own — they write it when they sign
+#      at signing, never the day the filer prepared the form — so it is now
+#      blocked. (Supersedes the prior round-10/11 deferral that left these
+#      notary-jurat dates unblocked pending the notary-block convention;
+#      the engine/fill_and_audit.py::_apply_notary_block convention fills
+#      only the jurat county / state and never reads or writes these date
+#      fields, so the generic stamp would otherwise reach them.)
+#      Opus-adjudicated against the rendered PDFs.
+#
+# DELIBERATELY KEPT (prefilled, NOT blocklisted): a SIGNER's own date that
+# sits next to the party's signature even when a notary jurat sentence is
+# adjacent — CV-061 `date_mmddyyyy` (Affiant), MJ-015 `date_mmddyyyy`
+# (Judgment Creditor), CR-006 `date_mmddyyyy` (Owner), CR-032
+# `date_mmddyyyy` (Applicant) — and filing counsel's own date — CV-183
+# `date_mmddyyyy`, OTH-046 `date_mmddyyyy` ("Plaintiff / Attorney at Law
+# (Bar Number)"). These are the signer's / counsel's own signature dates
+# and stay prefilled like every other signature-date line (attorney's
+# round-12 decision).
 _FORM_DATE_STAMP_BLOCKLIST: dict[str, frozenset[str]] = {
     # class 1 — substantive prior-order / GAL-contact dates
     "FM-132": frozenset({"dated_mmddyyyy", "date_mmddyyyy"}),
@@ -238,6 +247,30 @@ _FORM_DATE_STAMP_BLOCKLIST: dict[str, frozenset[str]] = {
     "MJBVB-017": frozenset({"date_2"}),
     "MJBVB-018": frozenset({"date_1"}),
     "OMB-097": frozenset({"dateofsigniture"}),
+    # class 4 — notary / official acknowledgment-line signature dates
+    # (round 12, extends the class-3 official-signature-date doctrine to the
+    # notary / register / clerk line). Each prints on the "____ Attorney at
+    # Law / Notary Public / Register / Clerk" capacity line (or the "Notary
+    # Public [ ] Attorney at Law [ ] Clerk" checkbox line on CV-061 / CV-295
+    # / FM-230 / FM-283 / FM-PC-003 / PA-013 / PB-003). The date is the
+    # OFFICIAL-who-takes-the-oath's own — written when they sign at the
+    # acknowledgment, never the day the filer prepared the form — so it must
+    # render blank. Opus-adjudicated against the rendered PDFs.
+    "AD-030": frozenset({"date_4"}),
+    "CV-037": frozenset({"date_mmddyyyy"}),
+    "CV-061": frozenset({"date_mmddyyyy_2"}),
+    "CV-295": frozenset({"date_mmddyyyy_3"}),
+    "FM-230": frozenset({"date_mmddyyyy_4"}),
+    "FM-283": frozenset({"date_mmddyyyy_2"}),
+    "FM-PC-003": frozenset({"date_mmddyyyy_2"}),
+    "GS-001": frozenset({"date_4"}),
+    "GS-003": frozenset({"date_4"}),
+    "GS-006": frozenset({"date_3"}),
+    "GS-007": frozenset({"date"}),
+    "GS-009": frozenset({"date_3"}),
+    "NC-003": frozenset({"date_2"}),
+    "PA-013": frozenset({"date_mmddyyyy_2"}),
+    "PB-003": frozenset({"date_mmddyyyy_3"}),
 }
 
 
