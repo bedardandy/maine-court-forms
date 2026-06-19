@@ -1,0 +1,542 @@
+{
+  "form_id": "FM-216",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "petitioner": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "petitioner_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "location_town": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "respondent": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "respondent_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "intended_parents_of_a_children_due_to_be_born_on_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_and_spouse_if_applicable_of_a_minor_child_due_to_be_born_on_mmddyyyy": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "undefined_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "intended_parents_of_a_children_due_to_be_born_on_mmddyyyy_2": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_and_spouse_if_applicable_of_a_minor_child_due_to_be_born_on_mmddyyyy_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "undefined_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "gestational_carrier_is_married_and_the_gestational_carriers_spouse": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "spouse": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "gestational_carrier_is_not_married": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "town_1": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "county_1": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "state_1": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "town_2": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "county_2": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "state_2": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "maine_has_jurisdiction_in_this_case_because_all_parties_to_the_petition_agree_to_submit_to_the_jurisdiction_of_this": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "pursuant_to_the_gestational_carrier_agreement_the_gestational_carrier_agreed_to_pregnancy_by_means_of": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_intended_parents_agree_to_be_the_exclusive_parents_of_any_resulting_children_and_agree_to_accept_all": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "petitionerss_and_respondents_declare_that_their_gestational_carrier_agreement_fully_complies_with_all_of": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "a_copy_of_the_gestational": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_agreement_is_in_writing_and_has_been_signed_by_all_parties": {
+      "value_type": "signature",
+      "required": false,
+      "guidance": "A signature blank — left empty for wet-ink signing."
+    },
+    "the_agreement_requires_no_more_than_a_oneyear_term_to_achieve_pregnancy": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "at_least_one_of_the_parties_to_the_agreement_is_a_legal_resident_of_this_state": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "the_agreement_was_executed_before_the_commencement_of_any_medical_procedures_other_than_the": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_is_21_years_old_or_older": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_has_previously_given_birth_to_at_least_one_child": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_has_completed_a_medical_evaluation_that_includes_a_mental_health": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_intended_parents_hashave_completed_a_medical_evaluation_that_includes_a_mental_health": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_has_had_independent_legal_representation_of_the_gestational_carriers_own": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_did_not_contribute_gametes_for_use_in_the_pregnancy": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_did_contribute_gametes_for_use_in_the_pregnancy_but_has_entered_into_a": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_is_married_the_gestational_carrier_agreement_is_signed_by_the_gestational": {
+      "value_type": "signature",
+      "required": false,
+      "guidance": "A signature blank — left empty for wet-ink signing."
+    },
+    "the_gestational_carrier_is_not_married": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_attorney_representing_the_gestational_carrier_has_completed_a_declaration_that_is_attached_to_the": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "the_intended_parents_has_had_independent_legal_representation_in_all_matters_concerning_the_terms": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_attorney_representing_the_intended_parents_has_completed_a_declaration_that_is_attached_to_the": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "each_party_has_signed_a_written_acknowledgment_that_she_has_received_a_copy_of_the_gestational_carrier": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "copies_of_the_signed_acknowledgments_are_attached": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_agreement_expressly_provides_that_the_gestational_carrier_must_undergo_assisted_reproduction_and": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_gestational_carrier_has_the_right_to_use_the_service_of_a_health_care_provider_of_the_gestational": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_agreement_expressly_provides_that_the_gestational_carrier_has_no_claim_to_parentage_of_any_resulting": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_agreement_provides_that_the_intended_parents_are_the_exclusive_parents_of_all_resulting_children": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "designating_the_contents_of_the_birth_certificates_in_accordance_with_22_mrs_2761_and_directing_the_office_of": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "declaring_that_the_intended_parents_are_the_parents_of_the_resulting_children_and_ordering_that_all_parental": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "sealing_the_record_from_the_public_to_protect_the_privacy_of_the_children_and_the_parties_and": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "any_further_relief_that_the_court_determines_necessary_and_proper": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "petitioner_signature_electronic_or_actual_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "petitioner_signature_electronic_or_actual_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_mmddyyyy_2": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "name": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "address_1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_1_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2_2": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "telephone": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "telephone_2": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "email_2": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "petitioner_signature_electronic_or_actual_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "text1": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "name_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "address_1_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "telephone_3": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email_3": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "jurat_affiant_block1_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "jurat_affiant_block1_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "respondent_signature_electronic_or_actual_1": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "respondent_signature_electronic_or_actual_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "date_mmddyyyy_4": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_mmddyyyy_6": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "text2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_6": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_4": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "address_1_4": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2_4": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "telephone_4": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "telephone_6": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email_4": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "email_6": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "respondent_signature_electronic_or_actual_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "date_mmddyyyy_5": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "name_5": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "text3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "telephone_5": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email_5": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "jurat_affiant_block2_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "jurat_affiant_block2_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    }
+  }
+}

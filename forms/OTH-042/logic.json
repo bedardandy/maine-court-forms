@@ -1,0 +1,55 @@
+{
+  "form_id": "OTH-042",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-this_email_account_accepts_emails_with_attachments_of_up_to_10_megabytes_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:this_email_account_accepts_emails_with_attachments_of_up_to_10_megabytes_and"
+      },
+      "then": {
+        "attachment": "This email account accepts emails with attachments of up to 10 megabytes and"
+      },
+      "message": "You indicated an attachment ('This email account accepts emails with attachments of up to 10 megabytes and') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-this_email_account_accepts_emails_with_attachments_of_up_to_10_megabytes_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:this_email_account_accepts_emails_with_attachments_of_up_to_10_megabytes_and_dup1"
+      },
+      "then": {
+        "attachment": "This email account accepts emails with attachments of up to 10 megabytes and dup1"
+      },
+      "message": "You indicated an attachment ('This email account accepts emails with attachments of up to 10 megabytes and dup1') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-required_if_applicable_i_have_attached_copies_of_my_recent_w2_form_and_tw",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:required_if_applicable_i_have_attached_copies_of_my_recent_w2_form_and_two_2_pay_stubs_or"
+      },
+      "then": {
+        "attachment": "Required if applicable i have"
+      },
+      "message": "You indicated an attachment ('Required if applicable i have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-supplementalworksheet_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:supplementalworksheet_attached"
+      },
+      "then": {
+        "attachment": "Supplementalworksheet"
+      },
+      "message": "You indicated an attachment ('Supplementalworksheet') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

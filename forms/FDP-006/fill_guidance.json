@@ -1,0 +1,185 @@
+{
+  "form_id": "FDP-006",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "plaintiff": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "superior_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "district_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "v": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "undefined": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "location_town": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "defendant_respectfully_requests_that_the_court_order_the_following_persons_to_participate": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "in_foreclosure_mediation_include_mailing_address_1": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "in_foreclosure_mediation_include_mailing_address_2": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "in_foreclosure_mediation_include_mailing_address_3": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "in_foreclosure_mediation_include_mailing_address_4": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "plaintiff_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "defendant_believes_the_participation_of_thisthese_persons_is_necessary_for_effective": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mediation_because_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "mediation_because_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "mediation_because_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "mediation_because_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "plaintiff_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "defendant_requests_that_thisthese_persons_be_required_to_exchange_the_following": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "information_with_the_court_and_parties_before_mediation_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "information_with_the_court_and_parties_before_mediation_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "information_with_the_court_and_parties_before_mediation_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "information_with_the_court_and_parties_before_mediation_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "information_with_the_court_and_parties_before_mediation_5": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_mediator_assigned_to_this_case_recommends_that_thisthese_persons_be_required_to_participate": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_mediator_assigned_to_this_case_recommends_that_thisthese_persons_be_required_to_participate_dup1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "defendant": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "text1": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    }
+  }
+}

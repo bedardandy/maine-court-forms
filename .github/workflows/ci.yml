@@ -27,3 +27,11 @@ jobs:
         run: |
           python -m pytest tests/ -v \
             --ignore=tests/test_opus_judge.py
+      - name: Run deterministic eval suite
+        # Product-contract evals (docs/agent-workflow.md): routing recall,
+        # workflow-chain integrity, completed-form golden snapshots, trust-tier
+        # invariants, warning controls, extraction-golden soundness. The
+        # llm/vision layers are gated (MCF_EVAL_LLM / MCF_EVAL_VISION) and skip
+        # here. See evals/README.md.
+        run: |
+          python -m evals.run --layer flow --layer fill --layer guidance --layer logic --layer llm

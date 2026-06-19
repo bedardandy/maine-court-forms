@@ -1,0 +1,187 @@
+{
+  "form_id": "PA-022",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "plaintiff": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "individually_and_on_behalf_of": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "on_behalf_of": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "2_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "v_1": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "on_behalf_of_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "v_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "location_town": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "modify": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "extinguish_final_protection_order": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1_plaintiff_contact_information": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "undefined_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "if_different_mailing_address": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "2_defendant_contact_information": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "undefined_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "if_different_mailing_address_2": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "defendant": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "the_order_for_protection_from_abuseharassment_dated_mmddyyyy": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "requests_that": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "modified_as_follows_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "maine_judicial_branch_1": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "19a_mrs_4111_do_not_complete_this_section_if_you_are_the_defendant": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "the_plaintiff": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "protection_from_abuseharassment_dated_mmddyyyy_1": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "protection_from_abuseharassment_dated_mmddyyyy_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    }
+  }
+}

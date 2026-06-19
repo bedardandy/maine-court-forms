@@ -1,0 +1,343 @@
+{
+  "form_id": "AD-007",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "location": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "docket_no_2": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "name_of_adoptee": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "adopting_parent_11_have_you_ever_adopted_another_child_how_many_and_when_were_they_adopted": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_21_have_you_ever_adopted_another_child_how_many_and_when_were_they_adopted": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_12_are_there_other_minor_children_in_your_home_now_how_many_their_ages": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_22_are_there_other_minor_children_in_your_home_now_how_many_their_ages": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_13_are_you_legally_responsible_for_any_children_not_living_in_your_home_how_many": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_23_are_you_legally_responsible_for_any_children_not_living_in_your_home_how_many": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_14_if_you_are_responsible_for_any_child_support_payments_are_you_current_in_those_payments": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_24_if_you_are_responsible_for_any_child_support_payments_are_you_current_in_those_payments": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_15_have_you_ever_been_a_party_to_a_protective_custody_proceeding_in_any_state_where_there_were_allegations_that_you_abused_or_neglected_a_child": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_25_have_you_ever_been_a_party_to_a_protective_custody_proceeding_in_any_state_where_there_were_allegations_that_you_abused_or_neglected_a_child": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_16_what_is_your_current_occupation_how_long_have_you_had_it": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_26_what_is_your_current_occupation_how_long_have_you_had_it": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_17_what_is_your_current_annual_salary": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "adopting_parent_27_what_is_your_current_annual_salary": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "adopting_parent_18_do_you_own_or_rent_your_home_how_long_have_you_lived_there": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_28_do_you_own_or_rent_your_home_how_long_have_you_lived_there": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_19_if_you_rent_what_is_your_monthly_rent_payment": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_29_if_you_rent_what_is_your_monthly_rent_payment": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_110_if_you_own_what_is_your_monthly_mortgage_payment": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_210_if_you_own_what_is_your_monthly_mortgage_payment": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adopting_parent_111_if_you_own_your_home_what_is_it_worth_and_how_much_if_any_is_the_mortgage_on_it": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "adopting_parent_211_if_you_own_your_home_what_is_it_worth_and_how_much_if_any_is_the_mortgage_on_it": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "12_have_you_ever_been_convicted_of_a_crime_punishable_by_a_term_of_one_year_or_more_of_imprisonment": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "12_convicted_of_crime": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "13_have_you_ever_been_convicted_of_a_crime_of_violence": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "13_convicted_crime_violence": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "14_have_you_ever_had_a_protection_from_abuse_or_protection_from_harassment_final_order_against_you": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "14_pfa_or_pfh": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "15_are_there_any_criminal_or_civil_charges_pending_against_you_in_any_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "15_crim_or_civi_charges": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "16_what_is_the_highest_grade_from_which_you_graduated_in_school": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "16_highest_grade": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "17_are_you_currently_involved_in_a_bankruptcy_or_insolvency_proceeding_in_which_your_debts_to_others_may_be_affected": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "17_bankruptcy_or_insolvency": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "18_list_all_legal_residences_you": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "18_all_legal_residences": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "19_list_your_current_employers_name_and_address": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "19_current_employer": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "20_list_the_names_and_addresses_of_your_employers_during_the_past_five_years": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "20_employers_last_five_years": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "21_how_many_times_have_you_been_married": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "21_times_married": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "22_have_you_ever_been_divorced_if_so_attach_copies_of_all_divorce_decrees": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "22_divorces": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "23_if_you_are_married_when_did_you_marry_your_current_spouse": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "23_when_married": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "24_if_you_are_not_married_how_long_have_you_been_living_with_your_partner": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "24_when_with_partner": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "25_have_you_ever_had_an_application_to_adopt_a_child_denied_by_a_court_or_a_public_or_private_agency": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "25_application_denied": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "adoption_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "dated": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "dated_2": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "20_employers_continued": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "20_employers_cont": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "text1": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "text2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    }
+  }
+}

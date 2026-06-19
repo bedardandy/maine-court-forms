@@ -1,0 +1,19 @@
+{
+  "form_id": "CV-FM-JV-PB-PC-269",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-4_the_circumstances_supporting_this_request_are_please_attach_additional_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.circumstances"
+      },
+      "then": {
+        "attachment": "4 the circumstances supporting this request are please attach additional pages as needed 1"
+      },
+      "message": "You indicated an attachment ('4 the circumstances supporting this request are please attach additional pages as needed 1') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

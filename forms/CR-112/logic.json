@@ -1,0 +1,53 @@
+{
+  "form_id": "CR-112",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-5_comply_with_all_conditions_of_the_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:5_comply_with_all_conditions_of_the_attached"
+      },
+      "then": {
+        "attachment": "5 comply with all conditions of the"
+      },
+      "message": "You indicated an attachment ('5 comply with all conditions of the') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-undefined_3",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.contact_start_time"
+          },
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Undefined 3' is PM, not AM."
+      },
+      "message": "'Undefined 3' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-undefined_4",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.contact_end_time"
+          },
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Undefined 4' is PM, not AM."
+      },
+      "message": "'Undefined 4' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

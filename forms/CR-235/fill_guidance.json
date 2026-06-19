@@ -1,0 +1,127 @@
+{
+  "form_id": "CR-235",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "check_box1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "check_box2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "location": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "check_box3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "v": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_of_county": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "address": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "no_direct_or_indirect_contact": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "18_have_no_contact_direct_or_indirect_with_the_following_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "18_have_no_contact_direct_or_indirect_with_the_following_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "amount": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "monthly_amount": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "36_other": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_2": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_3": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    }
+  }
+}

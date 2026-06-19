@@ -1,0 +1,145 @@
+{
+  "form_id": "CR-CV-FM-255",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "check_box1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "plaintiffpetitioner": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "superior_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "district_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "unified_criminal_docket": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "supreme_judicial_court": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "defendantrespondent": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "location_town": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "other_party": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "in_re": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "electronic_receipt_i_choose_to_opt_in_to_allow_other_parties_to_email_me_documents_in_this_case_i_have_reviewed_and": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "i_have_a_trusted_email_account_and_i_have_daily_access_to_this_account": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "i_understand_that_i_will_receive_timesensitive_documents_through_this_email_address_including_documents": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "this_email_account_has_available_electronic_storage_of_at_least_1_gigabyte": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "this_email_account_accepts_emails_with_attachments_of_up_to_10_megabytes_and": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "i_will_be_able_to_maintain_this_email_account_throughout_this_case": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "print_name": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "print_email_address": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    }
+  }
+}

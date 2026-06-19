@@ -1,0 +1,79 @@
+{
+  "form_id": "CV-187",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-187 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-187 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-183",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-183",
+        "required": true
+      },
+      "message": "Filing CV-187 requires companion form CV-183."
+    },
+    {
+      "id": "wf-companion-CV-188-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-188",
+        "required": false
+      },
+      "message": "CV-187 is usually filed with CV-188 (when judgment granted)."
+    },
+    {
+      "id": "attach-attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:attached"
+      },
+      "then": {
+        "attachment": "Attached"
+      },
+      "message": "You indicated an attachment ('Attached') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_transcript_order_form_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_transcript_order_form_is_attached"
+      },
+      "then": {
+        "attachment": "The transcript order form"
+      },
+      "message": "You indicated an attachment ('The transcript order form') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

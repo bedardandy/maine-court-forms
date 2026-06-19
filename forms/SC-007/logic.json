@@ -1,0 +1,77 @@
+{
+  "form_id": "SC-007",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-SC-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "SC-001",
+        "required": true
+      },
+      "message": "Filing SC-007 requires companion form SC-001."
+    },
+    {
+      "id": "wf-companion-SC-003-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "SC-003",
+        "required": false
+      },
+      "message": "SC-007 is usually filed with SC-003 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-SC-005",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "SC-005",
+        "required": true
+      },
+      "message": "Filing SC-007 requires companion form SC-005."
+    },
+    {
+      "id": "wf-companion-SC-006",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "SC-006",
+        "required": true
+      },
+      "message": "Filing SC-007 requires companion form SC-006."
+    },
+    {
+      "id": "attach-a_transcript_and_audio_order_form_cvcrjv165_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_transcript_and_audio_order_form_cvcrjv165_is_attached"
+      },
+      "then": {
+        "attachment": "A transcript and audio order form cvcrjv165"
+      },
+      "message": "You indicated an attachment ('A transcript and audio order form cvcrjv165') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-transcript_and_audio_order_form_cvcrjv165_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:transcript_and_audio_order_form_cvcrjv165_is_attached"
+      },
+      "then": {
+        "attachment": "Transcript and audio order form cvcrjv165"
+      },
+      "message": "You indicated an attachment ('Transcript and audio order form cvcrjv165') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

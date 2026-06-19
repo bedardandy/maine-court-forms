@@ -1,0 +1,568 @@
+{
+  "form_id": "FM-226",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "petitioner": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "petitioner_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "location_town": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "respondent": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "respondent_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "resides_in_town": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "county": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "undefined": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_2": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "resides_in_town_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "county_2": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "undefined_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_4": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "resides_in_town_3": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "county_3": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "undefined_5": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_6": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "resides_in_town_4": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "county_4": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "undefined_7": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_8": {
+      "value_type": "state",
+      "required": false,
+      "guidance": "A US state — 'Maine' or the 2-letter 'ME'; match the box width."
+    },
+    "petitioners_has_used_reasonable_efforts_and_cannot_locate_the_respondents": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "is_unknown_and_the": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "full_name_1": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_1": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "full_name_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_2": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "full_name_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_3": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "full_name_4": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_4": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_4": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "full_name_5": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_5": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_5": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "full_name_6": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "mmddyyyy_6": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "present_addresses_do_not_list_if_confidential_to_other_party_6": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_1": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_4": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_4": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_4": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_5": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_5": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_5": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_5": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_6": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_6": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_6": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_6": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "with_7": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "confidential_to_other_party_7": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "mmyy_mmyy_7": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "person_7": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "the_children_do_not_have_any_other_acknowledged_adjudicated_intended_de_facto_or_presumed_parents": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "the_children_have_an_acknowledged_adjudicated_intended_de_facto_or_presumed_parent": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "no_one_other_than_respondents_has_physical_custody_of_the_children_or_claims_to_have_custody_or_visitation": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "rights_with_respect_to_the_children_except_as_follows": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "protection_from_abuse_provide_docket_number": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "state_concerning_the_custody_of_the_children_except_as_follows": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "probate_matter_provide_docket_number": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "undefined_9": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other_describe_what_kind_of_other_case_and_provide_docket_number": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "undefined_10": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "iwe_have_attached_an_affidavit_describing_the_specific_facts_to_support_standing_under_19a_mrs": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "enter_an_order_establishing_rights_of_visitation_or_access_with_the_subject_children_and": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "enter_an_order_for_any_further_relief_that_the_court_determines_necessary_and_proper": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these_statements": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_11": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_12": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_mmddyyyy_2": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "name": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_2": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "address_1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_1_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "address_2_2": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "telephone": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "telephone_2": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "email_2": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    },
+    "undefined_13": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "date_mmddyyyy_3": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "name_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "address_1_3": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "address_2_3": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "telephone_3": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "email_3": {
+      "value_type": "email",
+      "required": false,
+      "guidance": "An email address."
+    }
+  }
+}

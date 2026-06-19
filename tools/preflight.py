@@ -238,7 +238,86 @@ def preflight_case(case, form_id: str | None = None,
                     f"{form_id} declares required facts the case doesn't "
                     f"provide: {missing_req} — the filled form would be "
                     "facially incomplete")]
+            # Value-type warnings: a supplied value that doesn't look like its
+            # field's declared type (e.g. a phone number in a ZIP field). Uses
+            # the per-field guidance; warnings only, never blocks.
+            result["warnings"] = result["warnings"] + _value_type_warnings(
+                case, form_id, froot)
+            # If/then logic warnings: conditional-required, attachment /
+            # companion-form triggers, incompatibilities, value inferences.
+            result["warnings"] = result["warnings"] + _logic_warnings(
+                case, form_id, froot)
     return result
+
+
+def _logic_warnings(case: dict, form_id: str,
+                    forms_root: pathlib.Path) -> list[dict]:
+    """Evaluate the form's logic.json (tools/logic_engine) against the case.
+    Best-effort: also resolves mapped field values so `field:` rules can fire.
+    Warnings only; silently no-ops if artifacts/modules are unavailable."""
+    lpath = forms_root / form_id / "logic.json"
+    if not lpath.exists():
+        return []
+    try:
+        from tools.logic_engine import evaluate_rules
+    except Exception:  # noqa: BLE001
+        try:
+            from logic_engine import evaluate_rules  # script-dir import
+        except Exception:  # noqa: BLE001
+            return []
+    fields = {}
+    try:
+        from engine.fill_via_mapping import resolve_mapping
+        fields = resolve_mapping(form_id, case, forms_root).get("fid_value", {})
+    except Exception:  # noqa: BLE001
+        fields = {}
+    try:
+        logic = json.loads(lpath.read_text())
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    for w in evaluate_rules(logic, case, fields):
+        msg = w.get("message", "")
+        if w.get("authority"):
+            msg = f"{msg} [{w['authority']}]"
+        out.append(_issue(f"logic-{w.get('kind', 'rule')}", "$", msg))
+    return out
+
+
+def _value_type_warnings(case: dict, form_id: str,
+                         forms_root: pathlib.Path) -> list[dict]:
+    """Flag supplied fact values that clearly mismatch their field's declared
+    value_type. Best-effort: silently no-ops if the guidance/mapping artifacts
+    or the validator module are unavailable."""
+    gpath = forms_root / form_id / "fill_guidance.json"
+    mpath = forms_root / form_id / "mapping.json"
+    if not gpath.exists() or not mpath.exists():
+        return []
+    try:
+        from tools.value_types import validate_value
+    except Exception:  # noqa: BLE001
+        try:
+            from value_types import validate_value  # script-dir import
+        except Exception:  # noqa: BLE001
+            return []
+    fields = json.loads(gpath.read_text()).get("fields", {})
+    fid_to_key = (json.loads(mpath.read_text()).get("map")) or {}
+    # canonical key -> value_type (first concrete, non-free_text type wins).
+    key_type: dict[str, str] = {}
+    for fid, key in fid_to_key.items():
+        vt = (fields.get(fid) or {}).get("value_type")
+        if vt and vt not in ("free_text", "checkbox", "signature"):
+            key_type.setdefault(key, vt)
+    out: list[dict] = []
+    for key, vt in key_type.items():
+        val = _resolve(case, key)
+        if val in (None, ""):
+            continue
+        problem = validate_value(vt, val)
+        if problem:
+            out.append(_issue("value-type", f"${'.' + key if key else ''}",
+                              f"{key} ({vt}): {problem}"))
+    return out
 
 
 def _resolve(case: dict, key: str):

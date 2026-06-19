@@ -1,0 +1,485 @@
+{
+  "form_id": "GS-016",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "location": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "docket_no_2": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "in_re": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "date_of_birth": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "address": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "employer_name": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "selfemployed": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "address_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "required_i_have_attached_copies_of_my_most_recent_w2_form_and_two_2_pay_stubs_or_tax": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "a_how_much_did_you_earn_last_year": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "salary_and_wages_gross_pay": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "every": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "week": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "biweekly": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "month": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "hourly_wage": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "and_number_of_hours_worked": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "week_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "biweekly_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "month_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "hours_frequency_other": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1b": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "undefined_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_5": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_6": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_7": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_8": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_9": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "undefined_10": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_11": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "income_other_amount": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "undefined_12": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "5": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "name_of_child_1": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_of_child_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "to_whom_paid_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "to_whom_paid_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "amount_1": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "amount_2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "required_i_have_attached_a_copy_of_my_health_insurance_premium_sheet": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "a_cost_of_health_insurance_for_yourself_only": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "6b": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "required_i_have_attached_a_copy_of_documentation_showing_the_cost_of_child_care": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "7": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "8": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "name_of_child_1_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_of_child_2_2": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "reason_for_expense_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "reason_for_expense_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "amount_1_2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "amount_2_2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "name_of_child_1_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_of_child_2_3": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "date_of_birth_1": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_of_birth_2": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "relationship_to_you_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "relationship_to_you_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "name_of_child_1_4": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "name_of_child_2_4": {
+      "value_type": "person_name",
+      "required": false,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "date_of_birth_1_2": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "date_of_birth_2_2": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "relationship_to_you_1_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "relationship_to_you_2_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other_benefits_received_on_behalf_of_the_child_and_amount_such_as_adoption_subsidies": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "undefined_13": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "2_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other_facts_you_think_the_court_should_know_that_may_affect_the_amount_of_child_support_ordered": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "2_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "3_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "current_value_of_your_assets": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "cashbank_accounts": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "1_3": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "2_4": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "other_such_as_a_business_interest_or_life_insurance": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "current_balance_of_your_debts": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "credit_cards": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "other_2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "date": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "signature_electronic_or_actual_1": {
+      "value_type": "signature",
+      "required": false,
+      "guidance": "A signature blank — left empty for wet-ink signing."
+    },
+    "personally_appeared_the_above_named": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    }
+  }
+}

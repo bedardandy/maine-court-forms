@@ -1,0 +1,57 @@
+{
+  "form_id": "CV-183",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-183 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-183 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-187-appeal",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.appeal"
+      },
+      "then": {
+        "form": "CV-187",
+        "required": false
+      },
+      "message": "CV-183 is usually filed with CV-187 (when appeal)."
+    },
+    {
+      "id": "wf-companion-CV-188-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-188",
+        "required": false
+      },
+      "message": "CV-183 is usually filed with CV-188 (when judgment granted)."
+    }
+  ]
+}

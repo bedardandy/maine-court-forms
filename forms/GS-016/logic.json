@@ -1,0 +1,43 @@
+{
+  "form_id": "GS-016",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-required_i_have_attached_copies_of_my_most_recent_w2_form_and_two_2_pay_s",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:required_i_have_attached_copies_of_my_most_recent_w2_form_and_two_2_pay_stubs_or_tax"
+      },
+      "then": {
+        "attachment": "Required i have"
+      },
+      "message": "You indicated an attachment ('Required i have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-required_i_have_attached_a_copy_of_my_health_insurance_premium_sheet",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.health_insurance_cost_self"
+      },
+      "then": {
+        "attachment": "Required i have"
+      },
+      "message": "You indicated an attachment ('Required i have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-required_i_have_attached_a_copy_of_documentation_showing_the_cost_of_chil",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.extraordinary_medical_expenses_total"
+      },
+      "then": {
+        "attachment": "Required i have"
+      },
+      "message": "You indicated an attachment ('Required i have') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

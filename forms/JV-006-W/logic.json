@@ -1,0 +1,34 @@
+{
+  "form_id": "JV-006-W",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-child_support_order_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:child_support_order_attached"
+      },
+      "then": {
+        "attachment": "Child support order"
+      },
+      "message": "You indicated an attachment ('Child support order') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-at_any_time_required_by_court",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:at_any_time_required_by_court",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'At any time required by court' is PM, not AM."
+      },
+      "message": "'At any time required by court' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

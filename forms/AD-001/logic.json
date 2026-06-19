@@ -1,0 +1,106 @@
+{
+  "form_id": "AD-001",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-petitioners_attach_all_documents_proving_legal_custody_including_divorce_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:petitioners_attach_all_documents_proving_legal_custody_including_divorce_decrees_or_other_court_order"
+      },
+      "then": {
+        "attachment": "Petitioners attach all documents proving legal custody including divorce decrees or other court order"
+      },
+      "message": "You indicated an attachment ('Petitioners attach all documents proving legal custody including divorce decrees or other court order') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-other_attach_an_affidavit_with_an_explanation_of_legal_custody_and_all_do",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:other_attach_an_affidavit_with_an_explanation_of_legal_custody_and_all_documents_proving_legal_custody"
+      },
+      "then": {
+        "attachment": "Other attach an affidavit with an explanation of legal custody and all documents proving legal custody"
+      },
+      "message": "You indicated an attachment ('Other attach an affidavit with an explanation of legal custody and all documents proving legal custody') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-a_certified_copy_of_the_birth_record_of_the_adoptee_is_attached_or",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_certified_copy_of_the_birth_record_of_the_adoptee_is_attached_or"
+      },
+      "then": {
+        "attachment": "A certified copy of the birth record of the adoptee"
+      },
+      "message": "You indicated an attachment ('A certified copy of the birth record of the adoptee') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-a_delayed_birth_registration_of_the_adoptee_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_delayed_birth_registration_of_the_adoptee_is_attached"
+      },
+      "then": {
+        "attachment": "A delayed birth registration of the adoptee"
+      },
+      "message": "You indicated an attachment ('A delayed birth registration of the adoptee') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-a_confidential_statement_form_ad007_is_attached_providing_background_info",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.confidential_statement_attached"
+      },
+      "then": {
+        "attachment": "A confidential statement form ad007"
+      },
+      "message": "You indicated an attachment ('A confidential statement form ad007') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-no_accounting_is_attached_because_the_petitioners_isare_a_blood_relative_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.disbursement_no_accounting_blood_relative_or_adult"
+      },
+      "then": {
+        "attachment": "No accounting"
+      },
+      "message": "You indicated an attachment ('No accounting') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-a_written_statement_relating_to_the_adoptees_cultural_ethnic_or_racial_ba",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_written_statement_relating_to_the_adoptees_cultural_ethnic_or_racial_background_is_attached"
+      },
+      "then": {
+        "attachment": "A written statement relating to the adoptees cultural ethnic or racial background"
+      },
+      "message": "You indicated an attachment ('A written statement relating to the adoptees cultural ethnic or racial background') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-the_petitioners_at_the_time_of_this_petition_does_not_yet_know_or_have_r",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_petitioners_at_the_time_of_this_petition_does_not_yet_know_or_have_reason_to_know_if_the_adoptee",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The petitioners at the time of this petition does not yet know or have reason to know if the adoptee' is PM, not AM."
+      },
+      "message": "'The petitioners at the time of this petition does not yet know or have reason to know if the adoptee' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

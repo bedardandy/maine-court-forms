@@ -1,0 +1,205 @@
+{
+  "form_id": "CV-287",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "cv287-attach-debt-agreement",
+      "kind": "attachment",
+      "severity": "warning",
+      "when": {
+        "or": [
+          {
+            "present": "facts.current_owner_name"
+          },
+          {
+            "present": "facts.cause_of_action"
+          }
+        ]
+      },
+      "then": {
+        "attachment": "the contract, application, or other writing evidencing the consumer's agreement to the debt"
+      },
+      "message": "A debt buyer must attach the contract/application (or other writing) evidencing the consumer's agreement to the debt.",
+      "authority": "32 M.R.S. §11013(9)"
+    },
+    {
+      "id": "cv287-attach-chain-of-title",
+      "kind": "attachment",
+      "severity": "warning",
+      "when": {
+        "or": [
+          {
+            "present": "facts.current_owner_name"
+          },
+          {
+            "present": "facts.debt_owner_1"
+          }
+        ]
+      },
+      "then": {
+        "attachment": "the bill of sale and each assignment establishing an unbroken chain of title from the original creditor"
+      },
+      "message": "Attach the bill of sale and each assignment establishing an unbroken chain of ownership from the original creditor to the current debt buyer.",
+      "authority": "32 M.R.S. §11019"
+    },
+    {
+      "id": "cv287-multiple-assignments-need-each",
+      "kind": "attachment",
+      "severity": "warning",
+      "when": {
+        "present": "facts.date_assignment_2"
+      },
+      "then": {
+        "attachment": "each successive assignment (the debt was assigned more than once)"
+      },
+      "message": "The debt was assigned more than once — attach every assignment in the chain, not just the most recent.",
+      "authority": "32 M.R.S. §11019"
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-287 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-287 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-287 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "attach-plaintiff_possesses_documentation_identified_in_32_mrs_110139i_j_and_has_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:plaintiff_possesses_documentation_identified_in_32_mrs_110139i_j_and_has_attached"
+      },
+      "then": {
+        "attachment": "Plaintiff possesses documentation identified in 32 mrs 110139i j and has"
+      },
+      "message": "You indicated an attachment ('Plaintiff possesses documentation identified in 32 mrs 110139i j and has') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-attached_are_affidavits_incorporating_the_required_documents_by_reference",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:attached_are_affidavits_incorporating_the_required_documents_by_reference_the_documentation"
+      },
+      "then": {
+        "attachment": "Attached are affidavits incorporating the required documents by reference the documentation"
+      },
+      "message": "You indicated an attachment ('Attached are affidavits incorporating the required documents by reference the documentation') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-plaintiff_has_attached_as_exhibit_b_documents_identifying_the_original_cr",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:plaintiff_has_attached_as_exhibit_b_documents_identifying_the_original_creditor_and_each_bill_of_sale"
+      },
+      "then": {
+        "attachment": "Plaintiff has"
+      },
+      "message": "You indicated an attachment ('Plaintiff has') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-plaintiff_has_attached_as_exhibit_c_affidavits_related_to_the_attached_do",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:plaintiff_has_attached_as_exhibit_c_affidavits_related_to_the_attached_documents"
+      },
+      "then": {
+        "attachment": "Plaintiff has"
+      },
+      "message": "You indicated an attachment ('Plaintiff has') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-plaintiff_has_requested_attorney_fees_and_attached_as_exhibit_d_documenta",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:plaintiff_has_requested_attorney_fees_and_attached_as_exhibit_d_documentation_showing_plaintiff_is"
+      },
+      "then": {
+        "attachment": "Plaintiff has requested attorney fees and"
+      },
+      "message": "You indicated an attachment ('Plaintiff has requested attorney fees and') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-description_and_exhibit_letter_of_other_documents_attached_if_any_1",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:description_and_exhibit_letter_of_other_documents_attached_if_any_1"
+      },
+      "then": {
+        "attachment": "Description and exhibit letter of other documents"
+      },
+      "message": "You indicated an attachment ('Description and exhibit letter of other documents') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-description_and_exhibit_letter_of_other_documents_attached_if_any_2",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:description_and_exhibit_letter_of_other_documents_attached_if_any_2"
+      },
+      "then": {
+        "attachment": "Description and exhibit letter of other documents"
+      },
+      "message": "You indicated an attachment ('Description and exhibit letter of other documents') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-description_and_exhibit_letter_of_other_documents_attached_if_any_3",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:description_and_exhibit_letter_of_other_documents_attached_if_any_3"
+      },
+      "then": {
+        "attachment": "Description and exhibit letter of other documents"
+      },
+      "message": "You indicated an attachment ('Description and exhibit letter of other documents') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-description_and_exhibit_letter_of_other_documents_attached_if_any_4",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:description_and_exhibit_letter_of_other_documents_attached_if_any_4"
+      },
+      "then": {
+        "attachment": "Description and exhibit letter of other documents"
+      },
+      "message": "You indicated an attachment ('Description and exhibit letter of other documents') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

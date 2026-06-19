@@ -1,0 +1,31 @@
+{
+  "form_id": "PC-034",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-as_required_by_22_mrs_40051d_i_have_attached_a_written_report_of_my_inves",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:as_required_by_22_mrs_40051d_i_have_attached_a_written_report_of_my_investigation_findings_and"
+      },
+      "then": {
+        "attachment": "As required by 22 mrs 40051d i have"
+      },
+      "message": "You indicated an attachment ('As required by 22 mrs 40051d i have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-no_written_report_of_my_investigation_findings_and_recommendations_is_att",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:no_written_report_of_my_investigation_findings_and_recommendations_is_attached_because_this_compliance"
+      },
+      "then": {
+        "attachment": "No written report of my investigation findings and recommendations"
+      },
+      "message": "You indicated an attachment ('No written report of my investigation findings and recommendations') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

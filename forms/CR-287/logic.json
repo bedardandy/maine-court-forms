@@ -1,0 +1,22 @@
+{
+  "form_id": "CR-287",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "time-pm-rank_at_time_of_separation",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:rank_at_time_of_separation",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Rank at time of separation' is PM, not AM."
+      },
+      "message": "'Rank at time of separation' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

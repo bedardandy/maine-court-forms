@@ -1,0 +1,70 @@
+{
+  "form_id": "PA-001",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "pa001-companion-pa005",
+      "kind": "companion_form",
+      "severity": "warning",
+      "when": null,
+      "then": {
+        "form": "PA-005",
+        "required": true
+      },
+      "message": "File PA-005 (Protection Order Service Information) with the complaint so law enforcement can serve the defendant.",
+      "authority": "Maine Judicial Branch PFA filing requirements (PA-005)"
+    },
+    {
+      "id": "pa001-companion-pa015-confidential",
+      "kind": "companion_form",
+      "severity": "warning",
+      "when": {
+        "or": [
+          {
+            "truthy": "facts.confidential_address"
+          },
+          {
+            "truthy": "facts.address_confidential"
+          }
+        ]
+      },
+      "then": {
+        "form": "PA-015",
+        "required": true
+      },
+      "message": "You asked to keep your address confidential — file PA-015 (Affidavit for Confidential Address) and omit your address from the public complaint.",
+      "authority": "PA-015 Affidavit for Confidential Address"
+    },
+    {
+      "id": "pa001-relationship-suggests-pfh",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.relationship_description"
+          },
+          "neighbor|co-?worker|colleague|stranger|landlord|tenant|acquaintance|no relationship|none"
+        ]
+      },
+      "then": {
+        "suggest": "Protection from Abuse requires a family/household member or dating relationship (19-A M.R.S. §4002). If no such relationship exists, the correct action is Protection from Harassment (PA-009) under 5 M.R.S. §3801."
+      },
+      "message": "The described relationship may not qualify for Protection from Abuse (19-A M.R.S. §4002); if there is no family/household/dating relationship, consider Protection from Harassment (PA-009).",
+      "authority": "19-A M.R.S. §4002 (abuse); 5 M.R.S. §3801 (harassment)"
+    },
+    {
+      "id": "attach-additional_space_is_needed_attach_another_page_1",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:additional_space_is_needed_attach_another_page_1"
+      },
+      "then": {
+        "attachment": "Additional space is needed attach another page 1"
+      },
+      "message": "You indicated an attachment ('Additional space is needed attach another page 1') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

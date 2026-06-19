@@ -1,0 +1,55 @@
+{
+  "form_id": "OTH-040",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-this_email_account_accepts_emails_with_attachments_of_up_to_10_megabyte",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:this_email_account_accepts_emails_with_attachments_of_up_to_10_megabyte"
+      },
+      "then": {
+        "attachment": "This email account accepts emails with attachments of up to 10 megabyte"
+      },
+      "message": "You indicated an attachment ('This email account accepts emails with attachments of up to 10 megabyte') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-this_email_account_accepts_emails_with_attachments_of_up_to_10_megabyte_d",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:this_email_account_accepts_emails_with_attachments_of_up_to_10_megabyte_dup1"
+      },
+      "then": {
+        "attachment": "This email account accepts emails with attachments of up to 10 megabyte dup1"
+      },
+      "message": "You indicated an attachment ('This email account accepts emails with attachments of up to 10 megabyte dup1') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-check_here_if_you_have_attached_additional_pages_because_you_need_more_sp",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:check_here_if_you_have_attached_additional_pages_because_you_need_more_space_to_complete_one_or_more_section"
+      },
+      "then": {
+        "attachment": "Check here if you have"
+      },
+      "message": "You indicated an attachment ('Check here if you have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-one_or_both_parties_have_an_interest_in_additional_real_estate_and_have_a",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:one_or_both_parties_have_an_interest_in_additional_real_estate_and_have_attached_another_certificate"
+      },
+      "then": {
+        "attachment": "One or both parties have an interest in additional real estate and have"
+      },
+      "message": "You indicated an attachment ('One or both parties have an interest in additional real estate and have') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

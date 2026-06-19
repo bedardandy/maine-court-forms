@@ -1,0 +1,103 @@
+{
+  "form_id": "CV-181",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-255-electronic_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.electronic_service"
+      },
+      "then": {
+        "form": "CR-CV-FM-255",
+        "required": false
+      },
+      "message": "CV-181 is usually filed with CR-CV-FM-255 (when electronic service)."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-181 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-181 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-181 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "wf-companion-CV-261",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-261",
+        "required": true
+      },
+      "message": "Filing CV-181 requires companion form CV-261."
+    },
+    {
+      "id": "wf-companion-CV-FM-036",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-FM-036",
+        "required": false
+      },
+      "message": "CV-181 is usually filed with CV-FM-036."
+    },
+    {
+      "id": "attach-was_lostdestroyed_affidavit_attached_pursuant_to_14_mrs_4656",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:was_lostdestroyed_affidavit_attached_pursuant_to_14_mrs_4656"
+      },
+      "then": {
+        "attachment": "Was lostdestroyed affidavit"
+      },
+      "message": "You indicated an attachment ('Was lostdestroyed affidavit') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-is_attached_to_this_request",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:is_attached_to_this_request"
+      },
+      "then": {
+        "attachment": "Is attached to this request"
+      },
+      "message": "You indicated an attachment ('Is attached to this request') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

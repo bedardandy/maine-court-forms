@@ -1,0 +1,113 @@
+{
+  "form_id": "CR-006",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "defendant": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "superior_court": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "district_court": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "unified_criminal_docket": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "location_town": {
+      "value_type": "city",
+      "required": false,
+      "guidance": "A city or town name only (no state or ZIP)."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "bail_poster": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "deposit_with_the_clerk_of_this_court_in_the_sum_of": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    }
+  }
+}

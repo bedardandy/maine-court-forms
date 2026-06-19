@@ -1,0 +1,42 @@
+{
+  "form_id": "CV-172",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CV-173-publication_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.publication_service"
+      },
+      "then": {
+        "form": "CV-173",
+        "required": false
+      },
+      "message": "CV-172 is usually filed with CV-173 (when publication service)."
+    },
+    {
+      "id": "wf-companion-CV-FM-072",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-FM-072",
+        "required": true
+      },
+      "message": "Filing CV-172 requires companion form CV-FM-072."
+    },
+    {
+      "id": "wf-companion-CV-FM-202",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-FM-202",
+        "required": true
+      },
+      "message": "Filing CV-172 requires companion form CV-FM-202."
+    }
+  ]
+}

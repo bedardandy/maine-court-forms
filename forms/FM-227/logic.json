@@ -1,0 +1,19 @@
+{
+  "form_id": "FM-227",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-i_have_attached_an_affidavit_with_the_specific_facts_addressing_whether_t",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:i_have_attached_an_affidavit_with_the_specific_facts_addressing_whether_the_petitioners_should_be"
+      },
+      "then": {
+        "attachment": "I have"
+      },
+      "message": "You indicated an attachment ('I have') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

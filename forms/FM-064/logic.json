@@ -1,0 +1,19 @@
+{
+  "form_id": "FM-064",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-see_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.refusal_reasons"
+      },
+      "then": {
+        "attachment": "See"
+      },
+      "message": "You indicated an attachment ('See') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "form_id": "OTH-132",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-by_checking_this_box_you_are_confirming_that_you_have_attached_a_curricul",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:by_checking_this_box_you_are_confirming_that_you_have_attached_a_curriculum_vitae_to_this"
+      },
+      "then": {
+        "attachment": "By checking this box you are confirming that you have"
+      },
+      "message": "You indicated an attachment ('By checking this box you are confirming that you have') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

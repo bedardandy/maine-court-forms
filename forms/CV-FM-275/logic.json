@@ -1,0 +1,19 @@
+{
+  "form_id": "CV-FM-275",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-additional_pages_are_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:additional_pages_are_attached"
+      },
+      "then": {
+        "attachment": "Additional pages are"
+      },
+      "message": "You indicated an attachment ('Additional pages are') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

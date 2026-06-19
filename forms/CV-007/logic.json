@@ -1,0 +1,129 @@
+{
+  "form_id": "CV-007",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-255-electronic_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.electronic_service"
+      },
+      "then": {
+        "form": "CR-CV-FM-255",
+        "required": false
+      },
+      "message": "CV-007 is usually filed with CR-CV-FM-255 (when electronic service)."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-007 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-007 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-007 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "wf-companion-CV-195-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-195",
+        "required": false
+      },
+      "message": "CV-007 is usually filed with CV-195 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-204",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-204",
+        "required": true
+      },
+      "message": "Filing CV-007 requires companion form CV-204."
+    },
+    {
+      "id": "wf-companion-CV-206-appeal",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.appeal"
+      },
+      "then": {
+        "form": "CV-206",
+        "required": false
+      },
+      "message": "CV-007 is usually filed with CV-206 (when appeal)."
+    },
+    {
+      "id": "wf-companion-CV-256",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-256",
+        "required": true
+      },
+      "message": "Filing CV-007 requires companion form CV-256."
+    },
+    {
+      "id": "attach-there_is_nothing_attached_to_this_complaint",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:there_is_nothing_attached_to_this_complaint"
+      },
+      "then": {
+        "attachment": "There is nothing"
+      },
+      "message": "You indicated an attachment ('There is nothing') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-additional_allegations_in_support_of_the_plaintiffs_claim_if_you_need_add",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:additional_allegations_in_support_of_the_plaintiffs_claim_if_you_need_additional_space_attach_a"
+      },
+      "then": {
+        "attachment": "Additional allegations in support of the plaintiffs claim if you need additional space attach a"
+      },
+      "message": "You indicated an attachment ('Additional allegations in support of the plaintiffs claim if you need additional space attach a') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

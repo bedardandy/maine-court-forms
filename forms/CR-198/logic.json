@@ -1,0 +1,19 @@
+{
+  "form_id": "CR-198",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-itemization_of_days_and_hours_worked_by_cpsw_participant_attach_a_separat",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.itemization_of_hours"
+      },
+      "then": {
+        "attachment": "Itemization of days and hours worked by cpsw participant attach a separate sheet if needed 1"
+      },
+      "message": "You indicated an attachment ('Itemization of days and hours worked by cpsw participant attach a separate sheet if needed 1') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

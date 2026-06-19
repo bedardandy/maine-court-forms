@@ -1,0 +1,416 @@
+{
+  "form_id": "CR-228",
+  "generated_by": "tools/derive_field_guidance.py",
+  "note": "Per-field fill-value guidance (value type, required-ness, choice-group conditionals). Derived offline from schema/mapping/constraints; consistent with the fill engine. Not legal advice — verify against the official form before filing. Currency/time guidance is conservative because the printed '$'/AM-PM are not read here.",
+  "value_types": [
+    "address",
+    "bar_number",
+    "case_number",
+    "checkbox",
+    "city",
+    "county",
+    "court_location",
+    "currency",
+    "date",
+    "docket",
+    "email",
+    "free_text",
+    "organization_name",
+    "percent",
+    "person_name",
+    "phone",
+    "signature",
+    "state",
+    "time",
+    "zip"
+  ],
+  "fields": {
+    "defendant": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "superior_court": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "district_court": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "unified_criminal_docket": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "superior_court",
+          "district_court",
+          "unified_criminal_docket"
+        ],
+        "note": "The form says '“X” the court for filing' — exactly one court box."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "county": {
+      "value_type": "county",
+      "required": false,
+      "guidance": "A Maine county name without the word 'County' (e.g. Cumberland)."
+    },
+    "location_town": {
+      "value_type": "court_location",
+      "required": false,
+      "guidance": "The court division / town where the case is filed."
+    },
+    "docket_no": {
+      "value_type": "docket",
+      "required": false,
+      "guidance": "The docket number (e.g. CV-2024-0099)."
+    },
+    "my_name_is": {
+      "value_type": "person_name",
+      "required": true,
+      "guidance": "A person's name (the engine collapses to initials only if it overflows the box)."
+    },
+    "my_date_of_birth_mmddyyyy_is": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "my_home_phone_is_1": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "my_cell_phone_is": {
+      "value_type": "phone",
+      "required": false,
+      "guidance": "A telephone number."
+    },
+    "my_home_phone_is_2": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "the_same_as_my_residential_address": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "text1": {
+      "value_type": "address",
+      "required": false,
+      "guidance": "A street address; include the street line. City/State/ZIP may belong in their own boxes — check the printed labels."
+    },
+    "total_of_all_fines_owed": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "date_fines_due_the_dueinfull_date_or_the_next_payment_datemmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "fine_extensionmodification_isare_as_follows_1": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "fine_extensionmodification_isare_as_follows_2": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "fine_extensionmodification_isare_as_follows_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "employed_by": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "a_month_in_disability_income": {
+      "value_type": "organization_name",
+      "required": false,
+      "guidance": "An organization / business / agency name."
+    },
+    "i_make": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "week": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "month": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "two": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "disabled_and_receive": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "undefined": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "unemployed_and_receive": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "a_week_in_unemployment_compensation": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "unemployed_and_receive_2": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "per_month_in_tanf_benefits": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "unemployed_but_expect_to_start_working_on_mmddyyyy": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "and_expect_to": {
+      "value_type": "date",
+      "format": "iso",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "make": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "week_2": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "month_2": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "two_weeks": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "am_currently_expecting_a": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "state": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "federal_tax_refund_in_the_total_amount_of": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "undefined_2": {
+      "value_type": "currency",
+      "required": false,
+      "guidance": "A dollar amount as digits (e.g. 1,250.00). Many forms pre-print '$' next to the blank; if so, do NOT type a second '$' (the engine strips a leading '$'). Verify against the form."
+    },
+    "have_no_source_of_income": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "i_have": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "cash_in_my_possession": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "i_request_that_the_court_grant_me": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "i_request_that_the_court_grant_me",
+          "i_request_a_new_payment_plan_of"
+        ],
+        "note": "The form says 'Choose one:' — more days to pay in full or a new payment plan, not both."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "more_days_to_pay_my_fine_in_full": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "i_request_a_new_payment_plan_of": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "i_request_that_the_court_grant_me",
+          "i_request_a_new_payment_plan_of"
+        ],
+        "note": "The form says 'Choose one:' — more days to pay in full or a new payment plan, not both."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "every": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    },
+    "week_3": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "week_3",
+          "two_weeks_2",
+          "month_beginning"
+        ],
+        "note": "A new payment plan names one frequency: every week, two weeks, or month."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "two_weeks_2": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "week_3",
+          "two_weeks_2",
+          "month_beginning"
+        ],
+        "note": "A new payment plan names one frequency: every week, two weeks, or month."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "month_beginning": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "week_3",
+          "two_weeks_2",
+          "month_beginning"
+        ],
+        "note": "A new payment plan names one frequency: every week, two weeks, or month."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "court_grants_my_request_before_the_date_of_the_hearing_i_must_return_to_court_on_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "at": {
+      "value_type": "time",
+      "required": false,
+      "guidance": "A wall-clock time (e.g. 10:00). If the form pre-prints AM/PM, circle/strike the correct one by hand — the engine does not."
+    },
+    "am": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "am",
+          "pm_for_a_hearing"
+        ],
+        "note": "A hearing time is AM or PM, not both."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "pm_for_a_hearing": {
+      "value_type": "checkbox",
+      "required": false,
+      "conditional": {
+        "rule": "exactly_one_of",
+        "group": [
+          "am",
+          "pm_for_a_hearing"
+        ],
+        "note": "A hearing time is AM or PM, not both."
+      },
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "i_swear_under_penalty_of_perjury_that_the_above_statements_are_true_and_correct_i_understand_that_these": {
+      "value_type": "checkbox",
+      "required": false,
+      "guidance": "A checkbox: filled with 'X' only when the fact is explicitly true; never auto-checked."
+    },
+    "date_mmddyyyy": {
+      "value_type": "date",
+      "format": "us_slash",
+      "required": false,
+      "guidance": "A calendar date."
+    },
+    "undefined_3": {
+      "value_type": "free_text",
+      "required": false,
+      "guidance": "Free-form narrative text specific to the situation."
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "form_id": "CV-CR-162",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CV-CR-163",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-CR-163",
+        "required": false
+      },
+      "message": "CV-CR-162 is usually filed with CV-CR-163."
+    },
+    {
+      "id": "wf-companion-CV-CR-JV-165",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-CR-JV-165",
+        "required": true
+      },
+      "message": "Filing CV-CR-162 requires companion form CV-CR-JV-165."
+    },
+    {
+      "id": "attach-the_transcript_order_form_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_transcript_order_form_is_attached"
+      },
+      "then": {
+        "attachment": "The transcript order form"
+      },
+      "message": "You indicated an attachment ('The transcript order form') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

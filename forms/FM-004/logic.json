@@ -1,0 +1,55 @@
+{
+  "form_id": "FM-004",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "fm004-children-require-fm050",
+      "kind": "companion_form",
+      "severity": "warning",
+      "when": {
+        "or": [
+          {
+            "present": "parties.child_1"
+          },
+          {
+            "present": "facts.child_1_current_name"
+          },
+          {
+            "truthy": "facts.has_minor_children"
+          }
+        ]
+      },
+      "then": {
+        "form": "FM-050",
+        "required": true
+      },
+      "message": "This divorce involves minor children — a Child Support Affidavit (FM-050) must accompany the complaint and be filed before the case management conference.",
+      "authority": "19-A M.R.S. §2004; Maine Judicial Branch divorce-with-children filing requirements"
+    },
+    {
+      "id": "fm004-children-require-fm040",
+      "kind": "companion_form",
+      "severity": "warning",
+      "when": {
+        "or": [
+          {
+            "present": "parties.child_1"
+          },
+          {
+            "present": "facts.child_1_current_name"
+          },
+          {
+            "truthy": "facts.has_minor_children"
+          }
+        ]
+      },
+      "then": {
+        "form": "FM-040",
+        "required": true
+      },
+      "message": "Minor children: complete and file a Child Support Worksheet (FM-040) no later than 3 days before any hearing (FM-040-A if you share substantially equal care).",
+      "authority": "19-A M.R.S. §2006 (child support guidelines); FM-040 worksheet"
+    }
+  ]
+}
