@@ -1,0 +1,276 @@
+{
+  "_doc": "Golden canonical fact objects for the LLM-extraction eval (evals/llm/test_extraction_fidelity.py). Each entry pairs a smoke narrative (tools/smoke/fact_patterns.json, by id) with a hand-authored, reviewed canonical case that an ideal extractor should produce: preflight-clean, covering the primary form's required facts, and routing to expect_forms. OFFLINE mode scores these goldens themselves (proving fixtures + scoring are sound, no model). LIVE mode (MCF_EVAL_LLM=1) scores a model's extraction against them. All parties/dates/addresses fictional; not legal advice.",
+  "cases": [
+    {
+      "id": "fam_divorce_nokids", "form": "FM-004",
+      "case": {
+        "matter": {"court_county": "Cumberland", "case_type": "divorce", "filing_date": "2026-06-19"},
+        "parties": {
+          "plaintiff": {"full_name": "Maria Elena Vasquez", "address": "47 Birchwood Lane", "city": "Portland", "state": "Maine", "zip": "04103", "phone": "207-555-0142"},
+          "defendant": {"full_name": "Daniel Robert Vasquez"}
+        },
+        "party": {"full_name": "Maria Elena Vasquez"},
+        "facts": {"date_of_marriage": "2009-06-14", "place_of_marriage": "Portland", "grounds": "irreconcilable differences"}
+      }
+    },
+    {
+      "id": "fam_divorce_twokids", "form": "FM-004",
+      "case": {
+        "matter": {"court_county": "Penobscot", "case_type": "divorce", "filing_date": "2026-06-19"},
+        "parties": {
+          "plaintiff": {"full_name": "Jennifer Anne Caldwell", "address": "12 Harbor Road", "city": "Bangor", "state": "Maine", "zip": "04401", "phone": "207-555-0199"},
+          "defendant": {"full_name": "Mark Steven Caldwell"},
+          "child_1": {"full_name": "Lucas Caldwell", "date_of_birth": "2014-03-08"},
+          "child_2": {"full_name": "Emma Caldwell", "date_of_birth": "2016-11-21"}
+        },
+        "party": {"full_name": "Jennifer Anne Caldwell"},
+        "facts": {"date_of_marriage": "2012-09-02", "place_of_marriage": "Bangor"}
+      }
+    },
+    {
+      "id": "fam_parentage", "form": "FM-006",
+      "case": {
+        "matter": {"court_county": "Androscoggin", "case_type": "parentage"},
+        "parties": {
+          "plaintiff": {"full_name": "Alicia Monroe", "address": "88 Cedar Street", "city": "Lewiston", "state": "Maine", "zip": "04240"},
+          "defendant": {"full_name": "James Tyler Brooks", "city": "Auburn"},
+          "child_1": {"full_name": "Noah Monroe", "date_of_birth": "2021-07-03"}
+        },
+        "party": {"full_name": "Alicia Monroe"}
+      }
+    },
+    {
+      "id": "fam_support_mod", "form": "FM-040",
+      "case": {
+        "matter": {"court_county": "Kennebec", "docket_number": "FM-2022-0451"},
+        "parties": {
+          "plaintiff": {"full_name": "Sandra Lin"},
+          "defendant": {"full_name": "Robert Lin", "address": "305 Pine Hill Drive", "city": "Augusta", "state": "Maine", "zip": "04330"},
+          "child_1": {"full_name": "Kevin Lin"}
+        },
+        "party": {"full_name": "Robert Lin"}
+      }
+    },
+    {
+      "id": "fam_motion_modify", "form": "FM-058",
+      "case": {
+        "matter": {"court_county": "York", "docket_number": "FM-2020-0312"},
+        "parties": {
+          "plaintiff": {"full_name": "Thomas Reyes", "address": "9 Lakeview Terrace", "city": "Saco", "state": "Maine", "zip": "04072"},
+          "defendant": {"full_name": "Donna Reyes"}
+        },
+        "party": {"full_name": "Thomas Reyes"}
+      }
+    },
+    {
+      "id": "fam_contempt", "form": "FM-030",
+      "case": {
+        "matter": {"court_county": "Kennebec", "docket_number": "FM-2019-0888"},
+        "parties": {
+          "plaintiff": {"full_name": "Patricia O'Donnell", "address": "220 Elm Avenue", "city": "Waterville", "state": "Maine", "zip": "04901"},
+          "defendant": {"full_name": "Brian O'Donnell"}
+        },
+        "party": {"full_name": "Patricia O'Donnell"}
+      }
+    },
+    {
+      "id": "pfa_domestic", "form": "PA-001",
+      "case": {
+        "matter": {"court_county": "York", "case_type": "protection from abuse"},
+        "parties": {
+          "plaintiff": {"full_name": "Rachel Simmons", "address": "14 Spruce Court", "city": "Biddeford", "state": "Maine", "zip": "04005", "phone": "207-555-0177"},
+          "defendant": {"full_name": "Kyle Foster", "city": "Sanford"}
+        },
+        "party": {"full_name": "Rachel Simmons"}
+      }
+    },
+    {
+      "id": "pfa_minor_child", "form": "PA-001",
+      "case": {
+        "matter": {"court_county": "Knox", "case_type": "protection from abuse"},
+        "parties": {
+          "plaintiff": {"full_name": "Christine Walker", "address": "61 Maple Street", "city": "Rockland", "state": "Maine", "zip": "04841"},
+          "defendant": {"full_name": "Gary Walker"},
+          "child_1": {"full_name": "Sophie Walker", "date_of_birth": "2013-05-02"}
+        },
+        "party": {"full_name": "Christine Walker"}
+      }
+    },
+    {
+      "id": "pfh_neighbor", "form": "PA-009",
+      "case": {
+        "matter": {"court_county": "Cumberland", "case_type": "protection from harassment"},
+        "parties": {
+          "plaintiff": {"full_name": "Victor Nguyen", "address": "7 Riverside Drive Apt 3", "city": "Brunswick", "state": "Maine", "zip": "04011"},
+          "defendant": {"full_name": "Frank Delgado"}
+        },
+        "party": {"full_name": "Victor Nguyen"}
+      }
+    },
+    {
+      "id": "money_smallclaims_loan", "form": "SC-001",
+      "case": {
+        "matter": {"court_county": "Cumberland", "case_type": "small claims"},
+        "parties": {
+          "plaintiff": {"full_name": "Hannah Goldberg", "address": "33 Winter Street", "city": "Portland", "state": "Maine", "zip": "04101", "phone": "207-555-0123"},
+          "defendant": {"full_name": "Eric Townsend", "address": "410 Forest Ave", "city": "Portland", "state": "Maine"}
+        },
+        "party": {"full_name": "Hannah Goldberg"},
+        "facts": {"amount_claimed": "2800", "debt_due_date": "2024-08-01"}
+      }
+    },
+    {
+      "id": "money_smallclaims_damage", "form": "SC-001",
+      "case": {
+        "matter": {"court_county": "Cumberland", "case_type": "small claims"},
+        "parties": {
+          "plaintiff": {"full_name": "Gregory Pate", "address": "102 Orchard Lane", "city": "Gorham", "state": "Maine", "zip": "04038"},
+          "defendant": {"full_name": "Coastal Build LLC"}
+        },
+        "party": {"full_name": "Gregory Pate"},
+        "facts": {"amount_claimed": "1450"}
+      }
+    },
+    {
+      "id": "money_debt_judgment", "form": "CV-168",
+      "case": {
+        "matter": {"court_county": "Penobscot", "docket_number": "CV-2023-0210"},
+        "parties": {
+          "plaintiff": {"full_name": "Linda Marsh"},
+          "defendant": {"full_name": "Wayne Bisson"}
+        },
+        "party": {"full_name": "Linda Marsh"},
+        "facts": {"judgment_amount": "5200"}
+      }
+    },
+    {
+      "id": "money_eviction", "form": "CV-007",
+      "case": {
+        "matter": {"court_county": "Androscoggin", "case_type": "eviction"},
+        "parties": {
+          "plaintiff": {"full_name": "Susan Pelletier"},
+          "defendant": {"full_name": "Carl Whitman"}
+        },
+        "party": {"full_name": "Susan Pelletier"},
+        "facts": {"premises_address": "58 Granite Street, Lewiston, ME 04240", "monthly_rent": "1100", "amount_in_arrears": "3300", "months_in_arrears": "3"}
+      }
+    },
+    {
+      "id": "money_civil_complaint", "form": "CV-001",
+      "case": {
+        "matter": {"court_county": "Cumberland", "court_type": "District Court", "case_type": "breach of contract"},
+        "parties": {
+          "plaintiff": {"full_name": "Andrew Foss", "address": "75 Hillcrest Road", "city": "Westbrook", "state": "Maine", "zip": "04092"},
+          "defendant": {"full_name": "Summit Roofing Inc."}
+        },
+        "party": {"full_name": "Andrew Foss"},
+        "facts": {"amount_claimed": "6000"}
+      }
+    },
+    {
+      "id": "name_adult", "form": "NC-001",
+      "case": {
+        "matter": {"court_county": "Hancock", "case_type": "name change"},
+        "parties": {
+          "plaintiff": {"full_name": "Jonathan Pierce Albright", "address": "19 Spring Street", "city": "Ellsworth", "state": "Maine", "zip": "04605", "phone": "207-555-0160"}
+        },
+        "party": {"full_name": "Jonathan Pierce Albright"},
+        "facts": {"current_name": "Jonathan Pierce Albright", "new_name": "Jon Pierce Rivers", "reason": "personal reasons"}
+      }
+    },
+    {
+      "id": "name_minor", "form": "NC-001",
+      "case": {
+        "matter": {"court_county": "Aroostook", "case_type": "name change"},
+        "parties": {
+          "plaintiff": {"full_name": "Megan Doyle", "address": "41 Birch Road", "city": "Presque Isle", "state": "Maine", "zip": "04769"},
+          "child_1": {"full_name": "Lily Carter", "date_of_birth": "2017-02-09"}
+        },
+        "party": {"full_name": "Megan Doyle"},
+        "facts": {"current_name": "Lily Carter", "new_name": "Lily Doyle"}
+      }
+    },
+    {
+      "id": "misc_guardianship_minor", "form": "GS-001",
+      "case": {
+        "matter": {"court_county": "Somerset", "case_type": "guardianship of minor"},
+        "parties": {
+          "plaintiff": {"full_name": "Dorothy Klein", "address": "6 Meadow Lane", "city": "Skowhegan", "state": "Maine", "zip": "04976"},
+          "other_party": {"full_name": "Tracy Klein"},
+          "child_1": {"full_name": "Mason Klein", "date_of_birth": "2015-10-12"}
+        },
+        "party": {"full_name": "Dorothy Klein"}
+      }
+    },
+    {
+      "id": "misc_appearance", "form": "CV-035",
+      "case": {
+        "matter": {"court_county": "Sagadahoc", "docket_number": "CV-2024-0099"},
+        "parties": {
+          "plaintiff": {"full_name": "Northpoint Credit Union"},
+          "defendant": {"full_name": "Steven Albert", "address": "88 Quarry Road", "city": "Bath", "state": "Maine", "zip": "04530"}
+        },
+        "party": {"full_name": "Steven Albert"}
+      }
+    },
+    {
+      "id": "crim_appearance", "form": "CR-028",
+      "case": {
+        "matter": {"court_county": "Knox", "docket_number": "CR-2024-0512"},
+        "parties": {
+          "plaintiff": {"full_name": "State of Maine"},
+          "defendant": {"full_name": "Marcus Bell", "address": "23 Union Street", "city": "Rockport", "state": "Maine", "zip": "04856"}
+        },
+        "party": {"full_name": "Marcus Bell"},
+        "facts": {"monthly_income": "1400"}
+      }
+    },
+    {
+      "id": "crim_continuance", "form": "CR-040",
+      "case": {
+        "matter": {"court_county": "York", "docket_number": "CR-2024-0331"},
+        "parties": {
+          "plaintiff": {"full_name": "State of Maine"},
+          "defendant": {"full_name": "Olivia Hartman"}
+        },
+        "party": {"full_name": "Olivia Hartman"},
+        "facts": {"hearing_date": "2026-06-18", "reason": "scheduled medical procedure"}
+      }
+    },
+    {
+      "id": "crim_release_conditions", "form": "CR-004",
+      "case": {
+        "matter": {"court_county": "Cumberland", "docket_number": "CR-2023-0777"},
+        "parties": {
+          "plaintiff": {"full_name": "State of Maine"},
+          "defendant": {"full_name": "Derek Sloan", "address": "130 Ocean Avenue", "city": "South Portland", "state": "Maine", "zip": "04106"}
+        },
+        "party": {"full_name": "Derek Sloan"},
+        "facts": {"requested_modification": "permission to travel out of state for work"}
+      }
+    },
+    {
+      "id": "crim_indigency", "form": "CR-016",
+      "case": {
+        "matter": {"court_county": "Oxford", "docket_number": "CR-2024-0190"},
+        "parties": {
+          "plaintiff": {"full_name": "State of Maine"},
+          "defendant": {"full_name": "Tanya Brooks", "address": "14 Mill Street", "city": "Norway", "state": "Maine", "zip": "04268"}
+        },
+        "party": {"full_name": "Tanya Brooks"},
+        "facts": {"monthly_income": "1200", "number_of_dependents": "2"}
+      }
+    },
+    {
+      "id": "crim_discovery_motion", "form": "CR-039",
+      "case": {
+        "matter": {"court_county": "Aroostook", "docket_number": "CR-2024-0654"},
+        "parties": {
+          "plaintiff": {"full_name": "State of Maine"},
+          "defendant": {"full_name": "Raymond Cobb", "address": "200 High Street", "city": "Caribou", "state": "Maine", "zip": "04736"}
+        },
+        "party": {"full_name": "Raymond Cobb"}
+      }
+    }
+  ]
+}
