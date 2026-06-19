@@ -22,14 +22,15 @@ import unittest
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent
-LAYERS = ["flow", "fill", "guidance", "llm", "vision"]
-DEFAULT = ["flow", "fill", "guidance"]
+LAYERS = ["flow", "fill", "guidance", "logic", "llm", "vision"]
+DEFAULT = ["flow", "fill", "guidance", "logic"]
 
 # Assumption tested by each layer, for the scorecard header.
 ASSUMPTIONS = {
     "flow": "the 6-step workflow chains (route->extract->preflight->fill)",
     "fill": "completed-form content is stable, correct, tier-honest",
     "guidance": "every field has correct fill-value guidance (type/required/cond)",
+    "logic": "if/then rules are valid, drift-free, and fire correctly",
     "llm": "an LLM extracts preflight-clean, required-fact-complete cases",
     "vision": "values land in the visually-correct widget",
 }

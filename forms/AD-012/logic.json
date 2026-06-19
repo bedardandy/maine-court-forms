@@ -1,0 +1,49 @@
+{
+  "form_id": "AD-012",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-required_petitioners_hashave_attached_an_affidavit_that_states_facts_in_s",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:required_petitioners_hashave_attached_an_affidavit_that_states_facts_in_support_of_the_allegations"
+      },
+      "then": {
+        "attachment": "Required petitioners hashave"
+      },
+      "message": "You indicated an attachment ('Required petitioners hashave') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-the_petitioners_at_the_time_of_this_petition_does_not_yet_know_or_have_r",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_petitioners_at_the_time_of_this_petition_does_not_yet_know_or_have_reason_to_know_if_the_adoptee",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The petitioners at the time of this petition does not yet know or have reason to know if the adoptee' is PM, not AM."
+      },
+      "message": "'The petitioners at the time of this petition does not yet know or have reason to know if the adoptee' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-the_parents_isare_unwilling_or_unable_to_take_responsibility_for_the_chi",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_parents_isare_unwilling_or_unable_to_take_responsibility_for_the_child_within_a_time_which_is",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The parents isare unwilling or unable to take responsibility for the child within a time which is' is PM, not AM."
+      },
+      "message": "'The parents isare unwilling or unable to take responsibility for the child within a time which is' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

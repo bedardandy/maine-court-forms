@@ -1,0 +1,19 @@
+{
+  "form_id": "OTH-012",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-please_provide_the_following_informationplease_be_specific_attach_additio",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:please_provide_the_following_informationplease_be_specific_attach_additional_pages_if_necessary"
+      },
+      "then": {
+        "attachment": "Please provide the following informationplease be specific attach additional pages if necessary"
+      },
+      "message": "You indicated an attachment ('Please provide the following informationplease be specific attach additional pages if necessary') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

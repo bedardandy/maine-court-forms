@@ -27,7 +27,15 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    `tools/derive_field_guidance.py`, `docs/field-guidance.md`: `value_type`
    person_name/county/currency/date+format/time/address/zip/checkbox/signature,
    plus `required` and `conditional` one-of groups; MCP `get_form` returns it as
-   `field_guidance`).
+   `field_guidance`). Preflight also evaluates `forms/<ID>/logic.json` — **if/then
+   cross-field rules** (`tools/derive_logic.py` + hand-authored
+   `logic.authored.json`, engine `tools/logic_engine.py`,
+   `docs/logic-rules.md`): conditional-required fields, attachment / companion-
+   form triggers (e.g. minor children → FM-050/FM-040; confidential address →
+   PA-015; debt-buyer chain-of-title per 32 M.R.S. §11019), value
+   incompatibilities (garnishment > 25% disposable, 14 M.R.S. §3127), and value
+   inferences (a court time H:MM without AM/PM is almost certainly PM) — all
+   warnings-only, surfaced as `logic-*` warnings and via MCP `get_form` `logic`.
 4. **Fetch the PDF:** `python3 tools/fetch_pdfs.py --forms <ID>` (blank PDFs are
    not shipped; fetched from the official portal).
 5. **Fill:** `python3 -m engine.fill_via_mapping --form <ID> --case case.json`

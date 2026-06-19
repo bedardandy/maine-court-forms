@@ -1,0 +1,36 @@
+{
+  "form_id": "CR-CV-FM-260",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-i_am_requesting_to_change_the_format_because_if_you_need_more_space_to_wr",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.reason_for_request"
+      },
+      "then": {
+        "attachment": "I am requesting to change the format because if you need more space to write please attach another page 1"
+      },
+      "message": "You indicated an attachment ('I am requesting to change the format because if you need more space to write please attach another page 1') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-at",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.hearing_time"
+          },
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'At' is PM, not AM."
+      },
+      "message": "'At' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

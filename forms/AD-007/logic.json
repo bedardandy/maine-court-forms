@@ -1,0 +1,19 @@
+{
+  "form_id": "AD-007",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-22_have_you_ever_been_divorced_if_so_attach_copies_of_all_divorce_decrees",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.divorced"
+      },
+      "then": {
+        "attachment": "22 have you ever been divorced if so attach copies of all divorce decrees"
+      },
+      "message": "You indicated an attachment ('22 have you ever been divorced if so attach copies of all divorce decrees') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "form_id": "FM-216",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-the_attorney_representing_the_gestational_carrier_has_completed_a_declara",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_attorney_representing_the_gestational_carrier_has_completed_a_declaration_that_is_attached_to_the"
+      },
+      "then": {
+        "attachment": "The attorney representing the gestational carrier has completed a declaration that"
+      },
+      "message": "You indicated an attachment ('The attorney representing the gestational carrier has completed a declaration that') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_attorney_representing_the_intended_parents_has_completed_a_declaratio",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_attorney_representing_the_intended_parents_has_completed_a_declaration_that_is_attached_to_the"
+      },
+      "then": {
+        "attachment": "The attorney representing the intended parents has completed a declaration that"
+      },
+      "message": "You indicated an attachment ('The attorney representing the intended parents has completed a declaration that') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-copies_of_the_signed_acknowledgments_are_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:copies_of_the_signed_acknowledgments_are_attached"
+      },
+      "then": {
+        "attachment": "Copies of the signed acknowledgments are"
+      },
+      "message": "You indicated an attachment ('Copies of the signed acknowledgments are') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

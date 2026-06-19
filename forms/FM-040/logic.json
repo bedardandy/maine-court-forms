@@ -1,0 +1,53 @@
+{
+  "form_id": "FM-040",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "fm040-adjusted-not-over-gross-primary",
+      "kind": "incompatible",
+      "severity": "warning",
+      "when": {
+        ">": [
+          {
+            "var": "facts.adjusted_gross_income_primary"
+          },
+          {
+            "var": "facts.gross_income_primary"
+          }
+        ]
+      },
+      "message": "Adjusted gross income (primary) cannot exceed gross income — adjustments only reduce gross income. Check lines for the primary care provider.",
+      "authority": "19-A M.R.S. §2001 (definitions of gross/adjusted gross income)"
+    },
+    {
+      "id": "fm040-adjusted-not-over-gross-nonprimary",
+      "kind": "incompatible",
+      "severity": "warning",
+      "when": {
+        ">": [
+          {
+            "var": "facts.adjusted_gross_income_non_primary"
+          },
+          {
+            "var": "facts.gross_income_non_primary"
+          }
+        ]
+      },
+      "message": "Adjusted gross income (non-primary) cannot exceed gross income — adjustments only reduce gross income. Check lines for the non-primary care provider.",
+      "authority": "19-A M.R.S. §2001"
+    },
+    {
+      "id": "attach-supplementalworksheet_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:supplementalworksheet_attached"
+      },
+      "then": {
+        "attachment": "Supplementalworksheet"
+      },
+      "message": "You indicated an attachment ('Supplementalworksheet') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

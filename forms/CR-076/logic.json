@@ -1,0 +1,19 @@
+{
+  "form_id": "CR-076",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-attachment_of_an_electronic_monitoring_device_is_requested_for_the_follow",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:attachment_of_an_electronic_monitoring_device_is_requested_for_the_following_reasons"
+      },
+      "then": {
+        "attachment": "Attachment of an electronic monitoring device is requested for the following reasons"
+      },
+      "message": "You indicated an attachment ('Attachment of an electronic monitoring device is requested for the following reasons') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

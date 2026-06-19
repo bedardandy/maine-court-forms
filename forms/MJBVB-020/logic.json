@@ -1,0 +1,19 @@
+{
+  "form_id": "MJBVB-020",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-the_transcriptorder_form_cvcr165is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_transcriptorder_form_cvcr165is_attached"
+      },
+      "then": {
+        "attachment": "The transcriptorder form cvcr165"
+      },
+      "message": "You indicated an attachment ('The transcriptorder form cvcr165') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

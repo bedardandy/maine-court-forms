@@ -1,0 +1,30 @@
+{
+  "form_id": "CV-287",
+  "_doc": "Hand-authored debt-buyer documentation rules. Warnings-only. Not legal advice.",
+  "rules": [
+    {
+      "id": "cv287-attach-debt-agreement",
+      "kind": "attachment", "severity": "warning",
+      "when": {"or": [{"present": "facts.current_owner_name"}, {"present": "facts.cause_of_action"}]},
+      "then": {"attachment": "the contract, application, or other writing evidencing the consumer's agreement to the debt"},
+      "message": "A debt buyer must attach the contract/application (or other writing) evidencing the consumer's agreement to the debt.",
+      "authority": "32 M.R.S. §11013(9)"
+    },
+    {
+      "id": "cv287-attach-chain-of-title",
+      "kind": "attachment", "severity": "warning",
+      "when": {"or": [{"present": "facts.current_owner_name"}, {"present": "facts.debt_owner_1"}]},
+      "then": {"attachment": "the bill of sale and each assignment establishing an unbroken chain of title from the original creditor"},
+      "message": "Attach the bill of sale and each assignment establishing an unbroken chain of ownership from the original creditor to the current debt buyer.",
+      "authority": "32 M.R.S. §11019"
+    },
+    {
+      "id": "cv287-multiple-assignments-need-each",
+      "kind": "attachment", "severity": "warning",
+      "when": {"present": "facts.date_assignment_2"},
+      "then": {"attachment": "each successive assignment (the debt was assigned more than once)"},
+      "message": "The debt was assigned more than once — attach every assignment in the chain, not just the most recent.",
+      "authority": "32 M.R.S. §11019"
+    }
+  ]
+}

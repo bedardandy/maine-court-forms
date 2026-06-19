@@ -1,0 +1,54 @@
+{
+  "form_id": "FM-PC-003",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "time-pm-b_length_of_time_employed",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.length_of_time_employed"
+          },
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'B length of time employed' is PM, not AM."
+      },
+      "message": "'B length of time employed' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-full_time",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:full_time",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Full time' is PM, not AM."
+      },
+      "message": "'Full time' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-part_time",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:part_time",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Part time' is PM, not AM."
+      },
+      "message": "'Part time' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

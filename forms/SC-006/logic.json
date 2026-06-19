@@ -1,0 +1,55 @@
+{
+  "form_id": "SC-006",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-SC-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "SC-001",
+        "required": true
+      },
+      "message": "Filing SC-006 requires companion form SC-001."
+    },
+    {
+      "id": "wf-companion-SC-003-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "SC-003",
+        "required": false
+      },
+      "message": "SC-006 is usually filed with SC-003 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-SC-005",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "SC-005",
+        "required": true
+      },
+      "message": "Filing SC-006 requires companion form SC-005."
+    },
+    {
+      "id": "wf-companion-SC-007-appeal",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.appeal"
+      },
+      "then": {
+        "form": "SC-007",
+        "required": false
+      },
+      "message": "SC-006 is usually filed with SC-007 (when appeal)."
+    }
+  ]
+}

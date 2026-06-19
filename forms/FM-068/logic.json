@@ -1,0 +1,19 @@
+{
+  "form_id": "FM-068",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-or_order_in_the_following_way_attach_an_additional_piece_of_paper_signed_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.contempt_details"
+      },
+      "then": {
+        "attachment": "Or order in the following way attach an additional piece of paper signed under oath if necessary 1"
+      },
+      "message": "You indicated an attachment ('Or order in the following way attach an additional piece of paper signed under oath if necessary 1') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

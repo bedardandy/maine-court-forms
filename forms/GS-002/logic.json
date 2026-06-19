@@ -1,0 +1,58 @@
+{
+  "form_id": "GS-002",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-the_following_parents_are_unwilling_or_unable_to_exercise_their_parental_",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_following_parents_are_unwilling_or_unable_to_exercise_their_parental_rights_as_set_forth_in_the_attached"
+      },
+      "then": {
+        "attachment": "The following parents are unwilling or unable to exercise their parental rights as set forth in the"
+      },
+      "message": "You indicated an attachment ('The following parents are unwilling or unable to exercise their parental rights as set forth in the') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-a_child_support_order_is_attached_to_this_appointment_and_incorporated_by",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_child_support_order_is_attached_to_this_appointment_and_incorporated_by_reference_or"
+      },
+      "then": {
+        "attachment": "A child support order"
+      },
+      "message": "You indicated an attachment ('A child support order') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_order_regarding_transitional_arrangement_for_minor_is_attached_to_thi",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_order_regarding_transitional_arrangement_for_minor_is_attached_to_this_appointment_and_incorporated_by"
+      },
+      "then": {
+        "attachment": "The order regarding transitional arrangement for minor"
+      },
+      "message": "You indicated an attachment ('The order regarding transitional arrangement for minor') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-the_court_declines_to_issue_a_child_support_order_at_the_time_of_this_ap",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_court_declines_to_issue_a_child_support_order_at_the_time_of_this_appointment_or_reserves_the_issue",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The court declines to issue a child support order at the time of this appointment or reserves the issue' is PM, not AM."
+      },
+      "message": "'The court declines to issue a child support order at the time of this appointment or reserves the issue' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

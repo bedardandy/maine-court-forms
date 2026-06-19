@@ -1,0 +1,46 @@
+{
+  "form_id": "GS-004",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-a_child_support_order_attached_to_this_appointment_and_incorporated_by_re",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_child_support_order_attached_to_this_appointment_and_incorporated_by_reference_or"
+      },
+      "then": {
+        "attachment": "A child support order"
+      },
+      "message": "You indicated an attachment ('A child support order') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_indian_child_welfare_act_applies_to_this_case_and_the_court_has_attac",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_indian_child_welfare_act_applies_to_this_case_and_the_court_has_attached_and_incorporated_required"
+      },
+      "then": {
+        "attachment": "The indian child welfare act applies to this case and the court has"
+      },
+      "message": "You indicated an attachment ('The indian child welfare act applies to this case and the court has') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-the_court_declines_to_issue_a_child_support_order_at_the_time_of_this_ap",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_court_declines_to_issue_a_child_support_order_at_the_time_of_this_appointment_and_reserves_the",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The court declines to issue a child support order at the time of this appointment and reserves the' is PM, not AM."
+      },
+      "message": "'The court declines to issue a child support order at the time of this appointment and reserves the' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

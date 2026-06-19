@@ -31,6 +31,11 @@ the form(s) the fact pattern requires.
   one-of choice group (`docs/field-guidance.md`; surfaced by MCP `get_form` as
   `field_guidance`). Preflight uses it to warn on a value that doesn't match its
   field's type.
+- `forms/<ID>/logic.json` adds **if/then cross-field rules** (`docs/logic-rules.md`)
+  — conditional-required fields, attachment & companion-form triggers, value
+  incompatibilities, and value inferences (e.g. a 1:00 court time is PM).
+  Preflight / `lint_case` evaluate them against your case and return `logic-*`
+  warnings; MCP `get_form` lists the rules as `logic`.
 
 **3. Extract — build the canonical fact object.**
 Translate the fact pattern into the canonical shape (full spec in

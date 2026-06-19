@@ -1,0 +1,124 @@
+{
+  "form_id": "CV-FM-291",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-a_copy_of_the_completed_and_signed_referee_contract_is_attached_as_requir",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:a_copy_of_the_completed_and_signed_referee_contract_is_attached_as_required_under_jb2304"
+      },
+      "then": {
+        "attachment": "A copy of the completed and signed referee contract"
+      },
+      "message": "You indicated an attachment ('A copy of the completed and signed referee contract') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-attached_is_a_copy_of_the_court_orders_preapproving_the_additional_time_v",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:attached_is_a_copy_of_the_court_orders_preapproving_the_additional_time_voucher_will_be_denied_if_court_order"
+      },
+      "then": {
+        "attachment": "Attached is a copy of the court orders preapproving the additional time voucher will be denied if court order"
+      },
+      "message": "You indicated an attachment ('Attached is a copy of the court orders preapproving the additional time voucher will be denied if court order') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_attached_voucher_is_submitted_no_later_than_90_days_after_the_conclus",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_attached_voucher_is_submitted_no_later_than_90_days_after_the_conclusion_of_the_courts_order_appointing_referee"
+      },
+      "then": {
+        "attachment": "The"
+      },
+      "message": "You indicated an attachment ('The') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-the_attached_statement_of_time_spent_providing_referee_services_is_true_a",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_attached_statement_of_time_spent_providing_referee_services_is_true_and_correct"
+      },
+      "then": {
+        "attachment": "The"
+      },
+      "message": "You indicated an attachment ('The') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-i_have_attached_to_this_voucher_copies_of_all_court_orders_preapproving_a",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:i_have_attached_to_this_voucher_copies_of_all_court_orders_preapproving_any_time_above_the_maximum_hours_allowed_under"
+      },
+      "then": {
+        "attachment": "I have"
+      },
+      "message": "You indicated an attachment ('I have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-if_any_of_the_boxes_above_are_not_checked_i_have_attached_a_letter_provid",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:if_any_of_the_boxes_above_are_not_checked_i_have_attached_a_letter_providing_an_explanation_to_this_voucher"
+      },
+      "then": {
+        "attachment": "If any of the boxes above are not checked i have"
+      },
+      "message": "You indicated an attachment ('If any of the boxes above are not checked i have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-attached_is_a_copy_of_the_court_orders_preapproving_the_additional_time_",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:attached_is_a_copy_of_the_court_orders_preapproving_the_additional_time_voucher_will_be_denied_if_court_order",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'Attached is a copy of the court orders preapproving the additional time voucher will be denied if court order' is PM, not AM."
+      },
+      "message": "'Attached is a copy of the court orders preapproving the additional time voucher will be denied if court order' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-the_attached_statement_of_time_spent_providing_referee_services_is_true_",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_attached_statement_of_time_spent_providing_referee_services_is_true_and_correct",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The attached statement of time spent providing referee services is true and correct' is PM, not AM."
+      },
+      "message": "'The attached statement of time spent providing referee services is true and correct' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    },
+    {
+      "id": "time-pm-i_have_attached_to_this_voucher_copies_of_all_court_orders_preapproving_",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:i_have_attached_to_this_voucher_copies_of_all_court_orders_preapproving_any_time_above_the_maximum_hours_allowed_under",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'I have attached to this voucher copies of all court orders preapproving any time above the maximum hours allowed under' is PM, not AM."
+      },
+      "message": "'I have attached to this voucher copies of all court orders preapproving any time above the maximum hours allowed under' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

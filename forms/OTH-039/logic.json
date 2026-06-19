@@ -1,0 +1,43 @@
+{
+  "form_id": "OTH-039",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-check_here_if_you_have_attached_additional_pages_because_you_need_more_sp",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:check_here_if_you_have_attached_additional_pages_because_you_need_more_space_to_complete_one_or_more_section"
+      },
+      "then": {
+        "attachment": "Check here if you have"
+      },
+      "message": "You indicated an attachment ('Check here if you have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-one_or_both_parties_have_an_interest_in_additional_real_estate_and_have_a",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:one_or_both_parties_have_an_interest_in_additional_real_estate_and_have_attached_another_certificate"
+      },
+      "then": {
+        "attachment": "One or both parties have an interest in additional real estate and have"
+      },
+      "message": "You indicated an attachment ('One or both parties have an interest in additional real estate and have') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-required_if_applicable_i_have_attached_copies_of_my_recent_w2_form_and_tw",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:required_if_applicable_i_have_attached_copies_of_my_recent_w2_form_and_two_2_pay_stubs_or"
+      },
+      "then": {
+        "attachment": "Required if applicable i have"
+      },
+      "message": "You indicated an attachment ('Required if applicable i have') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

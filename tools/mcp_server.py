@@ -134,6 +134,13 @@ def get_form(form_id: str) -> dict:
         "field_guidance": (json.loads(
             (fdir / "fill_guidance.json").read_text()).get("fields", {})
             if (fdir / "fill_guidance.json").exists() else {}),
+        # If/then fill logic (tools/derive_logic.py + authored): conditional-
+        # required, attachment / companion-form triggers, value
+        # incompatibilities, and value inferences. Warnings-only; lint_case /
+        # fill_form evaluate these against a case and return the firings.
+        "logic": (json.loads(
+            (fdir / "logic.json").read_text()).get("rules", [])
+            if (fdir / "logic.json").exists() else []),
         "skill": (fdir / "SKILL.md").read_text()[:4000] if (fdir / "SKILL.md").exists() else "",
         "sample_case": (sample := json.loads(
             (fdir / "examples" / "sample_case.json").read_text())),

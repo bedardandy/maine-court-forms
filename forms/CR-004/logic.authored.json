@@ -1,0 +1,14 @@
+{
+  "form_id": "CR-004",
+  "_doc": "Hand-authored real-estate bail bond rules. Warnings-only. Not legal advice.",
+  "rules": [
+    {
+      "id": "cr004-realestate-bond-needs-property",
+      "kind": "conditional_required", "severity": "warning",
+      "when": {"or": [{"present": "facts.lien_amount_numeric"}, {"present": "facts.lien_amount_words"}]},
+      "then": {"require": ["facts.property_street", "facts.property_town", "facts.property_county"]},
+      "message": "A real-estate bail bond must identify the property pledged as security (street, town, and county) so the lien can attach.",
+      "authority": "15 M.R.S. §1071 (real estate bail bond)"
+    }
+  ]
+}

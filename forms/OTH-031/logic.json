@@ -1,0 +1,19 @@
+{
+  "form_id": "OTH-031",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-additional_space_is_needed_attach_another_page_1",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:additional_space_is_needed_attach_another_page_1"
+      },
+      "then": {
+        "attachment": "Additional space is needed attach another page 1"
+      },
+      "message": "You indicated an attachment ('Additional space is needed attach another page 1') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "form_id": "CV-001",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-255-electronic_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.electronic_service"
+      },
+      "then": {
+        "form": "CR-CV-FM-255",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CR-CV-FM-255 (when electronic service)."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CR-CV-FM-JV-021."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-001 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-007",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-007",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-007."
+    },
+    {
+      "id": "wf-companion-CV-037",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-037",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-037."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "wf-companion-CV-181-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-181",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-181 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-183",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-183",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-183."
+    },
+    {
+      "id": "wf-companion-CV-187-appeal",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.appeal"
+      },
+      "then": {
+        "form": "CV-187",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-187 (when appeal)."
+    },
+    {
+      "id": "wf-companion-CV-188-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-188",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-188 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-195-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-195",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-195 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-204",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-204",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-204."
+    },
+    {
+      "id": "wf-companion-CV-206-appeal",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.appeal"
+      },
+      "then": {
+        "form": "CV-206",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-206 (when appeal)."
+    },
+    {
+      "id": "wf-companion-CV-207",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-207",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-207."
+    },
+    {
+      "id": "wf-companion-CV-208",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-208",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-208."
+    },
+    {
+      "id": "wf-companion-CV-256",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-256",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-256."
+    },
+    {
+      "id": "wf-companion-CV-261",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-261",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-261."
+    },
+    {
+      "id": "wf-companion-CV-266",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-266",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-266."
+    },
+    {
+      "id": "wf-companion-CV-287",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-287",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form CV-287."
+    },
+    {
+      "id": "wf-companion-CV-FM-036",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-FM-036",
+        "required": false
+      },
+      "message": "CV-001 is usually filed with CV-FM-036."
+    },
+    {
+      "id": "wf-companion-FDP-002A",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "FDP-002A",
+        "required": true
+      },
+      "message": "Filing CV-001 requires companion form FDP-002A."
+    }
+  ]
+}

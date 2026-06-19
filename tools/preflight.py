@@ -243,7 +243,45 @@ def preflight_case(case, form_id: str | None = None,
             # the per-field guidance; warnings only, never blocks.
             result["warnings"] = result["warnings"] + _value_type_warnings(
                 case, form_id, froot)
+            # If/then logic warnings: conditional-required, attachment /
+            # companion-form triggers, incompatibilities, value inferences.
+            result["warnings"] = result["warnings"] + _logic_warnings(
+                case, form_id, froot)
     return result
+
+
+def _logic_warnings(case: dict, form_id: str,
+                    forms_root: pathlib.Path) -> list[dict]:
+    """Evaluate the form's logic.json (tools/logic_engine) against the case.
+    Best-effort: also resolves mapped field values so `field:` rules can fire.
+    Warnings only; silently no-ops if artifacts/modules are unavailable."""
+    lpath = forms_root / form_id / "logic.json"
+    if not lpath.exists():
+        return []
+    try:
+        from tools.logic_engine import evaluate_rules
+    except Exception:  # noqa: BLE001
+        try:
+            from logic_engine import evaluate_rules  # script-dir import
+        except Exception:  # noqa: BLE001
+            return []
+    fields = {}
+    try:
+        from engine.fill_via_mapping import resolve_mapping
+        fields = resolve_mapping(form_id, case, forms_root).get("fid_value", {})
+    except Exception:  # noqa: BLE001
+        fields = {}
+    try:
+        logic = json.loads(lpath.read_text())
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    for w in evaluate_rules(logic, case, fields):
+        msg = w.get("message", "")
+        if w.get("authority"):
+            msg = f"{msg} [{w['authority']}]"
+        out.append(_issue(f"logic-{w.get('kind', 'rule')}", "$", msg))
+    return out
 
 
 def _value_type_warnings(case: dict, form_id: str,

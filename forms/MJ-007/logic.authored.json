@@ -1,0 +1,20 @@
+{
+  "form_id": "MJ-007",
+  "_doc": "Hand-authored wage-garnishment cap rules. Warnings-only. Not legal advice.",
+  "rules": [
+    {
+      "id": "mj007-withholding-not-over-25pct",
+      "kind": "incompatible", "severity": "warning",
+      "when": {">": [{"var": "facts.maximum_withholding_amount"}, {"var": "facts.twenty_five_percent_amount"}]},
+      "message": "The maximum withholding cannot exceed 25% of disposable earnings (line 4). Wage garnishment is capped at the lesser of 25% of disposable earnings or the amount over 40x the minimum wage.",
+      "authority": "14 M.R.S. §3127; 15 U.S.C. §1673(a)"
+    },
+    {
+      "id": "mj007-withholding-not-over-disposable",
+      "kind": "incompatible", "severity": "warning",
+      "when": {">": [{"var": "facts.maximum_withholding_amount"}, {"var": "facts.disposable_earnings"}]},
+      "message": "The maximum withholding cannot exceed the judgment debtor's disposable earnings (line 3).",
+      "authority": "14 M.R.S. §3127"
+    }
+  ]
+}

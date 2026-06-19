@@ -1,0 +1,19 @@
+{
+  "form_id": "CR-234",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-veteran_check_if_applicable_and_attach_dd214_if_available",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:veteran_check_if_applicable_and_attach_dd214_if_available"
+      },
+      "then": {
+        "attachment": "Veteran check if applicable and attach dd214 if available"
+      },
+      "message": "You indicated an attachment ('Veteran check if applicable and attach dd214 if available') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "form_id": "CV-FM-036",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-255-electronic_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.electronic_service"
+      },
+      "then": {
+        "form": "CR-CV-FM-255",
+        "required": false
+      },
+      "message": "CV-FM-036 is usually filed with CR-CV-FM-255 (when electronic service)."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-FM-036 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-FM-036 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-FM-036 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "wf-companion-CV-181-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-181",
+        "required": false
+      },
+      "message": "CV-FM-036 is usually filed with CV-181 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-261",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-261",
+        "required": true
+      },
+      "message": "Filing CV-FM-036 requires companion form CV-261."
+    }
+  ]
+}

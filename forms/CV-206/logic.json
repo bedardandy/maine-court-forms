@@ -1,0 +1,115 @@
+{
+  "form_id": "CV-206",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CR-CV-FM-255-electronic_service",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.electronic_service"
+      },
+      "then": {
+        "form": "CR-CV-FM-255",
+        "required": false
+      },
+      "message": "CV-206 is usually filed with CR-CV-FM-255 (when electronic service)."
+    },
+    {
+      "id": "wf-companion-CR-CV-FM-JV-021-attorney_filing",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.attorney_filing"
+      },
+      "then": {
+        "form": "CR-CV-FM-JV-021",
+        "required": true
+      },
+      "message": "CV-206 is usually filed with CR-CV-FM-JV-021 (when attorney filing)."
+    },
+    {
+      "id": "wf-companion-CV-001",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-001",
+        "required": true
+      },
+      "message": "Filing CV-206 requires companion form CV-001."
+    },
+    {
+      "id": "wf-companion-CV-007",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-007",
+        "required": true
+      },
+      "message": "Filing CV-206 requires companion form CV-007."
+    },
+    {
+      "id": "wf-companion-CV-061-default_judgment",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.default_judgment"
+      },
+      "then": {
+        "form": "CV-061",
+        "required": false
+      },
+      "message": "CV-206 is usually filed with CV-061 (when default judgment)."
+    },
+    {
+      "id": "wf-companion-CV-195-judgment_granted",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.judgment_granted"
+      },
+      "then": {
+        "form": "CV-195",
+        "required": false
+      },
+      "message": "CV-206 is usually filed with CV-195 (when judgment granted)."
+    },
+    {
+      "id": "wf-companion-CV-204",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-204",
+        "required": true
+      },
+      "message": "Filing CV-206 requires companion form CV-204."
+    },
+    {
+      "id": "wf-companion-CV-256",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-256",
+        "required": true
+      },
+      "message": "Filing CV-206 requires companion form CV-256."
+    },
+    {
+      "id": "attach-the_transcript_order_form_is_attached",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:the_transcript_order_form_is_attached"
+      },
+      "then": {
+        "attachment": "The transcript order form"
+      },
+      "message": "You indicated an attachment ('The transcript order form') — make sure the document is actually attached to the filing."
+    }
+  ]
+}

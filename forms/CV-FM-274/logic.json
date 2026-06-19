@@ -1,0 +1,60 @@
+{
+  "form_id": "CV-FM-274",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-witnesses_and_exhibits_number_of_plaintiffs_witnesses",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.plaintiff_witness_count"
+      },
+      "then": {
+        "attachment": "Witnesses and exhibits number of plaintiffs witnesses"
+      },
+      "message": "You indicated an attachment ('Witnesses and exhibits number of plaintiffs witnesses') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-submission_of_exhibits_to_referee_the_parties_shall_email_copies_of_exhib",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.exhibit_submission_deadline_date"
+      },
+      "then": {
+        "attachment": "Submission of exhibits to referee the parties shall email copies of exhibits to the referee in pdf format"
+      },
+      "message": "You indicated an attachment ('Submission of exhibits to referee the parties shall email copies of exhibits to the referee in pdf format') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "attach-in_addition_to_emailing_the_exhibits_to_the_referee_the_parties_shall_sen",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "field:in_addition_to_emailing_the_exhibits_to_the_referee_the_parties_shall_send_paper_copies_of_all_exhibits_to"
+      },
+      "then": {
+        "attachment": "In addition to emailing the exhibits to the referee the parties shall send paper copies of all exhibits to"
+      },
+      "message": "You indicated an attachment ('In addition to emailing the exhibits to the referee the parties shall send paper copies of all exhibits to') — make sure the document is actually attached to the filing."
+    },
+    {
+      "id": "time-pm-at",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          {
+            "var": "facts.hearing_time"
+          },
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'At' is PM, not AM."
+      },
+      "message": "'At' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

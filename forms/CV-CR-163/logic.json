@@ -1,0 +1,44 @@
+{
+  "form_id": "CV-CR-163",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "wf-companion-CV-CR-162",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-CR-162",
+        "required": true
+      },
+      "message": "Filing CV-CR-163 requires companion form CV-CR-162."
+    },
+    {
+      "id": "wf-companion-CV-CR-JV-165",
+      "kind": "companion_form",
+      "severity": "info",
+      "when": null,
+      "then": {
+        "form": "CV-CR-JV-165",
+        "required": true
+      },
+      "message": "Filing CV-CR-163 requires companion form CV-CR-JV-165."
+    },
+    {
+      "id": "time-pm-the_parties_good_faith_credible_estimate_of_the_time_required_for_the_tr",
+      "kind": "value_inference",
+      "severity": "info",
+      "when": {
+        "matches": [
+          "field:the_parties_good_faith_credible_estimate_of_the_time_required_for_the_trial_is",
+          "^(0?[1-6]):[0-5]\\d$"
+        ]
+      },
+      "then": {
+        "suggest": "A court time like this without AM/PM is almost always PM — confirm 'The parties good faith credible estimate of the time required for the trial is' is PM, not AM."
+      },
+      "message": "'The parties good faith credible estimate of the time required for the trial is' looks like an early-hour time with no AM/PM; court times are almost always PM — confirm."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "form_id": "FM-040",
+  "_doc": "Hand-authored arithmetic-sanity rules for the child support worksheet. Warnings-only. Not legal advice.",
+  "rules": [
+    {
+      "id": "fm040-adjusted-not-over-gross-primary",
+      "kind": "incompatible", "severity": "warning",
+      "when": {">": [{"var": "facts.adjusted_gross_income_primary"}, {"var": "facts.gross_income_primary"}]},
+      "message": "Adjusted gross income (primary) cannot exceed gross income — adjustments only reduce gross income. Check lines for the primary care provider.",
+      "authority": "19-A M.R.S. §2001 (definitions of gross/adjusted gross income)"
+    },
+    {
+      "id": "fm040-adjusted-not-over-gross-nonprimary",
+      "kind": "incompatible", "severity": "warning",
+      "when": {">": [{"var": "facts.adjusted_gross_income_non_primary"}, {"var": "facts.gross_income_non_primary"}]},
+      "message": "Adjusted gross income (non-primary) cannot exceed gross income — adjustments only reduce gross income. Check lines for the non-primary care provider.",
+      "authority": "19-A M.R.S. §2001"
+    }
+  ]
+}

@@ -31,6 +31,7 @@ default.
 | **flow** | the 6 steps chain — each step's output is a valid input to the next | always (deterministic) |
 | **fill** | completed-form content is stable, correct, and tier-honest | always (deterministic) |
 | **guidance** | every field has correct fill-value guidance (type/required/conditional) | always (deterministic) |
+| **logic** | if/then rules are valid, drift-free, and fire correctly | always (deterministic) |
 | **llm** | an LLM extracts a preflight-clean, required-fact-complete case | offline scores goldens; live: `MCF_EVAL_LLM=1` |
 | **vision** | values land in the visually-correct widget | `MCF_EVAL_VISION=1` (needs blank PDFs + model) |
 
@@ -77,6 +78,20 @@ engine actually resolves (a `.zip` key must be typed `zip`, etc.).
 Regenerate after a mapping/constraints change: `python3 -m
 tools.derive_field_guidance --all` (or `python3 tools/derive_field_guidance.py
 --all`), review, commit.
+
+### logic — if/then fill logic
+Each form ships `logic.json` (built by `tools/derive_logic.py` from authored +
+derived rules) with cross-field rules — conditional-required, attachment /
+companion-form triggers, value incompatibilities, value inferences — evaluated
+by `tools/logic_engine.py` (warnings-only). See `docs/logic-rules.md`.
+- `test_logic_engine.py` — the expression evaluator: every operator + malformed
+  input never raises (total).
+- `test_logic_rules.py` — artifact validity, no-drift, real form/field
+  references, and positive+negative firing controls for the authored seed
+  (PFA, family/support, eviction/money, criminal), plus preflight wiring.
+
+Regenerate after editing a `logic.authored.json` / `workflows.json`: `python3
+tools/derive_logic.py --all`, review, commit.
 
 ### llm — extraction fidelity
 - `extraction_cases.json` — a reviewed golden canonical case per smoke

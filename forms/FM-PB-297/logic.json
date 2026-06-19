@@ -1,0 +1,19 @@
+{
+  "form_id": "FM-PB-297",
+  "generated_by": "tools/derive_logic.py",
+  "note": "If/then fill logic (authored + derived): conditional-required, attachment/companion-form triggers, value incompatibilities, and value inferences. Warnings-only — evaluated by tools/logic_engine.py at preflight/fill time; nothing here blocks or alters a fill. Not legal advice.",
+  "rules": [
+    {
+      "id": "attach-and_i_ask_the_court_to_serve_the_attached_court_papers_on_the_other_party",
+      "kind": "attachment",
+      "severity": "info",
+      "when": {
+        "truthy": "facts.other_name"
+      },
+      "then": {
+        "attachment": "And i ask the court to serve the"
+      },
+      "message": "You indicated an attachment ('And i ask the court to serve the') — make sure the document is actually attached to the filing."
+    }
+  ]
+}
