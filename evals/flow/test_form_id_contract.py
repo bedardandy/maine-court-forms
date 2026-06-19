@@ -47,7 +47,14 @@ class TestFormIdContract(unittest.TestCase):
         flows = wf.get("workflows", wf) if isinstance(wf, dict) else wf
         members = []
         for f in (flows.values() if isinstance(flows, dict) else flows):
-            members.extend(f.get("forms", []) if isinstance(f, dict) else [])
+            if not isinstance(f, dict):
+                continue
+            # workflows.json carries members under steps[].form; tolerate a
+            # legacy top-level `forms` list too.
+            members.extend(s["form"] for s in (f.get("steps") or [])
+                           if isinstance(s, dict) and s.get("form"))
+            members.extend(f.get("forms") or [])
+        self.assertTrue(members, "no workflow member form ids found to check")
         bad = [m for m in members if not _RE.fullmatch(m)]
         self.assertEqual(bad, [], f"workflow members violate pattern: {bad}")
 

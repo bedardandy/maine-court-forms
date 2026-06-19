@@ -19,7 +19,9 @@ from __future__ import annotations
 import os
 import unittest
 
-import helpers  # tests/helpers.py (on path via evals.common)
+# Import evals.common first — it puts tests/ on sys.path so `helpers` resolves.
+import evals.common  # noqa: F401
+import helpers  # noqa: E402  (tests/helpers.py)
 
 VISION = os.environ.get("MCF_EVAL_VISION") == "1"
 
