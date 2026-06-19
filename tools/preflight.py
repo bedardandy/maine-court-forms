@@ -238,7 +238,48 @@ def preflight_case(case, form_id: str | None = None,
                     f"{form_id} declares required facts the case doesn't "
                     f"provide: {missing_req} — the filled form would be "
                     "facially incomplete")]
+            # Value-type warnings: a supplied value that doesn't look like its
+            # field's declared type (e.g. a phone number in a ZIP field). Uses
+            # the per-field guidance; warnings only, never blocks.
+            result["warnings"] = result["warnings"] + _value_type_warnings(
+                case, form_id, froot)
     return result
+
+
+def _value_type_warnings(case: dict, form_id: str,
+                         forms_root: pathlib.Path) -> list[dict]:
+    """Flag supplied fact values that clearly mismatch their field's declared
+    value_type. Best-effort: silently no-ops if the guidance/mapping artifacts
+    or the validator module are unavailable."""
+    gpath = forms_root / form_id / "fill_guidance.json"
+    mpath = forms_root / form_id / "mapping.json"
+    if not gpath.exists() or not mpath.exists():
+        return []
+    try:
+        from tools.value_types import validate_value
+    except Exception:  # noqa: BLE001
+        try:
+            from value_types import validate_value  # script-dir import
+        except Exception:  # noqa: BLE001
+            return []
+    fields = json.loads(gpath.read_text()).get("fields", {})
+    fid_to_key = (json.loads(mpath.read_text()).get("map")) or {}
+    # canonical key -> value_type (first concrete, non-free_text type wins).
+    key_type: dict[str, str] = {}
+    for fid, key in fid_to_key.items():
+        vt = (fields.get(fid) or {}).get("value_type")
+        if vt and vt not in ("free_text", "checkbox", "signature"):
+            key_type.setdefault(key, vt)
+    out: list[dict] = []
+    for key, vt in key_type.items():
+        val = _resolve(case, key)
+        if val in (None, ""):
+            continue
+        problem = validate_value(vt, val)
+        if problem:
+            out.append(_issue("value-type", f"${'.' + key if key else ''}",
+                              f"{key} ({vt}): {problem}"))
+    return out
 
 
 def _resolve(case: dict, key: str):

@@ -30,6 +30,7 @@ default.
 |-------|------------|------|
 | **flow** | the 6 steps chain — each step's output is a valid input to the next | always (deterministic) |
 | **fill** | completed-form content is stable, correct, and tier-honest | always (deterministic) |
+| **guidance** | every field has correct fill-value guidance (type/required/conditional) | always (deterministic) |
 | **llm** | an LLM extracts a preflight-clean, required-fact-complete case | offline scores goldens; live: `MCF_EVAL_LLM=1` |
 | **vision** | values land in the visually-correct widget | `MCF_EVAL_VISION=1` (needs blank PDFs + model) |
 
@@ -57,6 +58,25 @@ default.
   stays silent (no false positives).
 - `test_verify_fill` — (PDF-gated) the real `engine.verify_fill` confirms
   intended fields are `placed` in the written PDF; auto-skips offline.
+
+### guidance — per-field fill-value guidance
+Each form ships `fill_guidance.json` (built by `tools/derive_field_guidance.py`)
+declaring, per field: `value_type` (person_name / county / currency / date(+
+format) / time / address / zip / phone / email / docket / checkbox / signature
+/ ...), `required`, and `conditional` (one-of choice groups from
+constraints.json). The evals prove it is complete, in-vocabulary, drift-free,
+and — via counter-assertions — that the declared type agrees with the value the
+engine actually resolves (a `.zip` key must be typed `zip`, etc.).
+- `test_field_guidance.py` — coverage, vocabulary, no-drift, type/mapping
+  agreement, checkbox/signature/date-format rules, required & conditional
+  agreement, and preflight type-warning wiring.
+- `test_value_types.py` — adversarial validator tests: valid values across all
+  accepted formats must pass (no false positives), clear cross-type swaps must
+  be flagged.
+
+Regenerate after a mapping/constraints change: `python3 -m
+tools.derive_field_guidance --all` (or `python3 tools/derive_field_guidance.py
+--all`), review, commit.
 
 ### llm — extraction fidelity
 - `extraction_cases.json` — a reviewed golden canonical case per smoke

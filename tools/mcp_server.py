@@ -126,6 +126,14 @@ def get_form(form_id: str) -> dict:
         # facts.required = caption facts the form is facially incomplete
         # without; facts.used = every canonical key the fill can consume.
         "facts": mp.get("facts") or {"required": [], "used": canonical_keys},
+        # Per-field fill-value guidance (tools/derive_field_guidance.py):
+        # field_id -> {value_type, format?, required, conditional?, guidance}.
+        # Tells an agent what kind of text each blank wants (person name vs
+        # county vs dollar amount vs MM/DD/YYYY date vs checkbox), which fields
+        # are required, and which belong to a one-of choice group.
+        "field_guidance": (json.loads(
+            (fdir / "fill_guidance.json").read_text()).get("fields", {})
+            if (fdir / "fill_guidance.json").exists() else {}),
         "skill": (fdir / "SKILL.md").read_text()[:4000] if (fdir / "SKILL.md").exists() else "",
         "sample_case": (sample := json.loads(
             (fdir / "examples" / "sample_case.json").read_text())),

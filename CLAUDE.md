@@ -21,7 +21,13 @@ the protocol in **`docs/agent-workflow.md`**. In short:
    the fact pattern. Don't invent values; omit unknowns. Then preflight it:
    `python3 tools/preflight.py case.json --form <ID>` (MCP: `lint_case`)
    catches typo'd keys/roles (e.g. `parties.lawyer` → `parties.attorney`)
-   that would otherwise fill nothing.
+   that would otherwise fill nothing, and emits `value-type` warnings when a
+   supplied value doesn't match a field's declared type (per-field value
+   semantics live in `forms/<ID>/fill_guidance.json` —
+   `tools/derive_field_guidance.py`, `docs/field-guidance.md`: `value_type`
+   person_name/county/currency/date+format/time/address/zip/checkbox/signature,
+   plus `required` and `conditional` one-of groups; MCP `get_form` returns it as
+   `field_guidance`).
 4. **Fetch the PDF:** `python3 tools/fetch_pdfs.py --forms <ID>` (blank PDFs are
    not shipped; fetched from the official portal).
 5. **Fill:** `python3 -m engine.fill_via_mapping --form <ID> --case case.json`
